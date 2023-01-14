@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: Your MyLink Profile Data
+about: Describe your MyLink data and get a URL to share instantly!
 title: rishi-raj-jain
 labels: ''
 assignees: ''
