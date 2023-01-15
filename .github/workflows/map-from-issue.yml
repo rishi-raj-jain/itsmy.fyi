@@ -1,0 +1,11 @@
+on: issue_comment
+
+jobs:
+  issue_commented:
+    name: Issue Comment GH Action
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
