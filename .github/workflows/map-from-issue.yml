@@ -7,6 +7,7 @@ jobs:
     name: Issue Comment GH Action
     runs-on: ubuntu-latest
     steps:
-      - run: echo "$GITHUB_CONTEXT"
+      - run: node update-map.js
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
