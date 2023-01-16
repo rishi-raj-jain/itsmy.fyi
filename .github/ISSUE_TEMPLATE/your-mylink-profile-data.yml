@@ -16,9 +16,10 @@ body:
       placeholder: ex. rishi-raj-jain
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: links
     attributes:
+      label: Your Links
       value: |
         ---
         links: [] (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
