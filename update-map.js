@@ -1,4 +1,50 @@
-require('dotenv').config()
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
+require("dotenv").config();
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const matter = require("gray-matter");
 
-console.log(process.env.GITHUB_CONTEXT)
+const validateBody = (body) => {
+  try {
+    const { data } = matter(body);
+    if (!(typeof data.name === "string")) {
+      return false;
+    }
+    if (!(typeof data.slug === "string")) {
+      return false;
+    }
+    if (!(typeof data.image === "string")) {
+      return false;
+    }
+    if (!Array.isArray(data.links)) {
+      return false;
+    }
+    if (!Array.isArray(data.socials)) {
+      return false;
+    }
+    return data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+const validateEvent = (context) => {
+  try {
+    if (!(typeof context.event.issue.number === "string")) {
+      return false;
+    }
+    if (!(typeof context.event.issue.body === "string")) {
+      return false;
+    }
+    return validateBody(context.event.issue.body);
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+const context = process.env.GITHUB_CONTEXT;
+
+const data = validateEvent(context);
+
+console.log(JSON.stringify(data));
