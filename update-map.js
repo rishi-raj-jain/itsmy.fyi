@@ -84,23 +84,15 @@ if (data.issue) {
     }
   }
 
-  async function deleteFile(owner, repo, path, message) {
+  async function deleteFile(owner, repo, path, message, sha) {
     try {
-      const { data } = await octokit.repos.getCommit({
-        owner,
-        repo,
-        ref: "jsons",
-        branch: "jsons",
-      });
-
-      const { sha } = data.commit.tree;
-
       await octokit.repos.deleteFile({
         owner,
         repo,
         path,
         message,
         sha,
+        ref: "jsons",
         branch: "jsons",
       });
       console.log(`File ${path} has been deleted from ${owner}/${repo}`);
@@ -151,7 +143,8 @@ if (data.issue) {
             context.repository_owner,
             context.event.repository.name,
             `jsons/${data.slug}.json`,
-            `Issue ${data.issue} was closed.`
+            `Issue ${data.issue} was closed.`,
+            fileContent.sha
           );
         } else {
           // If the event was edited
@@ -180,6 +173,7 @@ if (data.issue) {
           owner,
           repo,
           ref: "jsons",
+          branch: "jsons",
         });
         const { sha } = commitData.commit.tree;
         await writeJsonToFile(
