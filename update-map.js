@@ -89,7 +89,7 @@ if (data.issue) {
       const { data } = await octokit.repos.getCommit({
         owner,
         repo,
-        ref: "HEAD",
+        ref: "jsons",
       });
 
       const { sha } = data.commit.tree;
@@ -114,7 +114,7 @@ if (data.issue) {
       const { data } = await octokit.repos.getCommit({
         owner,
         repo,
-        ref: "HEAD",
+        ref: "jsons",
       });
       const { sha } = data.commit.tree;
       await octokit.repos.createOrUpdateFileContents({
