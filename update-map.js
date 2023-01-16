@@ -142,6 +142,7 @@ if (data.issue) {
       const fileContentJSON = JSON.parse(
         Buffer.from(fileContent, "base64").toString()
       );
+      console.log(fileContentJSON);
       // evaulate if the issue number matches
       if (fileContentJSON.issue === data.issue) {
         // If the event was closed
