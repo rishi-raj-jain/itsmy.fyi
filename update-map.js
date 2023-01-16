@@ -6,6 +6,7 @@ const matter = require("gray-matter");
 const validateBody = (body) => {
   try {
     const { data } = matter(body);
+    console.log(data)
     if (!(typeof data.name === "string")) {
       return false;
     }
