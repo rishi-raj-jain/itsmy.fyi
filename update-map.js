@@ -104,7 +104,6 @@ if (data.issue) {
       console.log(`File ${path} has been deleted from ${owner}/${repo}`);
     } catch (err) {
       console.error(err);
-      process.exit();
     }
   }
 
