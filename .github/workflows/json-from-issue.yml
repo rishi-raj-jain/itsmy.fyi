@@ -1,4 +1,4 @@
-name: CUD JSON for Issue ${{ github.event.issue.number }}
+name: CUD JSON for Issue
 
 on:
   issues:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   issue_commented:
-    name: Issue Comment GH Action
+    name: CUD JSON for Issue
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
