@@ -70,12 +70,13 @@ if (data.issue) {
     auth: process.env.GITHUB_TOKEN,
   });
 
-  async function getFileContent(owner, repo, path) {
+  async function getFileContent(owner, repo, path, ref = "jsons") {
     try {
       const { data: fileData } = await octokit.repos.getContent({
         owner,
         repo,
         path,
+        ref,
       });
       return fileData.content;
     } catch (err) {
