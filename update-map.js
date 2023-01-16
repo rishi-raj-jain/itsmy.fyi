@@ -33,6 +33,8 @@ const validateBody = (body) => {
 
 const validateEvent = (context) => {
   try {
+    console.log(context.event.issue.number)
+    console.log(typeof context.event.issue.number)
     if (!(typeof context.event.issue.number === "string")) {
       return false;
     }
