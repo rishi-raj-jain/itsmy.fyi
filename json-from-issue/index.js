@@ -120,6 +120,7 @@ if (data.issue) {
         branch: 'jsons',
       })
       console.log(`JSON data written to file ${path} in ${owner}/${repo}`)
+      return true
     } catch (err) {
       console.error(err)
     }
@@ -176,7 +177,7 @@ if (data.issue) {
           branch: 'jsons',
         })
         const { sha } = commitData.commit.tree
-        await writeJsonToFile(
+        const success = await writeJsonToFile(
           context.repository_owner,
           context.event.repository.name,
           `jsons/${data.slug}.json`,
@@ -184,6 +185,14 @@ if (data.issue) {
           data,
           sha
         )
+        if (success) {
+          await octokit.issues.createComment({
+            owner: context.repository_owner,
+            repo: context.event.repository.name,
+            issue_number: data.issue,
+            body: `Thanks for using itsyour.page ✨\nHere's your personalized link: https://itsyour.page/u/${data.slug} 🚀`,
+          })
+        }
       }
     }
   })
