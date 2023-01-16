@@ -5,10 +5,10 @@ const matter = require("gray-matter");
 
 const validateBody = (body) => {
   try {
-    console.log(body)
-    console.log(matter(body))
+    console.log(body);
+    console.log(matter(body));
     const { data } = matter(body);
-    console.log(data)
+    console.log(data);
     if (!(typeof data.name === "string")) {
       return false;
     }
@@ -33,9 +33,7 @@ const validateBody = (body) => {
 
 const validateEvent = (context) => {
   try {
-    console.log(context.event.issue.number)
-    console.log(typeof context.event.issue.number)
-    if (!(typeof context.event.issue.number === "string")) {
+    if (!(typeof context.event.issue.number === "number")) {
       return false;
     }
     return validateBody(context.event.issue.body);
