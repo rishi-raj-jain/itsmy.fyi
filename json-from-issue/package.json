@@ -1,0 +1,15 @@
+{
+  "name": "itsyour.page.backend",
+  "scripts": {
+    "format": "prettier --write ./index.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^19.0.5",
+    "dotenv": "^16.0.3",
+    "gray-matter": "^4.0.3",
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.3"
+  }
+}

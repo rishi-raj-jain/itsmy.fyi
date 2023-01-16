@@ -1,0 +1,33 @@
+name: CUD JSON for Issue ${{ github.event.issue.number }}
+
+on:
+  issues:
+    types: [opened, edited, closed]
+
+jobs:
+  issue_commented:
+    name: Issue Comment GH Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: cd json-from-issue
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-backend-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-backend-${{ env.cache-name }}-
+            ${{ runner.os }}-backend-
+            ${{ runner.os }}-
+      - run: npm ci
+      - run: node index.js
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
