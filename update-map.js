@@ -72,7 +72,7 @@ if (data.issue) {
 
   async function getFileContent(owner, repo, path) {
     try {
-      const { fileData } = await octokit.repos.getContents({
+      const { fileData } = await octokit.repos.getContent({
         owner,
         repo,
         path,
@@ -80,6 +80,7 @@ if (data.issue) {
       return fileData.content;
     } catch (err) {
       console.error(err);
+      process.exit();
     }
   }
 
@@ -104,6 +105,7 @@ if (data.issue) {
       console.log(`File ${path} has been deleted from ${owner}/${repo}`);
     } catch (err) {
       console.error(err);
+      process.exit();
     }
   }
 
