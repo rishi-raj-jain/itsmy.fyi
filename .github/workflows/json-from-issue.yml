@@ -10,28 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          working-directory: ./json-from-issue
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          working-directory: ./json-from-issue
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          working-directory: ./json-from-issue
           path: ~/.npm
-          key: ${{ runner.os }}-backend-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-backend-${{ env.cache-name }}-
-            ${{ runner.os }}-backend-
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
             ${{ runner.os }}-
       - run: npm ci
-      - run: node index.js
-        working-directory: ./json-from-issue
+      - run: node json-from-issue/index.js
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

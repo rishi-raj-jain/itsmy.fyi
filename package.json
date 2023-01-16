@@ -19,7 +19,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.7",
     "cheerio": "^1.0.0-rc.12",
-    "dotenv": "^16.0.2",
+    "dotenv": "^16.0.3",
     "postcss": "^8.4.16",
     "prettier": "^2.8.1",
     "prettier-plugin-astro": "^0.7.0",
@@ -29,7 +29,10 @@
   "dependencies": {
     "@astrojs/node": "^4.0.0",
     "@octokit/core": "^4.1.0",
+    "@octokit/rest": "^19.0.5",
     "astro": "^1.9.2",
-    "html-minifier": "^4.0.0"
+    "gray-matter": "^4.0.3",
+    "html-minifier": "^4.0.0",
+    "node-fetch": "^3.3.0"
   }
 }
