@@ -132,63 +132,62 @@ if (data.issue) {
   }
 
   // Get file content for the slug from data
-  const fileContent = await getFileContent(
+  getFileContent(
     context.repository_owner,
     context.event.repository.name,
     `jsons/${data.slug}.json`
-  );
-
-  console.log(fileContent);
-  console.log(typeof fileContent);
-
-  // In case the file already exists
-  if (fileContent) {
-    console.log("File does exist.");
-    // Parse the base64 content to JSON
-    const fileContentJSON = JSON.parse(
-      Buffer.from(fileContent, "base64").toString()
-    );
-    // evaulate if the issue number matches
-    if (fileContentJSON.issue === data.issue) {
-      // If the event was closed
-      // Remove the file
-      if (context.event.action === "closed") {
-        // Delete the file
-        await deleteFile(
-          context.repository_owner,
-          context.event.repository.name,
-          `jsons/${data.slug}.json`,
-          `Issue ${data.issue} was closed.`
-        );
+  ).then(async (fileContent) => {
+    console.log(fileContent);
+    console.log(typeof fileContent);
+    // In case the file already exists
+    if (fileContent) {
+      console.log("File does exist.");
+      // Parse the base64 content to JSON
+      const fileContentJSON = JSON.parse(
+        Buffer.from(fileContent, "base64").toString()
+      );
+      // evaulate if the issue number matches
+      if (fileContentJSON.issue === data.issue) {
+        // If the event was closed
+        // Remove the file
+        if (context.event.action === "closed") {
+          // Delete the file
+          await deleteFile(
+            context.repository_owner,
+            context.event.repository.name,
+            `jsons/${data.slug}.json`,
+            `Issue ${data.issue} was closed.`
+          );
+        } else {
+          // If the event was edited
+          // Update the file
+          await writeJsonToFile(
+            context.repository_owner,
+            context.event.repository.name,
+            `jsons/${data.slug}.json`,
+            `Issue ${data.issue} was edited.`,
+            data
+          );
+        }
       } else {
-        // If the event was edited
+        // If the event number doesn't match
+        // Do nothing
+      }
+    } else {
+      // If there is no file
+      // and the issue was not closed
+      if (context.event.action !== "closed") {
+        console.log("File does not exist.");
+        // Write a file
         // Update the file
         await writeJsonToFile(
           context.repository_owner,
           context.event.repository.name,
           `jsons/${data.slug}.json`,
-          `Issue ${data.issue} was edited.`,
+          `Issue ${data.issue} was created.`,
           data
         );
       }
-    } else {
-      // If the event number doesn't match
-      // Do nothing
     }
-  } else {
-    // If there is no file
-    // and the issue was not closed
-    if (context.event.action !== "closed") {
-      console.log("File does not exist.");
-      // Write a file
-      // Update the file
-      await writeJsonToFile(
-        context.repository_owner,
-        context.event.repository.name,
-        `jsons/${data.slug}.json`,
-        `Issue ${data.issue} was created.`,
-        data
-      );
-    }
-  }
+  });
 }
