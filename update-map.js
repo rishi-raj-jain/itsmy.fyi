@@ -72,7 +72,7 @@ if (data.issue) {
 
   async function getFileContent(owner, repo, path) {
     try {
-      const { fileData } = await octokit.repos.getContent({
+      const { data: fileData } = await octokit.repos.getContent({
         owner,
         repo,
         path,
