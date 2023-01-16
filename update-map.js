@@ -5,6 +5,7 @@ const matter = require("gray-matter");
 
 const validateBody = (body) => {
   try {
+    console.log(body)
     console.log(matter(body))
     const { data } = matter(body);
     console.log(data)
