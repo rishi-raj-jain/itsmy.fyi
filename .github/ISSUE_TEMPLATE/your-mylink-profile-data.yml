@@ -1,34 +1,15 @@
 name: Your MyLink Profile Data
 description: Describe your MyLink data and get a URL to share instantly!
-title: "MyLink -"
+title: "MyLink - Your Name"
 body:
-  - type: input
-    id: name
-    attributes:
-      label: Name
-      placeholder: ex. Rishi Raj Jain
-    validations:
-      required: true
-  - type: input
-    id: slug
-    attributes:
-      label: Your MyLink Slug
-      placeholder: ex. rishi-raj-jain
-    validations:
-      required: true
-  - type: input
-    id: image
-    attributes:
-      label: Your MyLink Image
-      placeholder: ex. https://rishi.app/static/favicon-image.jpg
-    validations:
-      required: true
   - type: textarea
-    id: links
     attributes:
-      label: Your Links
+      label: Your MyLink Data
       value: |
         ---
+        name: Rishi Raj Jain # String (without quotes or newline)
+        image: https://rishi.app/static/favicon-image.jpg # String (without quotes or newline)
+        slug: rishi-raj-jain # String (without quotes, newline, let's keep it simple!)
         links: [] # (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
         socials: [] # (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
         ---
