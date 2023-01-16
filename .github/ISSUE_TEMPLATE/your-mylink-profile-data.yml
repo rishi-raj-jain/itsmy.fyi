@@ -1,10 +1,9 @@
 name: Your MyLink Profile Data
 description: Describe your MyLink data and get a URL to share instantly!
-title: "MyLink - Your Name"
+title: "{INSERT NAME} MyLink Profile Data"
 body:
   - type: textarea
     attributes:
-      label: Your MyLink Data
       value: |
         ---
         name: Rishi Raj Jain # String (without quotes or newline)
