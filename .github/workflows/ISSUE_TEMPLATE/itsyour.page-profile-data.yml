@@ -1,0 +1,17 @@
+name: itsyour.page Profile Data
+description: Describe your profile data and get a URL to share instantly!
+title: "itsyour.page - {INSERT NAME} (Optional)"
+body:
+  - type: textarea
+    attributes:
+      label: Profile Data
+      value: |
+        ---
+        name: Rishi Raj Jain # required, String (without quotes or newline)
+        image: https://rishi.app/static/favicon-image.jpg # required, String (without quotes or newline)
+        slug: rishi-raj-jain # required, String (without quotes, newline, let's keep it simple!)
+        links: [] # required but can be empty array, (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
+        socials: [] # required but can be empty array, (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
+        ---
+    validations:
+      required: true
