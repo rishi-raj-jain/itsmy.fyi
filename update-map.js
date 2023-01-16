@@ -63,7 +63,7 @@ const data = validateEvent(context);
 
 if (data.issue) {
   // Import octokit
-  const Octokit = require("@octokit/rest");
+  const { Octokit } = require("@octokit/rest");
 
   // Initialize octokit
   const octokit = new Octokit({
