@@ -1,9 +1,0 @@
-{
-  "name": "mylink",
-  "dependencies": {
-    "@octokit/rest": "^19.0.5",
-    "dotenv": "^16.0.3",
-    "gray-matter": "^4.0.3",
-    "node-fetch": "^3.3.0"
-  }
-}
