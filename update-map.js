@@ -90,6 +90,7 @@ if (data.issue) {
         owner,
         repo,
         ref: "jsons",
+        branch: "jsons",
       });
 
       const { sha } = data.commit.tree;
@@ -108,15 +109,9 @@ if (data.issue) {
     }
   }
 
-  async function writeJsonToFile(owner, repo, path, message, jsonData) {
+  async function writeJsonToFile(owner, repo, path, message, jsonData, sha) {
     try {
       const content = Buffer.from(JSON.stringify(jsonData)).toString("base64");
-      const { data } = await octokit.repos.getCommit({
-        owner,
-        repo,
-        ref: "jsons",
-      });
-      const { sha } = data.commit.tree;
       await octokit.repos.createOrUpdateFileContents({
         owner,
         repo,
@@ -167,7 +162,8 @@ if (data.issue) {
             context.event.repository.name,
             `jsons/${data.slug}.json`,
             `Issue ${data.issue} was edited.`,
-            data
+            data,
+            fileContentJSON.sha
           );
         }
       } else {
@@ -181,12 +177,19 @@ if (data.issue) {
         console.log("File does not exist.");
         // Write a file
         // Update the file
+        const { data: commitData } = await octokit.repos.getCommit({
+          owner,
+          repo,
+          ref: "jsons",
+        });
+        const { sha } = commitData.commit.tree;
         await writeJsonToFile(
           context.repository_owner,
           context.event.repository.name,
           `jsons/${data.slug}.json`,
           `Issue ${data.issue} was created.`,
-          data
+          data,
+          sha
         );
       }
     }
