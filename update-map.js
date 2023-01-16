@@ -78,7 +78,7 @@ if (data.issue) {
         path,
         ref,
       });
-      return fileData.content;
+      return fileData;
     } catch (err) {
       console.error(err);
     }
@@ -133,14 +133,12 @@ if (data.issue) {
     context.event.repository.name,
     `jsons/${data.slug}.json`
   ).then(async (fileContent) => {
-    console.log(fileContent);
-    console.log(typeof fileContent);
     // In case the file already exists
-    if (fileContent) {
+    if (fileContent.content) {
       console.log("File does exist.");
       // Parse the base64 content to JSON
       const fileContentJSON = JSON.parse(
-        Buffer.from(fileContent, "base64").toString()
+        Buffer.from(fileContent.content, "base64").toString()
       );
       console.log(fileContentJSON);
       // evaulate if the issue number matches
@@ -164,7 +162,7 @@ if (data.issue) {
             `jsons/${data.slug}.json`,
             `Issue ${data.issue} was edited.`,
             data,
-            fileContentJSON.sha
+            fileContent.sha
           );
         }
       } else {
