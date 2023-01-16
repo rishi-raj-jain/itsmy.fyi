@@ -33,7 +33,12 @@ const validateEvent = (context) => {
       return false;
     }
     const body = context.event.issue.body;
-    console.log(body.substring(body.length - 5));
+    console.log(
+      body.substring(
+        "### Your MyLink Data\n\n".length,
+        body.length - "\r\n".length
+      )
+    );
     return {
       ...validateBody(
         body.substring(
