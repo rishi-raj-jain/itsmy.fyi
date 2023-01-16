@@ -16,14 +16,21 @@ body:
       placeholder: ex. rishi-raj-jain
     validations:
       required: true
+  - type: input
+    id: image
+    attributes:
+      label: Your MyLink Image
+      placeholder: ex. https://rishi.app/static/favicon-image.jpg
+    validations:
+      required: true
   - type: textarea
     id: links
     attributes:
       label: Your Links
       value: |
         ---
-        links: [] (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
-        socials: [] (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
+        links: [] # (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
+        socials: [] # (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
         ---
     validations:
       required: true
