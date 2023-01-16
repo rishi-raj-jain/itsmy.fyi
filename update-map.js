@@ -36,9 +36,6 @@ const validateEvent = (context) => {
     if (!(typeof context.event.issue.number === "string")) {
       return false;
     }
-    if (!(typeof context.event.issue.body === "string")) {
-      return false;
-    }
     return validateBody(context.event.issue.body);
   } catch (e) {
     console.log(e);
