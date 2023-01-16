@@ -1,0 +1,22 @@
+---
+const { href, title, image } = Astro.props
+
+const url = new URL(href)
+url.searchParams.append('ref', 'itsyour.page')
+---
+
+{
+  href && (
+    <a
+      target="_blank"
+      href={url.toString()}
+      rel="noopener noreferrer"
+      class="mb-3 flex w-full max-w-3xl items-center rounded bg-white/75 p-1 transition-all hover:scale-[1.025]"
+    >
+      <div class="flex w-full text-center">
+        <div class="h-10 w-10">{image && <img width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}</div>
+        {title && <h2 class="-ml-10 flex w-full items-center justify-center font-medium text-gray-700">{title}</h2>}
+      </div>
+    </a>
+  )
+}

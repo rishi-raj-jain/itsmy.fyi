@@ -1,0 +1,54 @@
+---
+import { getUserItems } from '@/src/api'
+import Link from '@/src/components/Link.astro'
+import MainLayout from '@/src/layouts/MainLayout.astro'
+
+const { slug } = Astro.params
+
+let url = Astro.request.url.replace('http:', 'https:')
+const origin = Astro.url.origin.replace('http:', 'https:')
+
+let userSlug = slug.toLowerCase(),
+  title = '',
+  description = '',
+  image = origin + '/seo/social-media-card.png'
+
+if (userSlug.endsWith('/')) {
+  userSlug = userSlug.substring(0, userSlug.length - 1)
+}
+
+// Get data from the json file
+const { content, encoding } = await getUserItems(userSlug)
+const { name: userName, image: userImage, links = [], socials = [] } = JSON.parse(Buffer.from(content, encoding).toString())
+
+// Process into content map
+const contentMap = {}
+contentMap['image'] = userImage
+contentMap['name'] = userName
+contentMap['links'] = links.map((i) => ({ title: i[0], href: i[1], image: i[2] ?? '' }))
+console.log(JSON.stringify(contentMap))
+
+// Create SEO map
+const seo = {
+  url,
+  title,
+  image,
+  description,
+}
+
+if (contentMap.image) {
+  seo['preloads'] = [{ href: contentMap.image, as: 'image' }]
+}
+
+if (contentMap.links.length > 1) {
+  seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
+}
+---
+
+<MainLayout content={seo}>
+  <div class="mx-auto mt-16 flex w-full flex-col items-center justify-center px-8">
+    {contentMap.image && <img width="96" height="96" loading="eager" alt={contentMap.name} src={contentMap.image} class="rounded-full shadow-2xl" />}
+    {contentMap.name && <h1 class="mt-4 mb-8 text-2xl font-medium tracking-wide text-white">{contentMap.name}</h1>}
+    {contentMap.links && contentMap.links.length > 0 && contentMap.links.map((i) => <Link {...i} />)}
+  </div>
+</MainLayout>

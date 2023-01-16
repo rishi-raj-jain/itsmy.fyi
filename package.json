@@ -1,0 +1,35 @@
+{
+  "name": "itsyour.page",
+  "scripts": {
+    "astro": "astro",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "edgio:dev": "edgio dev",
+    "edgio:build": "edgio build",
+    "edgio:deploy": "edgio deploy",
+    "format": "prettier --write '**/*' --ignore-unknown"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "latest",
+    "@edgio/astro": "latest",
+    "@edgio/cli": "latest",
+    "@edgio/core": "latest",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.7",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.2",
+    "postcss": "^8.4.16",
+    "prettier": "^2.8.1",
+    "prettier-plugin-astro": "^0.7.0",
+    "prettier-plugin-tailwindcss": "^0.2.1",
+    "tailwindcss": "^3.2.4"
+  },
+  "dependencies": {
+    "@astrojs/node": "^4.0.0",
+    "@octokit/core": "^4.1.0",
+    "astro": "^1.9.2",
+    "html-minifier": "^4.0.0"
+  }
+}

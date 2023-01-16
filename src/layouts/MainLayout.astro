@@ -1,0 +1,30 @@
+---
+import SEO from '@/components/SEO.astro'
+
+const { content } = Astro.props
+---
+
+<html lang="en">
+  <head>
+    <SEO {...content} />
+    <style>
+      body {
+        background-color: rgb(253, 164, 175);
+        background-image: radial-gradient(at 31% 6%, rgb(244, 63, 94) 0, transparent 78%),
+          radial-gradient(at 52% 52%, rgb(255, 228, 230) 0, transparent 98%), radial-gradient(at 41% 2%, rgb(209, 213, 219) 0, transparent 3%),
+          radial-gradient(at 64% 58%, rgb(113, 63, 18) 0, transparent 82%), radial-gradient(at 71% 24%, rgb(12, 74, 110) 0, transparent 24%),
+          radial-gradient(at 77% 53%, rgb(147, 51, 234) 0, transparent 71%);
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: optional;
+        src: url(/fonts/rsms-inter-var.woff2) format('woff2');
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen w-screen flex-col items-center overflow-x-hidden font-display">
+    <slot />
+  </body>
+</html>
