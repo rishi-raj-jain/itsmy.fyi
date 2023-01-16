@@ -25,7 +25,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: npm ci
+      - run: npm install
       - run: node json-from-issue/index.js
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
