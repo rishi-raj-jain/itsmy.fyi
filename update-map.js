@@ -32,8 +32,15 @@ const validateEvent = (context) => {
     if (!(typeof context.event.issue.number === "number")) {
       return false;
     }
+    const body = context.event.issue.body;
+    console.log(body.substring(body.length - 5));
     return {
-      ...validateBody(context.event.issue.body),
+      ...validateBody(
+        body.substring(
+          "### Your MyLink Data\n\n".length,
+          body.length - "\r\n".length
+        )
+      ),
       issue: context.event.issue.number,
     };
   } catch (e) {
