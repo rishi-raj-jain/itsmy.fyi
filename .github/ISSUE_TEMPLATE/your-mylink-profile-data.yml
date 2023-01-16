@@ -4,6 +4,7 @@ title: "{INSERT NAME} MyLink Profile Data"
 body:
   - type: textarea
     attributes:
+      label: MyLink Profile Data
       value: |
         ---
         name: Rishi Raj Jain # String (without quotes or newline)
