@@ -173,8 +173,8 @@ if (data.issue) {
         // Write a file
         // Update the file
         const { data: commitData } = await octokit.repos.getCommit({
-          owner,
-          repo,
+          owner: context.repository_owner,
+          repo: context.event.repository.name,
           ref: "jsons",
           branch: "jsons",
         });
