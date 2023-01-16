@@ -80,7 +80,6 @@ if (data.issue) {
       return fileData.content;
     } catch (err) {
       console.error(err);
-      process.exit();
     }
   }
 
