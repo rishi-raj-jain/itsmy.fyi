@@ -45,6 +45,8 @@ const validateEvent = (context) => {
 
 const context = process.env.GITHUB_CONTEXT;
 
+console.log(context)
+
 const data = validateEvent(context);
 
 console.log(JSON.stringify(data));
