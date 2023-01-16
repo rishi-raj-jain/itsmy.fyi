@@ -20,8 +20,8 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-frontend-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-frontend-${{ env.cache-name }}-
+            ${{ runner.os }}-frontend-
             ${{ runner.os }}-
       - run: npm ci
       - run: npm run edgio:deploy -- --token=$EDGIO_DEPLOY_TOKEN
