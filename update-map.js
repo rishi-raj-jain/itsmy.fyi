@@ -129,7 +129,7 @@ if (data.issue) {
     `jsons/${data.slug}.json`
   ).then(async (fileContent) => {
     // In case the file already exists
-    if (fileContent.content) {
+    if (fileContent && fileContent.content) {
       console.log("File does exist.");
       // Parse the base64 content to JSON
       const fileContentJSON = JSON.parse(
