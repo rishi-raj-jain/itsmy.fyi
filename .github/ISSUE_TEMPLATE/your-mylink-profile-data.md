@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-MyLink Data
-
 ---
 name: Rishi Raj Jain
 image: https://rishi.app/static/favicon-image.jpg
