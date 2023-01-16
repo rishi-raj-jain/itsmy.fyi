@@ -33,19 +33,10 @@ const validateEvent = (context) => {
       return false;
     }
     const body = context.event.issue.body;
-    console.log(
-      body.substring(
-        "### Your MyLink Data\n\n".length,
-        body.length - "\r\n".length
-      )
-    );
+    const start = body.indexOf("---\r\n");
+    const end = body.lastIndexOf("\r\n---");
     return {
-      ...validateBody(
-        body.substring(
-          "### Your MyLink Data\n\n".length,
-          body.length - "\r\n".length
-        )
-      ),
+      ...validateBody(body.substring(start, end + 5)),
       issue: context.event.issue.number,
     };
   } catch (e) {
