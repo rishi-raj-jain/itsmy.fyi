@@ -30,8 +30,6 @@ const validateBody = (body) => {
 
 const validateEvent = (context) => {
   try {
-    console.log(context)
-    console.log(context.event)
     if (!(typeof context.event.issue.number === "string")) {
       return false;
     }
@@ -45,10 +43,7 @@ const validateEvent = (context) => {
   }
 };
 
-const context = process.env.GITHUB_CONTEXT;
-
-console.log(context)
-console.log(typeof context)
+const context = JSON.parse(process.env.GITHUB_CONTEXT);
 
 const data = validateEvent(context);
 
