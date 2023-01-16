@@ -1,9 +1,6 @@
 name: Deploy To Edgio
 
 on:
-  push:
-    branches:
-      - "main"
   workflow_dispatch:
 
 jobs:
