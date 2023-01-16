@@ -99,7 +99,7 @@ if (data.issue) {
         path,
         message,
         sha,
-        branch: "main",
+        branch: "jsons",
       });
       console.log(`File ${path} has been deleted from ${owner}/${repo}`);
     } catch (err) {
@@ -123,7 +123,7 @@ if (data.issue) {
         message,
         content,
         sha,
-        branch: "main",
+        branch: "jsons",
       });
       console.log(`JSON data written to file ${path} in ${owner}/${repo}`);
     } catch (err) {
