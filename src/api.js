@@ -5,12 +5,16 @@ const octokit = new Octokit({
 })
 
 export async function getUserItems(slug) {
-  const resp = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}{?ref}', {
-    owner: 'rishi-raj-jain',
-    repo: 'itsyour.page',
-    path: 'jsons/' + slug + '.json',
-    ref: 'jsons',
-  })
+  let resp
+  if (import.meta.env.GITHUB_API_TOKEN) {
+    resp = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}{?ref}', {
+      owner: 'rishi-raj-jain',
+      repo: 'itsyour.page',
+      path: 'jsons/' + slug + '.json',
+    })
+  } else {
+    // Define 1-click logic
+  }
   if (resp.status === 200) {
     return resp.data
   } else {

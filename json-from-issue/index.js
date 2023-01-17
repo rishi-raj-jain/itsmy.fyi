@@ -76,13 +76,12 @@ if (data.issue) {
     auth: process.env.GITHUB_TOKEN,
   })
 
-  async function getFileContent(owner, repo, path, ref = 'jsons') {
+  async function getFileContent(owner, repo, path) {
     try {
       const { data: fileData } = await octokit.repos.getContent({
         owner,
         repo,
         path,
-        ref,
       })
       return fileData
     } catch (err) {
@@ -98,8 +97,6 @@ if (data.issue) {
         path,
         message,
         sha,
-        ref: 'jsons',
-        branch: 'jsons',
       })
       console.log(`File ${path} has been deleted from ${owner}/${repo}`)
     } catch (err) {
@@ -117,7 +114,6 @@ if (data.issue) {
         message,
         content,
         sha,
-        branch: 'jsons',
       })
       console.log(`JSON data written to file ${path} in ${owner}/${repo}`)
       return true
@@ -126,8 +122,10 @@ if (data.issue) {
     }
   }
 
+  const jsonPath = `jsons/${data.slug}.json`
+
   // Get file content for the slug from data
-  getFileContent(context.repository_owner, context.event.repository.name, `jsons/${data.slug}.json`).then(async (fileContent) => {
+  getFileContent(context.repository_owner, context.event.repository.name, jsonPath).then(async (fileContent) => {
     // In case the file already exists
     if (fileContent && fileContent.content) {
       // Parse the base64 content to JSON
@@ -138,20 +136,14 @@ if (data.issue) {
         // Remove the file
         if (context.event.action === 'closed') {
           // Delete the file
-          await deleteFile(
-            context.repository_owner,
-            context.event.repository.name,
-            `jsons/${data.slug}.json`,
-            `Issue ${data.issue} was closed.`,
-            fileContent.sha
-          )
+          await deleteFile(context.repository_owner, context.event.repository.name, jsonPath, `Issue ${data.issue} was closed.`, fileContent.sha)
         } else {
           // If the event was edited
           // Update the file
           await writeJsonToFile(
             context.repository_owner,
             context.event.repository.name,
-            `jsons/${data.slug}.json`,
+            jsonPath,
             `Issue ${data.issue} was edited.`,
             data,
             fileContent.sha
@@ -170,14 +162,12 @@ if (data.issue) {
         const { data: commitData } = await octokit.repos.getCommit({
           owner: context.repository_owner,
           repo: context.event.repository.name,
-          ref: 'jsons',
-          branch: 'jsons',
         })
         const { sha } = commitData.commit.tree
         const success = await writeJsonToFile(
           context.repository_owner,
           context.event.repository.name,
-          `jsons/${data.slug}.json`,
+          jsonPath,
           `Issue ${data.issue} was created.`,
           data,
           sha
