@@ -83,7 +83,7 @@ if (data.issue) {
         owner,
         repo,
         path,
-        ref: 'main'
+        ref: 'main',
       })
       return fileData
     } catch (err) {
@@ -99,7 +99,7 @@ if (data.issue) {
         path,
         message,
         sha,
-        ref: 'main'
+        ref: 'main',
       })
       console.log(`File ${path} has been deleted from ${owner}/${repo}`)
     } catch (err) {
@@ -117,7 +117,7 @@ if (data.issue) {
         message,
         content,
         sha,
-        ref: 'main'
+        ref: 'main',
       })
       console.log(`JSON data written to file ${path} in ${owner}/${repo}`)
       return true
@@ -166,7 +166,7 @@ if (data.issue) {
         const { data: commitData } = await octokit.repos.getCommit({
           owner: context.repository_owner,
           repo: context.event.repository.name,
-          ref: 'main'
+          ref: 'main',
         })
         const { sha } = commitData.commit.tree
         const success = await writeJsonToFile(

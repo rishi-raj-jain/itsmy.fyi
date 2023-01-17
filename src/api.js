@@ -13,7 +13,7 @@ export async function getUserItems(slug) {
       owner: 'rishi-raj-jain',
       repo: 'itsyour.page',
       path: 'jsons/' + slug + '.json',
-      ref: 'main'
+      ref: 'main',
     })
   } else {
     // Define 1-click logic

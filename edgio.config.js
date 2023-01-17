@@ -1,18 +1,17 @@
 const { join } = require('path')
+const { existsSync } = require('fs')
+
+let includeFiles = {}
+
+const depPath = join(process.cwd(), 'deps.json')
+if (existsSync(depPath)) {
+  includeFiles = require(depPath)
+}
 
 module.exports = {
+  includeFiles,
   connector: '@edgio/astro',
   astro: {
     appPath: join(process.cwd(), 'dist', 'server', 'entry.mjs'),
-  },
-  includeFiles: {
-    'node_modules/html-minifier/**/*': true,
-    'node_modules/camel-case/**/*': true,
-    'node_modules/clean-css/**/*': true,
-    'node_modules/commander/**/*': true,
-    'node_modules/he/**/*': true,
-    'node_modules/relateurl/**/*': true,
-    'node_modules/uglify-js/**/*': true,
-    'node_modules/param-case/**/*': true,
   },
 }

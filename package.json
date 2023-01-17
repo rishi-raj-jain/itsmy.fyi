@@ -19,6 +19,7 @@
     "@edgio/core": "latest",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.7",
+    "@vercel/nft": "^0.22.6",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.3",
     "postcss": "^8.4.16",

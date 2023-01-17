@@ -15,3 +15,4 @@ pnpm-debug.log*
 .edgio_temp
 # environment variables
 .env
+/deps.json
