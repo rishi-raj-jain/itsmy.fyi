@@ -40,7 +40,7 @@ You can deploy your own hosted version of itsyour.page using the button below:
 
 ## Tech Stack + Features
 
-https://raw.githubusercontent.com/rishi-raj-jain/itsyour.page/main/itsyourpage-demo.mp4
+https://a.storyblok.com/f/117912/x/54d5d3a643/itsyourpage-demo.mp4
 
 ### Frameworks
 
