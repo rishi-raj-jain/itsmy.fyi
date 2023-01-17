@@ -14,6 +14,7 @@ export default defineConfig({
       hooks: {
         'astro:build:done': async ({}) => {
           const appDir = process.cwd()
+          console.log({ appDir })
           const { computeDependencies } = await import(`${appDir}/computeDependencies.mjs`)
           await computeDependencies([`${appDir}/deps.mjs`], 'deps')
         },
