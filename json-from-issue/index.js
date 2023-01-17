@@ -130,10 +130,8 @@ if (data.issue) {
   getFileContent(context.repository_owner, context.event.repository.name, `jsons/${data.slug}.json`).then(async (fileContent) => {
     // In case the file already exists
     if (fileContent && fileContent.content) {
-      console.log('File does exist.')
       // Parse the base64 content to JSON
       const fileContentJSON = JSON.parse(Buffer.from(fileContent.content, 'base64').toString())
-      console.log(fileContentJSON)
       // evaulate if the issue number matches
       if (fileContentJSON.issue === data.issue) {
         // If the event was closed
@@ -167,7 +165,6 @@ if (data.issue) {
       // If there is no file
       // and the issue was not closed
       if (context.event.action !== 'closed') {
-        console.log('File does not exist.')
         // Write a file
         // Update the file
         const { data: commitData } = await octokit.repos.getCommit({
@@ -192,6 +189,7 @@ if (data.issue) {
             issue_number: data.issue,
             body: `Thanks for using [itsyour.page](https://itsyour.page). Visit your [profile here ↗︎](https://itsyour.page/u/${data.slug})`,
           })
+          await fetch(`https://itsyour.page/u/${data.slug}`)
         }
       }
     }
