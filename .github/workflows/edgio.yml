@@ -15,20 +15,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'pnpm'
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - run: pnpm install
-      - run: pnpm run edgio:deploy -- --token=$EDGIO_DEPLOY_TOKEN
+          cache: 'yarn'
+      - run: yarn --prefer-offline
+      - run: yarn run edgio:deploy -- --token=$EDGIO_DEPLOY_TOKEN
         env:
           EDGIO_DEPLOY_TOKEN: ${{secrets.EDGIO_DEPLOY_TOKEN}}
