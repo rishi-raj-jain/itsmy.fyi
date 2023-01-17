@@ -40,7 +40,7 @@ You can deploy your own hosted version of itsyour.page using the button below:
 
 ## Tech Stack + Features
 
-https://user-images.githubusercontent.com/46300090/212988111-e9afeeaf-9cd1-40d5-a506-2e8f479b0890.mp4
+https://user-images.githubusercontent.com/46300090/212988543-5027751d-6a19-4af2-ad4f-b122b6f81636.mp4
 
 ### Frameworks
 
