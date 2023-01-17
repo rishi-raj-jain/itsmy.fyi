@@ -1,17 +1,30 @@
 name: itsyour.page Profile Data
 description: Describe your profile data and get a URL to share instantly!
-title: "itsyour.page - {INSERT NAME} (Optional)"
+title: 'itsyour.page - {INSERT NAME} (Optional)'
 body:
   - type: textarea
     attributes:
-      label: Profile Data
+      label: itsyour.page Profile Data
       value: |
         ---
-        name: Rishi Raj Jain # required, String (without quotes or newline)
-        image: https://rishi.app/static/favicon-image.jpg # required, String (without quotes or newline)
-        slug: rishi-raj-jain # required, String (without quotes, newline, let's keep it simple!)
-        links: [] # required but can be empty array, (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
-        socials: [] # required but can be empty array, (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
+        slug: rishi-raj-jain
+        name: Rishi Raj Jain
+        about: Hey there, I'm Rishi on itsyour.page!
+        image: https://rishi.app/static/favicon-image.jpg
+        og:
+          image: https://rishi.app/static/social-media-card.jpg
+        links: [["Portfolio", "https://rishi.app"]]
+        socials: [["Twitter", "https://twitter.com/rishi_raj_jain_"]]
         ---
+
+        The expected format for itsyour.page to parse your data would be:
+        1. slug: <span style="color:red">required</span>, String (without quotes, newline, let's keep it simple!)
+        2. name: <span style="color:red">required</span>, String (without quotes or newline)
+        3. about: optional, String (without quotes or newline)
+        4. image: <span style="color:red">required</span>, String (without quotes or newline)
+        5. og:
+            image: optional, String (without quotes or newline)
+        6. links: <span style="color:red">required</span>, but can be empty array, (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
+        7. socials: <span style="color:red">required</span>, but can be empty array, (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
     validations:
       required: true

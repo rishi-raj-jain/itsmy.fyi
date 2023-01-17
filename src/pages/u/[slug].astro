@@ -19,7 +19,19 @@ if (userSlug.endsWith('/')) {
 
 // Get data from the json file
 const { content, encoding } = await getUserItems(userSlug)
-const { name: userName, image: userImage, links = [], socials = [] } = JSON.parse(Buffer.from(content, encoding).toString())
+const { name: userName, image: userImage, links = [], socials = [], about = '', og = {} } = JSON.parse(Buffer.from(content, encoding).toString())
+
+if (userName) {
+  title = userName
+}
+
+if (about) {
+  description = about
+}
+
+if (og && og.image) {
+  image = og.image
+}
 
 // Process into content map
 const contentMap = {}
