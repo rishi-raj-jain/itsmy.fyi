@@ -1,5 +1,6 @@
 require('dotenv').config()
 const matter = require('gray-matter')
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
 const validateBody = (body) => {
   try {
