@@ -3,8 +3,8 @@ description: Describe your profile data and get a URL to share instantly!
 title: 'itsyour.page - {INSERT NAME} (Optional)'
 body:
   - type: textarea
-    render: data
     attributes:
+      render: data
       label: itsyour.page Profile Data
       value: |
         ---
