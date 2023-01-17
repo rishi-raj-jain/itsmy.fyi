@@ -7,6 +7,7 @@ const octokit = new Octokit({
 export async function getUserItems(slug) {
   let resp
   if (import.meta.env.GITHUB_API_TOKEN) {
+    console.log(JSON.stringify((import.meta.env.GITHUB_API_TOKEN))
     resp = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}{?ref}', {
       owner: 'rishi-raj-jain',
       repo: 'itsyour.page',
