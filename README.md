@@ -1,6 +1,7 @@
 <p align="center">
   <a href="https://itsyour.page">
     <img alt="itsyour.page - Take control of your online presence" src="https://itsyour.page/seo/social-media-card.png">
+    <h1 align="center">It's your page</h1>
   </a>
 </p>
 
@@ -14,12 +15,6 @@
   </a>
   <a href="https://github.com/rishi-raj-jain/itsyour.page">
     <img src="https://img.shields.io/github/stars/rishi-raj-jain/itsyour.page?label=rishi-raj-jain%2Fitsyour.page" alt="itsyour.page repo star count" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://twitter.com/rishi_raj_jain_">
-    <img src="https://img.shields.io/twitter/follow/rishi_raj_jain_?style=flat&label=%40rishi_raj_jain_&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
   </a>
 </p>
 
