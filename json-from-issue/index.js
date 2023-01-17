@@ -190,7 +190,7 @@ if (data.issue) {
             owner: context.repository_owner,
             repo: context.event.repository.name,
             issue_number: data.issue,
-            body: `Thanks for using itsyour.page ✨\nHere's your personalized link: https://itsyour.page/u/${data.slug} 🚀`,
+            body: `Thanks for using [itsyour.page](https://itsyour.page). Visit your [profile here ↗︎](https://itsyour.page/u/${data.slug}).`,
           })
         }
       }
