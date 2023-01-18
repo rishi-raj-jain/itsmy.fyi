@@ -65,11 +65,13 @@ const ratelimit = import.meta.env.UPSTASH_REDIS_REST_URL
 
 export async function post({ request }) {
   // Rate Limiter Code
+  let limit = 9999,
+    remaining = 9999
   if (ratelimit) {
     const identifier = request.headers.get('x-0-client-ip')
     const result = await ratelimit.limit(identifier)
-    res.setHeader('X-RateLimit-Limit', result.limit)
-    res.setHeader('X-RateLimit-Remaining', result.remaining)
+    limit = result.limit
+    remaining = result.remaining
     if (!result.success) {
       return {
         headers: {
@@ -86,6 +88,10 @@ export async function post({ request }) {
   const map = { closed: 1, edited: 1, opened: 1 }
   if (!map.hasOwnProperty(context.action.toLowerCase())) {
     return {
+      headers: {
+        'X-RateLimit-Limit': limit,
+        'X-RateLimit-Remaining': remaining,
+      },
       body: JSON.stringify({
         message: 'Event not supported.',
       }),
@@ -174,10 +180,22 @@ export async function post({ request }) {
         if (context.action === 'closed') {
           // Delete the file
           await deleteFile(context.sender.login, context.repository.name, jsonPath, `Issue ${data.issue} was closed.`, fileContent.sha)
+          return {
+            headers: {
+              'X-RateLimit-Limit': limit,
+              'X-RateLimit-Remaining': remaining,
+            },
+          }
         } else {
           // If the event was edited
           // Update the file
           await writeJsonToFile(context.sender.login, context.repository.name, jsonPath, `Issue ${data.issue} was edited.`, data, fileContent.sha)
+          return {
+            headers: {
+              'X-RateLimit-Limit': limit,
+              'X-RateLimit-Remaining': remaining,
+            },
+          }
         }
       } else {
         // If the event number doesn't match
@@ -204,6 +222,12 @@ export async function post({ request }) {
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/u/${data.slug})`,
           })
           await fetch(`https://itsmy.fyi/u/${data.slug}`)
+        }
+        return {
+          headers: {
+            'X-RateLimit-Limit': limit,
+            'X-RateLimit-Remaining': remaining,
+          },
         }
       }
     }
