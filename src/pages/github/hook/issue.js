@@ -1,6 +1,8 @@
 import fetch from 'node-fetch'
 import matter from 'gray-matter'
+import { Redis } from '@upstash/redis'
 import { Octokit } from '@octokit/rest'
+import { Ratelimit } from '@upstash/ratelimit'
 
 const octokit = new Octokit({
   auth: import.meta.env.GITHUB_API_TOKEN,
@@ -53,7 +55,33 @@ const validateEvent = (context) => {
   }
 }
 
+// Create a new ratelimiter, that allows 3 requests per 60 seconds
+const ratelimit = import.meta.env.UPSTASH_REDIS_REST_URL
+  ? new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.fixedWindow(3, '60 s'),
+    })
+  : undefined
+
 export async function post({ request }) {
+  // Rate Limiter Code
+  if (ratelimit) {
+    const identifier = request.headers.get('x-0-client-ip')
+    const result = await ratelimit.limit(identifier)
+    res.setHeader('X-RateLimit-Limit', result.limit)
+    res.setHeader('X-RateLimit-Remaining', result.remaining)
+    if (!result.success) {
+      return {
+        headers: {
+          'X-RateLimit-Limit': result.limit,
+          'X-RateLimit-Remaining': result.remaining,
+        },
+        body: JSON.stringify({
+          message: 'Too many updates in 1 minute. Please try again in a few minutes.',
+        }),
+      }
+    }
+  }
   const context = await request.json()
   const map = { closed: 1, edited: 1, opened: 1 }
   if (!map.hasOwnProperty(context.action.toLowerCase())) {
@@ -64,6 +92,7 @@ export async function post({ request }) {
     }
   }
   const data = validateEvent(context)
+  console.log(JSON.stringify(data))
 
   // Issue: Edited/Created
   // Check if the slug already exists
@@ -172,9 +201,9 @@ export async function post({ request }) {
             owner: context.sender.login,
             repo: context.repository.name,
             issue_number: data.issue,
-            body: `Thanks for using [itsyour.page](https://itsyour.page). Visit your [profile here ↗︎](https://itsyour.page/u/${data.slug})`,
+            body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/u/${data.slug})`,
           })
-          await fetch(`https://itsyour.page/u/${data.slug}`)
+          await fetch(`https://itsmy.fyi/u/${data.slug}`)
         }
       }
     }

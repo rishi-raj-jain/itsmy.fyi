@@ -1,16 +1,16 @@
-name: itsyour.page Profile Data
+name: itsmy.fyi Profile Data
 description: Describe your profile data and get a URL to share instantly!
-title: 'itsyour.page - {INSERT NAME} (Optional)'
+title: 'itsmy.fyi - {INSERT NAME} (Optional)'
 body:
   - type: textarea
     attributes:
       render: data
-      label: itsyour.page Profile Data
+      label: itsmy.fyi Profile Data
       value: |
         ---
         slug: rishi-raj-jain
         name: Rishi Raj Jain
-        about: Hey there, I'm Rishi on itsyour.page!
+        about: Hey there, I'm Rishi on itsmy.fyi!
         image: https://rishi.app/static/favicon-image.jpg
         og:
           image: https://rishi.app/static/social-media-card.jpg
@@ -18,7 +18,7 @@ body:
         socials: [["Twitter", "https://twitter.com/rishi_raj_jain_"]]
         ---
 
-        The expected format for itsyour.page to parse your data would be:
+        The expected format for itsmy.fyi to parse your data would be:
         1. slug: <span style="color:red">required</span>, String (without quotes, newline, let's keep it simple!)
         2. name: <span style="color:red">required</span>, String (without quotes or newline)
         3. about: optional, String (without quotes or newline)
