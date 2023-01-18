@@ -48,6 +48,8 @@ https://user-images.githubusercontent.com/46300090/212994310-8236d693-4bfb-4833-
 
 ### Hooks and Utilities
 
+- [Upstash Rate Limiter](https://github.com/upstash/ratelimit/) - Rate Limiting requests to 3 per user per 60 seconds
+
 - [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) – Capturing Data from Issue Forms
 
 ### UI
@@ -64,4 +66,4 @@ https://user-images.githubusercontent.com/46300090/212994310-8236d693-4bfb-4833-
 
 ## Author
 
-- Rishi Raj Jain ([@rishi_raj_jain_](https://twitter.com/rishi_raj_jain_))
+- Rishi Raj Jain ([@rishi*raj_jain*](https://twitter.com/rishi_raj_jain_))
