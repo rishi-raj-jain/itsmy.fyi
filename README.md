@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://itsmy.fyi">
     <img alt="itsmy.fyi - Take control of your online presence" src="https://itsmy.fyi/seo/social-media-card.png">
-    <h1 align="center">It's your page</h1>
+    <h1 align="center">itsmy.fyi</h1>
   </a>
 </p>
 
