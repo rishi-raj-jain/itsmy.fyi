@@ -35,6 +35,7 @@
     "@upstash/ratelimit": "^0.1.5",
     "@upstash/redis": "^1.19.1",
     "astro": "^1.9.2",
+    "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "html-minifier": "^4.0.0",
     "node-fetch": "^3.3.0"
