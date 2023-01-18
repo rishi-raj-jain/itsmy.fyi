@@ -13,8 +13,8 @@
   <a href="https://twitter.com/rishi_raj_jain_">
     <img src="https://img.shields.io/twitter/follow/rishi_raj_jain_?style=flat&label=rishi_raj_jain_&logo=twitter&color=0bf&logoColor=fff" alt="Rishi Raj Jain Twitter follower count" />
   </a>
-  <a href="https://github.com/rishi-raj-jain/itsyour.page">
-    <img src="https://img.shields.io/github/stars/rishi-raj-jain/itsyour.page?label=rishi-raj-jain%2Fitsyour.page" alt="itsmy.fyi repo star count" />
+  <a href="https://github.com/rishi-raj-jain/itsmy.fyi">
+    <img src="https://img.shields.io/github/stars/rishi-raj-jain/itsmy.fyi?label=rishi-raj-jain%2Fitsmy.fyi" alt="itsmy.fyi repo star count" />
   </a>
 </p>
 
@@ -36,7 +36,7 @@ Built with [Astro](https://astro.build), [Edgio](https://edg.io), [GitHub Issue 
 
 You can deploy your own hosted version of itsmy.fyi using the button below:
 
-[![Deploy with Edgio](https://docs.edg.io/button.svg)](https://app.layer0.co/deploy?repo=https://github.com/rishi-raj-jain/itsyour.page)
+[![Deploy with Edgio](https://docs.edg.io/button.svg)](https://app.layer0.co/deploy?repo=https://github.com/rishi-raj-jain/itsmy.fyi)
 
 ## Tech Stack + Features
 

@@ -7,10 +7,10 @@ const octokit = new Octokit({
 export async function getUserItems(slug) {
   let resp
   if (import.meta.env.GITHUB_API_TOKEN) {
-    // ex. https://api.github.com/repos/rishi-raj-jain/itsyour.page/contents/jsons%2Frishi-raj-jain.json?ref=main
+    // ex. https://api.github.com/repos/rishi-raj-jain/itsmy.fyi/contents/jsons%2Frishi-raj-jain.json?ref=main
     resp = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}{?ref}', {
       owner: 'rishi-raj-jain',
-      repo: 'itsyour.page',
+      repo: 'itsmy.fyi',
       path: 'jsons/' + slug + '.json',
       ref: 'main',
     })
