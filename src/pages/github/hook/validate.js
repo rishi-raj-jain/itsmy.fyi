@@ -24,7 +24,7 @@ const validateBody = (body) => {
     const { name, slug, image, links, socials, og = {}, about = '' } = data
     return { name, slug, image, links, socials, og, about }
   } catch (e) {
-    console.log(e)
+    console.error(e.message || e.toString())
     return false
   }
 }
@@ -42,7 +42,7 @@ export const validateEvent = (context) => {
       issue: context.issue.number,
     }
   } catch (e) {
-    console.log(e)
+    console.error(e.message || e.toString())
     return false
   }
 }

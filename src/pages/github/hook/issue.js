@@ -47,7 +47,7 @@ export async function post({ request }) {
   if (context.action === 'opened') {
     // If the file already exists, suggest another slug
     if (ifFileExists) {
-      await octokit.issues.createComment({
+      await octokit.rest.issues.createComment({
         owner: context.repository.owner.login,
         repo: context.repository.name,
         issue_number: data.issue,
@@ -58,23 +58,16 @@ export async function post({ request }) {
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
-      const { data: commitData } = await octokit.repos.getCommit({
-        owner: context.repository.owner.login,
-        repo: context.repository.name,
-        ref: 'main',
-      })
-      const { sha } = commitData.commit.tree
       const success = await writeJsonToFile(
         context.repository.owner.login,
         context.repository.name,
         jsonPath,
         `Issue ${data.issue} was created.`,
-        data,
-        sha
+        data
       )
       // If the file is created successfully, comment with the profile link
       if (success) {
-        await octokit.issues.createComment({
+        await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
           issue_number: data.issue,
@@ -84,7 +77,7 @@ export async function post({ request }) {
       }
       // If the file is not created successfully, comment with the re-try method
       else {
-        await octokit.issues.createComment({
+        await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
           issue_number: data.issue,
@@ -103,7 +96,7 @@ export async function post({ request }) {
       if (fileContentJSON.issue === data.issue) {
         // Delete the file
         await deleteFile(context.repository.owner.login, context.repository.name, jsonPath, `Issue ${data.issue} was closed.`, fileContent.sha)
-        await octokit.issues.createComment({
+        await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
           issue_number: data.issue,
@@ -130,7 +123,7 @@ export async function post({ request }) {
         )
       }
     } else {
-      await octokit.issues.createComment({
+      await octokit.rest.issues.createComment({
         owner: context.repository.owner.login,
         repo: context.repository.name,
         issue_number: data.issue,
