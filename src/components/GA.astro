@@ -1,0 +1,18 @@
+---
+const { configID } = Astro.props
+---
+
+<script defer define:vars={{ configID }}>
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  if (configID && configID.length > 3) {
+    const gaScript = document.createElement('script')
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${configID}`
+    gaScript.onload = () => {
+      window.dataLayer = window.dataLayer || []
+      gtag('js', new Date())
+      gtag('config', configID)
+    }
+  }
+</script>

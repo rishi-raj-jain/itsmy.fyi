@@ -1,5 +1,6 @@
 ---
 import { getUserItems } from '@/src/api'
+import GA from '@/src/components/GA.astro'
 import Link from '@/src/components/Link.astro'
 import MainLayout from '@/src/layouts/MainLayout.astro'
 
@@ -21,7 +22,7 @@ if (userSlug.endsWith('/')) {
 const { content, encoding } = await getUserItems(userSlug)
 const bufferString = Buffer.from(content, encoding).toString()
 console.log(bufferString)
-const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {} } = JSON.parse(bufferString)
+const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {}, ga = {} } = JSON.parse(bufferString)
 
 if (userName) {
   title = userName
@@ -56,6 +57,16 @@ if (contentMap.image) {
 if (contentMap.links.length > 1) {
   seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
 }
+
+const updatedAt = new Date().toString()
+
+let showGA = false
+
+try {
+  showGA = ga.enabled && ga.configID
+} catch (e) {
+  console.log(e.message || e.toString())
+}
 ---
 
 <MainLayout background={background} content={seo}>
@@ -64,4 +75,7 @@ if (contentMap.links.length > 1) {
     {contentMap.name && <h1 class="mt-4 mb-8 text-2xl font-medium tracking-wide text-white">{contentMap.name}</h1>}
     {contentMap.links && contentMap.links.length > 0 && contentMap.links.map((i) => <Link {...i} />)}
   </div>
+  <span id="datestamp" class="hidden">{updatedAt}</span>
 </MainLayout>
+
+{showGA && <GA {...ga} />}
