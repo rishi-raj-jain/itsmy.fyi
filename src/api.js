@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import { Octokit } from '@octokit/core'
 
 const octokit = new Octokit({
@@ -14,13 +15,16 @@ export async function getUserItems(slug) {
       path: 'jsons/' + slug + '.json',
       ref: 'main',
     })
+    if (resp.status === 200) {
+      return resp.data
+    }
   } else {
     // Define 1-click logic
+    resp = await fetch(`https://api.github.com/repos/rishi-raj-jain/itsmy.fyi/contents/jsons%2F${slug}.json?ref=main`)
+    if (resp.status === 200) {
+      return await resp.json()
+    }
   }
-  if (resp.status === 200) {
-    return resp.data
-  } else {
-    console.log(JSON.stringify(resp.status))
-    console.log(JSON.stringify(resp))
-  }
+  console.log(JSON.stringify(resp.status))
+  console.log(JSON.stringify(resp))
 }
