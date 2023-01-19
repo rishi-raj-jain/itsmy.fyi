@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  Take control of your online presence
+  Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree
 </p>
 
 <p align="center">
