@@ -14,5 +14,6 @@ const { configID } = Astro.props
       gtag('js', new Date())
       gtag('config', configID)
     }
+    document.head.appendChild(gaScript)
   }
 </script>
