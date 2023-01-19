@@ -34,6 +34,8 @@ Built with [Astro](https://astro.build), [Edgio](https://edg.io), [GitHub Issue 
 
 ## One-Click Deploy
 
+> Note: one-click deployment is a bit broken at the moment – you'll need to change some of the hard-coded values in the codebase to get it working. We're working on fixing this.
+
 You can deploy your own hosted version of itsmy.fyi using the button below:
 
 [![Deploy with Edgio](https://docs.edg.io/button.svg)](https://app.layer0.co/deploy?repo=https://github.com/rishi-raj-jain/itsmy.fyi)
@@ -66,4 +68,8 @@ https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-
 
 ## Author
 
-- Rishi Raj Jain ([@rishi*raj_jain*](https://twitter.com/rishi_raj_jain_))
+- Rishi Raj Jain ([@rishi_raj_jain_](https://twitter.com/rishi_raj_jain_))
+
+## License
+
+Inspired by [Dub](https://dub.sh), itsmy.fyi is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can find it [here](LICENSE.md).
