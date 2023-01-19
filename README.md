@@ -40,7 +40,7 @@ You can deploy your own hosted version of itsmy.fyi using the button below:
 
 ## Tech Stack + Features
 
-https://user-images.githubusercontent.com/46300090/212994310-8236d693-4bfb-4833-a436-3708978c9be6.mp4
+https://user-images.githubusercontent.com/46300090/213327827-39dc008c-cdba-489c-b1fe-38f4ba7779a7.mp4
 
 ### Frameworks
 
