@@ -12,10 +12,13 @@ body:
         name: Rishi Raj Jain
         about: Hey there, I'm Rishi on itsmy.fyi!
         image: https://rishi.app/static/favicon-image.jpg
-        og:
-          image: https://rishi.app/static/social-media-card.jpg
         links: [["Portfolio", "https://rishi.app"]]
         socials: [["Twitter", "https://twitter.com/rishi_raj_jain_"]]
+        og:
+          image: https://rishi.app/static/social-media-card.jpg
+        background:
+          color: white
+          image: https://volta.net/home/hero.png
         ---
 
         The expected format for itsmy.fyi to parse your data would be:
