@@ -1,31 +1,24 @@
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
 
-import crypto from 'crypto'
 import { load } from 'cheerio'
 import { astroRoutes } from '@edgio/astro'
 import { minifyOptions } from 'minifyOptions'
 import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
+import { verifyPostData } from './src/pages/github/verifySignature'
 
 const paths = ['/u/:path']
 
 const router = new Router({ indexPermalink: true })
 
-const verifyPostData = (signature256, body) => {
-  try {
-    const sig = Buffer.from(signature256, 'utf8')
-    const hmac = crypto.createHmac('sha256', process.env.GITHUB_WEBHOOK_SECRET)
-    const digest = Buffer.from('sha256=' + hmac.update(body).digest('hex'), 'utf8')
-    if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
-      return false
-    }
-    return true
-  } catch (e) {
-    console.log(e.message || e.toString())
-    return false
-  }
-}
+router.match('/_image', ({ cache }) => {
+  cache({
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+  })
+})
 
 router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
   compute((req, res) => {

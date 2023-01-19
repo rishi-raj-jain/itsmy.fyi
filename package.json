@@ -29,6 +29,7 @@
     "tailwindcss": "^3.2.4"
   },
   "dependencies": {
+    "@astrojs/image": "^0.12.1",
     "@astrojs/node": "^4.0.0",
     "@octokit/core": "^4.1.0",
     "@octokit/rest": "^19.0.5",
@@ -38,6 +39,9 @@
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "html-minifier": "^4.0.0",
-    "node-fetch": "^3.3.0"
+    "image-size": "^1.0.2",
+    "node-fetch": "^3.3.0",
+    "probe-image-size": "^7.2.3",
+    "sharp": "^0.31.3"
   }
 }

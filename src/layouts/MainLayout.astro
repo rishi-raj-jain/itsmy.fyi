@@ -1,14 +1,30 @@
 ---
+import probe from 'probe-image-size'
 import SEO from '@/components/SEO.astro'
+import { getImage } from '@astrojs/image'
 
-const { content } = Astro.props
+const { content, background = {} } = Astro.props
+
+let bgSrc = null
+try {
+  if (background.hasOwnProperty('image')) {
+    const { type, width, height } = await probe(background.image)
+    const { src } = await getImage({ src: background.image, alt: 'Background Image', width, height, format: type })
+    if (src) {
+      bgSrc = src
+    }
+  }
+} catch (e) {
+  console.log(e.message || e.toString())
+}
 ---
 
 <html lang="en">
   <head>
     <SEO {...content} />
+    {bgSrc && <link rel="preload" href={bgSrc} />}
     <style>
-      body {
+      .default-body {
         background-color: rgb(253, 164, 175);
         background-image: radial-gradient(at 31% 6%, rgb(244, 63, 94) 0, transparent 78%),
           radial-gradient(at 52% 52%, rgb(255, 228, 230) 0, transparent 98%), radial-gradient(at 41% 2%, rgb(209, 213, 219) 0, transparent 3%),
@@ -24,7 +40,13 @@ const { content } = Astro.props
       }
     </style>
   </head>
-  <body class="flex min-h-screen w-screen flex-col items-center overflow-x-hidden font-display">
+  <body
+    style={background.hasOwnProperty('color') ? `background: ${background.color}` : ''}
+    class={`relative flex min-h-screen w-screen flex-col items-center overflow-x-hidden font-display ${
+      background.hasOwnProperty('color') || background.hasOwnProperty('image') ? '' : 'default-body'
+    }`}
+  >
+    {bgSrc && <img loading="eager" decoding="async" class="fixed top-0 left-0 z-[-2] h-screen w-screen transform-gpu" src={bgSrc} />}
     <slot />
   </body>
 </html>

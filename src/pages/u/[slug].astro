@@ -19,7 +19,9 @@ if (userSlug.endsWith('/')) {
 
 // Get data from the json file
 const { content, encoding } = await getUserItems(userSlug)
-const { name: userName, image: userImage, links = [], socials = [], about = '', og = {} } = JSON.parse(Buffer.from(content, encoding).toString())
+const bufferString = Buffer.from(content, encoding).toString()
+console.log(bufferString)
+const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {} } = JSON.parse(bufferString)
 
 if (userName) {
   title = userName
@@ -38,7 +40,6 @@ const contentMap = {}
 contentMap['image'] = userImage
 contentMap['name'] = userName
 contentMap['links'] = links.map((i) => ({ title: i[0], href: i[1], image: i[2] ?? '' }))
-console.log(JSON.stringify(contentMap))
 
 // Create SEO map
 const seo = {
@@ -57,7 +58,7 @@ if (contentMap.links.length > 1) {
 }
 ---
 
-<MainLayout content={seo}>
+<MainLayout background={background} content={seo}>
   <div class="mx-auto mt-16 flex w-full flex-col items-center justify-center px-8">
     {contentMap.image && <img width="96" height="96" loading="eager" alt={contentMap.name} src={contentMap.image} class="rounded-full shadow-2xl" />}
     {contentMap.name && <h1 class="mt-4 mb-8 text-2xl font-medium tracking-wide text-white">{contentMap.name}</h1>}
