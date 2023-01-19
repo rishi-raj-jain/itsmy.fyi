@@ -121,6 +121,12 @@ export async function post({ request }) {
           data,
           fileContent.sha
         )
+        await octokit.rest.issues.createComment({
+          owner: context.repository.owner.login,
+          repo: context.repository.name,
+          issue_number: data.issue,
+          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/u/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+        })
       }
     } else {
       await octokit.rest.issues.createComment({
