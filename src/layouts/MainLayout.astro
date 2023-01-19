@@ -2,10 +2,12 @@
 import probe from 'probe-image-size'
 import SEO from '@/components/SEO.astro'
 import { getImage } from '@astrojs/image'
+import { getBase64ImageUrl } from '../image/blur'
 
 const { content, background = {} } = Astro.props
 
-let bgSrc = null
+let bgSrc = null,
+  bgBlurUrl = {}
 try {
   if (background.hasOwnProperty('image')) {
     const { type, width, height } = await probe(background.image)
@@ -13,6 +15,7 @@ try {
     if (src) {
       bgSrc = src
     }
+    bgBlurUrl = await getBase64ImageUrl(background.image)
   }
 } catch (e) {
   console.log(e.message || e.toString())
@@ -46,7 +49,22 @@ try {
       background.hasOwnProperty('color') || background.hasOwnProperty('image') ? '' : 'default-body'
     }`}
   >
-    {bgSrc && <img loading="eager" decoding="async" class="fixed top-0 left-0 z-[-2] h-screen w-screen transform-gpu" src={bgSrc} />}
+    {
+      bgSrc && (
+        <img
+          src={bgSrc}
+          loading="eager"
+          decoding="async"
+          alt="Background Image"
+          class="fixed top-0 left-0 z-[-2] h-screen w-screen transform-gpu"
+          style={
+            bgBlurUrl.hasOwnProperty('data')
+              ? `background-image: url(${bgBlurUrl.data}); background-repeat: no-repeat; background-position: 50% 50%; background-size: cover;`
+              : ''
+          }
+        />
+      )
+    }
     <slot />
   </body>
 </html>

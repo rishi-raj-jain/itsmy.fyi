@@ -40,6 +40,8 @@
     "gray-matter": "^4.0.3",
     "html-minifier": "^4.0.0",
     "image-size": "^1.0.2",
+    "imagemin": "^8.0.1",
+    "imagemin-jpegtran": "^7.0.0",
     "node-fetch": "^3.3.0",
     "probe-image-size": "^7.2.3",
     "sharp": "^0.31.3"
