@@ -1,8 +1,6 @@
 // This file was automatically added by edgio init.
 // You should commit this file to source control.
 
-require('dotenv').config()
-
 import { load } from 'cheerio'
 import { astroRoutes } from '@edgio/astro'
 import { minifyOptions } from 'minifyOptions'
