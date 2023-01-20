@@ -8,8 +8,7 @@ import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
 import { verifyPostData } from './src/pages/github/verifySignature'
 
-const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp, removeResponseHeader }) => {
-  removeResponseHeader('ITS-MY-PROTECTION')
+const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
     edge: {
@@ -46,40 +45,37 @@ router.match('/_image', ({ cache }) => {
   })
 })
 
-// router.match('/me/:slug', ({ compute, redirect, send }) => {
-//   compute((req, res) => {
-//     const { slug } = req.params
-//     if (slug && slug.length) {
-//       const headers = req.getHeaders()
-//       const analyticsObject = {}
-//       if (headers['x-0-browser']) {
-//         analyticsObject['browser'] = headers['x-0-browser']
-//       }
-//       if (headers['x-0-device']) {
-//         analyticsObject['device'] = headers['x-0-device']
-//       }
-//       if (headers['x-0-device-is-bot']) {
-//         analyticsObject['bot'] = headers['x-0-device-is-bot']
-//       }
-//       if (headers['x-0-geo-country-code']) {
-//         analyticsObject['country'] = headers['x-0-geo-country-code']
-//       }
-//       if (headers['sec-ch-ua-platform']) {
-//         analyticsObject['os'] = headers['sec-ch-ua-platform']
-//       }
-//       if (headers['referer']) {
-//         analyticsObject['referer'] = headers['referer']
-//       }
-//       console.log(JSON.stringify(analyticsObject))
-//       res.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
-//       return redirect('/u/:slug')
-//     } else {
-//       send('Invalid Request', 403)
-//     }
-//   })
-// })
-
-// router.match({ path: '/u/:path', headers: { 'ITS-MY-PROTECTION': process.env.GITHUB_WEBHOOK_SECRET } }, optimizePage)
+router.match('/me/:slug', ({ compute, proxy, send }) => {
+  compute((req, res) => {
+    const { slug } = req.params
+    if (slug && slug.length) {
+      const headers = req.getHeaders()
+      const analyticsObject = {}
+      if (headers['x-0-browser']) {
+        analyticsObject['browser'] = headers['x-0-browser']
+      }
+      if (headers['x-0-device']) {
+        analyticsObject['device'] = headers['x-0-device']
+      }
+      if (headers['x-0-device-is-bot']) {
+        analyticsObject['bot'] = headers['x-0-device-is-bot']
+      }
+      if (headers['x-0-geo-country-code']) {
+        analyticsObject['country'] = headers['x-0-geo-country-code']
+      }
+      if (headers['sec-ch-ua-platform']) {
+        analyticsObject['os'] = headers['sec-ch-ua-platform']
+      }
+      if (headers['referer']) {
+        analyticsObject['referer'] = headers['referer']
+      }
+      console.log(JSON.stringify(analyticsObject))
+      return proxy('https://itsmy.fyi/u/:slug')
+    } else {
+      send('Invalid Request', 403)
+    }
+  })
+})
 
 router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
   compute((req, res) => {
