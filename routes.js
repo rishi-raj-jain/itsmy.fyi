@@ -8,7 +8,7 @@ import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
 import { ratelimit } from './src/pages/github/ratelimit'
 import { verifyPostData } from './src/pages/github/verifySignature'
-import { writeJsonToFile } from './src/pages/github/octokit/helpers'
+// import { writeJsonToFile } from './src/pages/github/octokit/helpers'
 
 // Right now, record only 10 requests per month per user
 // Enables us with concurrent 1000 users per day
@@ -160,13 +160,13 @@ router.match('/u/:slug', ({ compute, renderWithApp, send }) => {
           if (headers['referer']) {
             analyticsObject['referer'] = headers['referer']
           }
-          writeJsonToFile(
-            'rishi-raj-jain',
-            'itsmy.fyi',
-            `analytics/${slug}/${new Date().getTime().toString()}.json`,
-            `${result.remaining} tracks remaining.`,
-            analyticsObject
-          )
+          // writeJsonToFile(
+          //   'rishi-raj-jain',
+          //   'itsmy.fyi',
+          //   `analytics/${slug}/${new Date().getTime().toString()}.json`,
+          //   `${result.remaining} tracks remaining.`,
+          //   analyticsObject
+          // )
         }
       }
       return renderWithApp()
