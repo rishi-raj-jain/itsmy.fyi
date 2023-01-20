@@ -70,7 +70,7 @@ router.match('/me/:slug', ({ compute, proxy, send }) => {
         analyticsObject['referer'] = headers['referer']
       }
       console.log(JSON.stringify(analyticsObject))
-      return proxy('https://itsmy.fyi/u/:slug')
+      return proxy('self', { path: '/u/:slug' })
     } else {
       send('Invalid Request', 403)
     }
