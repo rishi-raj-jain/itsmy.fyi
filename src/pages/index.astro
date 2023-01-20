@@ -28,7 +28,7 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
 }).then((res) => res.json())
 ---
 
-<html>
+<html lang="en">
   <head>
     <SEO {...seo} />
     <link rel="preload" href="https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4" />
@@ -144,8 +144,8 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
           ></path>
         </svg>
       </a>
-      <a href="/">
-        <img src="https://itsmy.fyi/seo/logo.png" height="40" width="40" loading="lazy" />
+      <a aria-label="itsmy.fyi Home Page" href="/">
+        <img alt="itsmy.fyi Logo" src="https://itsmy.fyi/seo/logo.png" height="40" width="40" loading="lazy" />
       </a>
       <a target="_blank" href="https://github.com/rishi-raj-jain/itsmy.fyi">
         <span class="sr-only"> Github</span>
