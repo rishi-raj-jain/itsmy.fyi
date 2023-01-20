@@ -1,13 +1,19 @@
 import fetch from 'node-fetch'
 import { Octokit } from '@octokit/core'
 
-const octokit = new Octokit({
-  auth: import.meta.env.GITHUB_API_TOKEN,
-})
+let auth
+
+if (import.meta && import.meta.env) {
+  auth = import.meta.env.GITHUB_API_TOKEN
+} else if (process.env) {
+  auth = process.env.GITHUB_API_TOKEN
+}
+
+const octokit = new Octokit({ auth })
 
 export async function getUserItems(slug) {
   let resp
-  if (import.meta.env.GITHUB_API_TOKEN) {
+  if (auth) {
     // ex. https://api.github.com/repos/rishi-raj-jain/itsmy.fyi/contents/jsons%2Frishi-raj-jain.json?ref=main
     resp = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}{?ref}', {
       owner: 'rishi-raj-jain',
