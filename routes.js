@@ -22,10 +22,13 @@ const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp }) =>
     transformResponse: async (res, req) => {
       let statusCodeOriginal = res.statusCode
       try {
-        if (res.getHeader('content-type').includes('html')) {
+        if (res.getHeader('content-type').includes('/html')) {
           const $ = load(res.body)
           const { minify } = await esImport('html-minifier')
           res.body = minify($.html(), minifyOptions)
+        } else if (res.getHeader('content-type').includes('/xml')) {
+          const { minify } = await esImport('html-minifier')
+          res.body = minify(res.body.toString(), minifyOptions)
         }
       } catch (e) {
         console.log(e.message || e.toString())
@@ -90,8 +93,8 @@ router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
 })
 
 router.match('/', optimizePage)
-
 router.match('/u/:path', optimizePage)
+router.match('/sitemap.xml', optimizePage)
 
 router.use(astroRoutes)
 

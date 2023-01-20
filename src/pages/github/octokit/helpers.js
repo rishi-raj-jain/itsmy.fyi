@@ -48,3 +48,17 @@ export async function writeJsonToFile(owner, repo, path, message, jsonData, sha 
     console.error(e.message || e.toString())
   }
 }
+
+export async function listFilenames(owner, repo, path) {
+  try {
+    const { data } = await octokit.rest.repos.getContent({
+      owner,
+      repo,
+      path,
+    })
+    return data.map((file) => file.name)
+  } catch (e) {
+    console.error(e.message || e.toString())
+    return []
+  }
+}

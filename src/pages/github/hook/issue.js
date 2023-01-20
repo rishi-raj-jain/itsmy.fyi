@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { slug } from 'github-slugger'
 import { ratelimit } from '../ratelimit'
 import { validateEvent } from './validate'
@@ -73,7 +72,6 @@ export async function post({ request }) {
           issue_number: data.issue,
           body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
-        await fetch(`https://itsmy.fyi/me/${sluggedSlug}`)
       }
       // If the file is not created successfully, comment with the re-try method
       else {
