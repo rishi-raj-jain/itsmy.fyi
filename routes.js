@@ -46,6 +46,13 @@ const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp }) =>
 
 const router = new Router({ indexPermalink: true })
 
+// Home page
+router.match('/', optimizePage)
+
+// Sitemap
+router.match('/sitemap.xml', optimizePage)
+
+// Astro's on the fly image path
 router.match('/_image', ({ cache }) => {
   cache({
     edge: {
@@ -54,7 +61,51 @@ router.match('/_image', ({ cache }) => {
   })
 })
 
-router.match('/me/:slug', ({ compute, proxy, send }) => {
+// GitHub hooks to update and handle updates for user profile(s)
+router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
+  compute((req, res) => {
+    if (req.method.toLowerCase() === 'post') {
+      if (req.getHeader('Content-Type').toLowerCase() === 'application/json') {
+        if (verifyPostData(req.getHeader('X-Hub-Signature-256'), req.rawBody)) {
+          return renderWithApp()
+        }
+      }
+    }
+  })
+})
+
+// User path(s)
+router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
+  removeUpstreamResponseHeader('cache-control')
+  cache({
+    edge: {
+      maxAgeSeconds: 1,
+      staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
+    },
+    browser: false,
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
+  renderWithApp({
+    path: '/u/:path',
+    transformResponse: async (res, req) => {
+      let statusCodeOriginal = res.statusCode
+      try {
+        if (res.getHeader('content-type').includes('/html')) {
+          const $ = load(res.body)
+          const { minify } = await esImport('html-minifier')
+          res.body = minify($.html(), minifyOptions)
+        }
+      } catch (e) {
+        console.log(e.message || e.toString())
+        res.statusCode = statusCodeOriginal
+      }
+    },
+  })
+})
+
+// Track Analytics
+// Currently In Demo
+router.match('/u/:slug', ({ compute, renderWithApp, send }) => {
   compute(async (req, res) => {
     const { slug } = req.params
     if (slug && slug.length) {
@@ -90,28 +141,12 @@ router.match('/me/:slug', ({ compute, proxy, send }) => {
           )
         }
       }
-      return proxy('self', { path: '/u/:slug' })
+      return renderWithApp()
     } else {
       send('Invalid Request', 403)
     }
   })
 })
-
-router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
-  compute((req, res) => {
-    if (req.method.toLowerCase() === 'post') {
-      if (req.getHeader('Content-Type').toLowerCase() === 'application/json') {
-        if (verifyPostData(req.getHeader('X-Hub-Signature-256'), req.rawBody)) {
-          return renderWithApp()
-        }
-      }
-    }
-  })
-})
-
-router.match('/', optimizePage)
-router.match('/u/:path', optimizePage)
-router.match('/sitemap.xml', optimizePage)
 
 router.use(astroRoutes)
 
