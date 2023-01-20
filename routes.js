@@ -20,6 +20,18 @@ router.match('/_image', ({ cache }) => {
   })
 })
 
+router.match('/launch', ({ redirect }) => {
+  redirect('https://twitter.com/rishi_raj_jain_/status/1616100171137560577')
+})
+
+router.match('/me/:path', ({ compute, redirect }) => {
+  compute((req, res) => {
+    const headers = req.getHeaders()
+    console.log(JSON.stringify(headers))
+    return redirect('/u/:path')
+  })
+})
+
 router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
   compute((req, res) => {
     if (req.method.toLowerCase() === 'post') {
