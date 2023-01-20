@@ -25,7 +25,7 @@ const validateBody = (body) => {
     return { name, slug, image, links, socials, og, about, background, ga, icon }
   } catch (e) {
     console.error(e.message || e.toString())
-    return false
+    return { error: e.message || e.toString() }
   }
 }
 
@@ -43,6 +43,6 @@ export const validateEvent = (context) => {
     }
   } catch (e) {
     console.error(e.message || e.toString())
-    return false
+    return { error: e.message || e.toString() }
   }
 }

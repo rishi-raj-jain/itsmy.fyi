@@ -38,6 +38,16 @@ export async function post({ request }) {
   }
   const data = validateEvent(context)
 
+  if (data.error) {
+    await octokit.rest.issues.createComment({
+      owner: context.repository.owner.login,
+      repo: context.repository.name,
+      issue_number: data.issue,
+      body: `Bad luck! Here's what we found breaking in your data:\n${data.error}.\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.`,
+    })
+    return
+  }
+
   const sluggedSlug = slug(data.slug)
 
   // Get file content for the slug from data
@@ -56,6 +66,7 @@ export async function post({ request }) {
           3
         )}.\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
       })
+      return
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
@@ -68,6 +79,7 @@ export async function post({ request }) {
           issue_number: data.issue,
           body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
+        return
       }
       // If the file is not created successfully, comment with the re-try method
       else {
@@ -77,6 +89,7 @@ export async function post({ request }) {
           issue_number: data.issue,
           body: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
+        return
       }
     }
   }
@@ -95,6 +108,7 @@ export async function post({ request }) {
             issue_number: data.issue,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
           })
+          return
         } else {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
@@ -102,6 +116,7 @@ export async function post({ request }) {
             issue_number: data.issue,
             body: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
           })
+          return
         }
       }
     }
@@ -120,6 +135,7 @@ export async function post({ request }) {
             issue_number: data.issue,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
           })
+          return
         }
       }
     } else {
@@ -129,6 +145,7 @@ export async function post({ request }) {
         issue_number: data.issue,
         body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
       })
+      return
     }
   }
 }
