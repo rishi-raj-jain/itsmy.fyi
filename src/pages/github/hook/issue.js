@@ -71,9 +71,9 @@ export async function post({ request }) {
           owner: context.repository.owner.login,
           repo: context.repository.name,
           issue_number: data.issue,
-          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/u/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
-        await fetch(`https://itsmy.fyi/u/${sluggedSlug}`)
+        await fetch(`https://itsmy.fyi/me/${sluggedSlug}`)
       }
       // If the file is not created successfully, comment with the re-try method
       else {
@@ -125,7 +125,7 @@ export async function post({ request }) {
           owner: context.repository.owner.login,
           repo: context.repository.name,
           issue_number: data.issue,
-          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/u/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
       }
     } else {
