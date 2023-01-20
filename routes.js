@@ -8,7 +8,33 @@ import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
 import { verifyPostData } from './src/pages/github/verifySignature'
 
-const paths = ['/u/:path']
+const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp, removeHeader }) => {
+  removeHeader('ITS-MY-PROTECTION')
+  removeUpstreamResponseHeader('cache-control')
+  cache({
+    edge: {
+      maxAgeSeconds: 1,
+      staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
+    },
+    browser: false,
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
+  renderWithApp({
+    transformResponse: async (res, req) => {
+      let statusCodeOriginal = res.statusCode
+      try {
+        if (res.getHeader('content-type').includes('html')) {
+          const $ = load(res.body)
+          const { minify } = await esImport('html-minifier')
+          res.body = minify($.html(), minifyOptions)
+        }
+      } catch (e) {
+        console.log(e.message || e.toString())
+        res.statusCode = statusCodeOriginal
+      }
+    },
+  })
+}
 
 const router = new Router({ indexPermalink: true })
 
@@ -24,11 +50,36 @@ router.match('/launch', ({ redirect }) => {
   redirect('https://twitter.com/rishi_raj_jain_/status/1616100171137560577')
 })
 
-router.match('/me/:path', ({ compute, redirect }) => {
+router.match('/me/:slug', ({ compute, redirect, send }) => {
   compute((req, res) => {
-    const headers = req.getHeaders()
-    console.log(JSON.stringify(headers))
-    return redirect('/u/:path')
+    const { slug } = req.params
+    if (slug && slug.length) {
+      const headers = req.getHeaders()
+      const analyticsObject = {}
+      if (headers.getHeader('x-0-browser')) {
+        analyticsObject['browser'] = headers.getHeader('x-0-browser')
+      }
+      if (headers.getHeader('x-0-device')) {
+        analyticsObject['device'] = headers.getHeader('x-0-device')
+      }
+      if (headers.getHeader('x-0-device-is-bot')) {
+        analyticsObject['bot'] = headers.getHeader('x-0-device-is-bot')
+      }
+      if (headers.getHeader('x-0-geo-country-code')) {
+        analyticsObject['country'] = headers.getHeader('x-0-geo-country-code')
+      }
+      if (headers.getHeader('sec-ch-ua-platform')) {
+        analyticsObject['os'] = headers.getHeader('sec-ch-ua-platform')
+      }
+      if (headers.getHeader('referer')) {
+        analyticsObject['referer'] = headers.getHeader('referer')
+      }
+      console.log(JSON.stringify(analyticsObject))
+      req.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
+      return redirect('/u/:path')
+    } else {
+      send('Invalid Request', 403)
+    }
   })
 })
 
@@ -44,33 +95,12 @@ router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
   })
 })
 
-paths.forEach((i) => {
-  router.match(i, ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
-    removeUpstreamResponseHeader('cache-control')
-    cache({
-      edge: {
-        maxAgeSeconds: 1,
-        staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
-      },
-      browser: false,
-      key: new CustomCacheKey().excludeAllQueryParameters(),
-    })
-    renderWithApp({
-      transformResponse: async (res, req) => {
-        let statusCodeOriginal = res.statusCode
-        try {
-          if (res.getHeader('content-type').includes('html')) {
-            const $ = load(res.body)
-            const { minify } = await esImport('html-minifier')
-            res.body = minify($.html(), minifyOptions)
-          }
-        } catch (e) {
-          console.log(e.message || e.toString())
-          res.statusCode = statusCodeOriginal
-        }
-      },
-    })
-  })
+router.match('/', optimizePage)
+
+router.match({ path: '/u/:path', headers: { 'ITS-MY-PROTECTION': process.env.GITHUB_WEBHOOK_SECRET } }, optimizePage)
+
+router.match({ path: '/u/:path' }, ({ send }) => {
+  send('Blocked', 403)
 })
 
 router.use(astroRoutes)
