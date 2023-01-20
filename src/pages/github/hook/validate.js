@@ -21,8 +21,8 @@ const validateBody = (body) => {
     if (!Array.isArray(data.socials)) {
       return false
     }
-    const { name, slug, image, links, socials, og = {}, about = '', background = {}, ga = {} } = data
-    return { name, slug, image, links, socials, og, about, background, ga }
+    const { name, slug, image, links, socials, og = {}, about = '', background = {}, ga = {}, icon } = data
+    return { name, slug, image, links, socials, og, about, background, ga, icon }
   } catch (e) {
     console.error(e.message || e.toString())
     return false

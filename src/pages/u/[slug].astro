@@ -12,7 +12,8 @@ const origin = Astro.url.origin.replace('http:', 'https:')
 let userSlug = slug.toLowerCase(),
   title = '',
   description = '',
-  image = origin + '/seo/social-media-card.png'
+  image = origin + '/seo/social-media-card.png',
+  icon = origin + '/seo/logo.png'
 
 if (userSlug.endsWith('/')) {
   userSlug = userSlug.substring(0, userSlug.length - 1)
@@ -22,7 +23,21 @@ if (userSlug.endsWith('/')) {
 const { content, encoding } = await getUserItems(userSlug)
 const bufferString = Buffer.from(content, encoding).toString()
 console.log(bufferString)
-const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {}, ga = {} } = JSON.parse(bufferString)
+const {
+  name: userName,
+  image: userImage,
+  links = [],
+  socials = [],
+  about = '',
+  og = {},
+  background = {},
+  ga = {},
+  icon: iconLink,
+} = JSON.parse(bufferString)
+
+if (iconLink) {
+  icon = iconLink
+}
 
 if (userName) {
   title = userName
@@ -45,6 +60,7 @@ contentMap['links'] = links.map((i) => ({ title: i[0], href: i[1], image: i[2] ?
 // Create SEO map
 const seo = {
   url,
+  icon,
   title,
   image,
   description,

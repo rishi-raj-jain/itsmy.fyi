@@ -1,5 +1,5 @@
 ---
-const { title, description, url, image, preloads, slackPreviewLabels = [] } = Astro.props
+const { title, description, url, image, preloads, slackPreviewLabels = [], icon } = Astro.props
 ---
 
 <!-- Global Metadata -->
@@ -9,6 +9,7 @@ const { title, description, url, image, preloads, slackPreviewLabels = [] } = As
 <meta name="generator" content={Astro.generator} />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href={icon} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
