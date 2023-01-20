@@ -56,23 +56,23 @@ router.match('/me/:slug', ({ compute, redirect, send }) => {
     if (slug && slug.length) {
       const headers = req.getHeaders()
       const analyticsObject = {}
-      if (headers.getHeader('x-0-browser')) {
-        analyticsObject['browser'] = headers.getHeader('x-0-browser')
+      if (headers['x-0-browser']) {
+        analyticsObject['browser'] = headers['x-0-browser']
       }
-      if (headers.getHeader('x-0-device')) {
-        analyticsObject['device'] = headers.getHeader('x-0-device')
+      if (headers['x-0-device']) {
+        analyticsObject['device'] = headers['x-0-device']
       }
-      if (headers.getHeader('x-0-device-is-bot')) {
-        analyticsObject['bot'] = headers.getHeader('x-0-device-is-bot')
+      if (headers['x-0-device-is-bot']) {
+        analyticsObject['bot'] = headers['x-0-device-is-bot']
       }
-      if (headers.getHeader('x-0-geo-country-code')) {
-        analyticsObject['country'] = headers.getHeader('x-0-geo-country-code')
+      if (headers['x-0-geo-country-code']) {
+        analyticsObject['country'] = headers['x-0-geo-country-code']
       }
-      if (headers.getHeader('sec-ch-ua-platform')) {
-        analyticsObject['os'] = headers.getHeader('sec-ch-ua-platform')
+      if (headers['sec-ch-ua-platform']) {
+        analyticsObject['os'] = headers['sec-ch-ua-platform']
       }
-      if (headers.getHeader('referer')) {
-        analyticsObject['referer'] = headers.getHeader('referer')
+      if (headers['referer']) {
+        analyticsObject['referer'] = headers['referer']
       }
       console.log(JSON.stringify(analyticsObject))
       req.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
