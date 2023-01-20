@@ -5,6 +5,8 @@ import { octokit } from '../octokit/setup'
 import { generateString } from './generateString'
 import { deleteFile, getFileContent, writeJsonToFile } from '../octokit/helpers'
 
+const rateLimiter = ratelimit(3, '60 s')
+
 export async function post({ request }) {
   let limit = 9999,
     remaining = 9999
@@ -16,8 +18,8 @@ export async function post({ request }) {
       }),
     }
   }
-  if (ratelimit) {
-    const result = await ratelimit.limit(context.sender.login)
+  if (rateLimiter) {
+    const result = await rateLimiter.limit(context.sender.login)
     limit = result.limit
     remaining = result.remaining
     if (!result.success) {

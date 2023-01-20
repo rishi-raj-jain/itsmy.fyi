@@ -6,7 +6,13 @@ import { astroRoutes } from '@edgio/astro'
 import { minifyOptions } from 'minifyOptions'
 import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
+import { ratelimit } from './src/pages/github/ratelimit'
 import { verifyPostData } from './src/pages/github/verifySignature'
+import { writeJsonToFile } from './src/pages/github/octokit/helpers'
+
+// Right now, record only 10 requests per month per user
+// Enables us with concurrent 1000 users per day
+const rateLimiter = ratelimit(10, '2628002 s')
 
 const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
@@ -49,30 +55,41 @@ router.match('/_image', ({ cache }) => {
 })
 
 router.match('/me/:slug', ({ compute, proxy, send }) => {
-  compute((req, res) => {
+  compute(async (req, res) => {
     const { slug } = req.params
     if (slug && slug.length) {
-      const headers = req.getHeaders()
-      const analyticsObject = {}
-      if (headers['x-0-browser']) {
-        analyticsObject['browser'] = headers['x-0-browser']
+      if (rateLimiter) {
+        const result = await rateLimiter.limit(slug)
+        if (result.success) {
+          const headers = req.getHeaders()
+          const analyticsObject = {}
+          if (headers['x-0-browser']) {
+            analyticsObject['browser'] = headers['x-0-browser']
+          }
+          if (headers['x-0-device']) {
+            analyticsObject['device'] = headers['x-0-device']
+          }
+          if (headers['x-0-device-is-bot']) {
+            analyticsObject['bot'] = headers['x-0-device-is-bot']
+          }
+          if (headers['x-0-geo-country-code']) {
+            analyticsObject['country'] = headers['x-0-geo-country-code']
+          }
+          if (headers['sec-ch-ua-platform']) {
+            analyticsObject['os'] = headers['sec-ch-ua-platform']
+          }
+          if (headers['referer']) {
+            analyticsObject['referer'] = headers['referer']
+          }
+          writeJsonToFile(
+            'rishi-raj-jain',
+            'itsmy.fyi',
+            `analytics/${slug}/${new Date().getTime().toString()}.json`,
+            `${result.remaining} tracks remaining.`,
+            analyticsObject
+          )
+        }
       }
-      if (headers['x-0-device']) {
-        analyticsObject['device'] = headers['x-0-device']
-      }
-      if (headers['x-0-device-is-bot']) {
-        analyticsObject['bot'] = headers['x-0-device-is-bot']
-      }
-      if (headers['x-0-geo-country-code']) {
-        analyticsObject['country'] = headers['x-0-geo-country-code']
-      }
-      if (headers['sec-ch-ua-platform']) {
-        analyticsObject['os'] = headers['sec-ch-ua-platform']
-      }
-      if (headers['referer']) {
-        analyticsObject['referer'] = headers['referer']
-      }
-      console.log(JSON.stringify(analyticsObject))
       return proxy('self', { path: '/u/:slug' })
     } else {
       send('Invalid Request', 403)
