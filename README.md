@@ -30,7 +30,7 @@
 
 Take control of your online presence with itsmy.fyi - the open-source alternative to Linktree.
 
-Built with [Astro](https://astro.build), [Edgio](https://edg.io), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
+Built with [Astro](https://astro.build), [Edgio](https://edg.io), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
 
 ## One-Click Deploy
 
