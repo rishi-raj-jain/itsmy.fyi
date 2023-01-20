@@ -76,7 +76,7 @@ router.match('/me/:slug', ({ compute, redirect, send }) => {
       }
       console.log(JSON.stringify(analyticsObject))
       req.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
-      return redirect('/u/:path')
+      return redirect('/u/:slug')
     } else {
       send('Invalid Request', 403)
     }
