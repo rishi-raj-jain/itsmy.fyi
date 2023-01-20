@@ -1,8 +1,8 @@
 ---
-import { getUserItems } from '@/src/api'
 import GA from '@/src/components/GA.astro'
 import Link from '@/src/components/Link.astro'
 import MainLayout from '@/src/layouts/MainLayout.astro'
+import { getUserInfo } from '../github/upstash/users/get'
 
 const { slug } = Astro.params
 
@@ -20,9 +20,6 @@ if (userSlug.endsWith('/')) {
 }
 
 // Get data from the json file
-const { content, encoding } = await getUserItems(userSlug)
-const bufferString = Buffer.from(content, encoding).toString()
-console.log(bufferString)
 const {
   name: userName,
   image: userImage,
@@ -33,7 +30,12 @@ const {
   background = {},
   ga = {},
   icon: iconLink,
-} = JSON.parse(bufferString)
+  code = 1,
+} = await getUserInfo(userSlug)
+
+if (code === 0) {
+  return Astro.redirect('/404')
+}
 
 if (iconLink) {
   icon = iconLink

@@ -3,7 +3,9 @@ import { ratelimit } from '../ratelimit'
 import { validateEvent } from './validate'
 import { octokit } from '../octokit/setup'
 import { generateString } from './generateString'
-import { deleteFile, getFileContent, writeJsonToFile } from '../octokit/helpers'
+import { getUserInfo } from '../upstash/users/get'
+import { postUserInfo } from '../upstash/users/post'
+import { deleteUserInfo } from '../upstash/users/delete'
 
 const rateLimiter = ratelimit(3, '60 s')
 
@@ -38,11 +40,9 @@ export async function post({ request }) {
 
   const sluggedSlug = slug(data.slug)
 
-  const jsonPath = `jsons/${sluggedSlug}.json`
-
   // Get file content for the slug from data
-  const fileContent = await getFileContent(context.repository.owner.login, context.repository.name, jsonPath)
-  const ifFileExists = fileContent && fileContent.content
+  const fileContent = await getUserInfo(sluggedSlug)
+  const ifFileExists = fileContent.code === 1
 
   // If an issue is opened
   if (context.action === 'opened') {
@@ -59,15 +59,9 @@ export async function post({ request }) {
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
-      const success = await writeJsonToFile(
-        context.repository.owner.login,
-        context.repository.name,
-        jsonPath,
-        `Issue ${data.issue} was created.`,
-        data
-      )
+      const { code } = await postUserInfo(data)
       // If the file is created successfully, comment with the profile link
-      if (success) {
+      if (code === 1) {
         await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
@@ -90,18 +84,25 @@ export async function post({ request }) {
   else if (context.action === 'closed') {
     // If the file exists
     if (ifFileExists) {
-      // Parse the base64 content to JSON
-      const fileContentJSON = JSON.parse(Buffer.from(fileContent.content, 'base64').toString())
       // Only if the issue matches
-      if (fileContentJSON.issue === data.issue) {
+      if (fileContent.issue === data.issue) {
         // Delete the file
-        await deleteFile(context.repository.owner.login, context.repository.name, jsonPath, `Issue ${data.issue} was closed.`, fileContent.sha)
-        await octokit.rest.issues.createComment({
-          owner: context.repository.owner.login,
-          repo: context.repository.name,
-          issue_number: data.issue,
-          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
-        })
+        const { code } = await deleteUserInfo(data.slug)
+        if (code === 1) {
+          await octokit.rest.issues.createComment({
+            owner: context.repository.owner.login,
+            repo: context.repository.name,
+            issue_number: data.issue,
+            body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
+          })
+        } else {
+          await octokit.rest.issues.createComment({
+            owner: context.repository.owner.login,
+            repo: context.repository.name,
+            issue_number: data.issue,
+            body: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
+          })
+        }
       }
     }
   }
@@ -109,24 +110,17 @@ export async function post({ request }) {
   else if (context.action === 'edited') {
     // If the file exists
     if (ifFileExists) {
-      // Parse the base64 content to JSON
-      const fileContentJSON = JSON.parse(Buffer.from(fileContent.content, 'base64').toString())
       // Only if the issue matches
-      if (fileContentJSON.issue === data.issue) {
-        await writeJsonToFile(
-          context.repository.owner.login,
-          context.repository.name,
-          jsonPath,
-          `Issue ${data.issue} was edited.`,
-          data,
-          fileContent.sha
-        )
-        await octokit.rest.issues.createComment({
-          owner: context.repository.owner.login,
-          repo: context.repository.name,
-          issue_number: data.issue,
-          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-        })
+      if (fileContent.issue === data.issue) {
+        const { code } = await postUserInfo(data)
+        if (code === 1) {
+          await octokit.rest.issues.createComment({
+            owner: context.repository.owner.login,
+            repo: context.repository.name,
+            issue_number: data.issue,
+            body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+          })
+        }
       }
     } else {
       await octokit.rest.issues.createComment({

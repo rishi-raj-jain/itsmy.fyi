@@ -1,18 +1,28 @@
-import { listFilenames } from './github/octokit/helpers'
+import { getUserSlugs } from './github/upstash/users/list'
 
 export async function get({}) {
-  const prefix = 'https://itsmy.fyi/'
-  const slugs = (await listFilenames('rishi-raj-jain', 'itsmy.fyi', 'jsons')).map((i) => i.substring(0, i.indexOf('.json')))
-  const sitemap = `
+  const prefix = 'https://itsmy.fyi'
+  const { code, slugs = [] } = await getUserSlugs()
+  if (code === 1) {
+    const sitemap = `
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         <url><loc>${prefix}</loc></url>
-        ${slugs.map((i) => `<url><loc>${prefix}${i}</loc></url>`).join('')}
+        ${slugs.map((i) => `<url><loc>${prefix}/me/${i}</loc></url>`).join('')}
     </urlset>
   `
-  return new Response(sitemap, {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/xml',
-    },
-  })
+    return new Response(sitemap, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+    })
+  } else {
+    return new Response(null, {
+      status: 404,
+      location: '/404',
+      headers: {
+        'Content-Type': 'text/html',
+      },
+    })
+  }
 }

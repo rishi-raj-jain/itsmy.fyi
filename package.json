@@ -42,6 +42,7 @@
     "image-size": "^1.0.2",
     "imagemin": "^8.0.1",
     "imagemin-jpegtran": "^7.0.0",
+    "ioredis": "^5.2.5",
     "node-fetch": "^3.3.0",
     "probe-image-size": "^7.2.3",
     "sharp": "^0.31.3"
