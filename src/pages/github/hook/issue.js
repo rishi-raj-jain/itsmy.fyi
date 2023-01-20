@@ -59,7 +59,7 @@ export async function post({ request }) {
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
-      const { code } = await postUserInfo(data)
+      const { code } = await postUserInfo({ ...data, slug: sluggedSlug })
       // If the file is created successfully, comment with the profile link
       if (code === 1) {
         await octokit.rest.issues.createComment({
@@ -112,7 +112,7 @@ export async function post({ request }) {
     if (ifFileExists) {
       // Only if the issue matches
       if (fileContent.issue === data.issue) {
-        const { code } = await postUserInfo(data)
+        const { code } = await postUserInfo({ ...data, slug: sluggedSlug })
         if (code === 1) {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
