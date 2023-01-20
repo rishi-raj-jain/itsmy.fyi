@@ -16,3 +16,4 @@ pnpm-debug.log*
 # environment variables
 .env
 /deps.json
+test.js
