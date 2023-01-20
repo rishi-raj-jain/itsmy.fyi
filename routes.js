@@ -8,8 +8,8 @@ import esImport from '@edgio/core/utils/esImport'
 import { CustomCacheKey, Router } from '@edgio/core'
 import { verifyPostData } from './src/pages/github/verifySignature'
 
-const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp, removeHeader }) => {
-  removeHeader('ITS-MY-PROTECTION')
+const optimizePage = ({ cache, removeUpstreamResponseHeader, renderWithApp, removeRequestHeader }) => {
+  removeRequestHeader('ITS-MY-PROTECTION')
   removeUpstreamResponseHeader('cache-control')
   cache({
     edge: {
