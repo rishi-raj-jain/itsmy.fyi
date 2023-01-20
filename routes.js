@@ -46,42 +46,40 @@ router.match('/_image', ({ cache }) => {
   })
 })
 
-router.match('/launch', ({ redirect }) => {
-  redirect('https://twitter.com/rishi_raj_jain_/status/1616100171137560577')
-})
+// router.match('/me/:slug', ({ compute, redirect, send }) => {
+//   compute((req, res) => {
+//     const { slug } = req.params
+//     if (slug && slug.length) {
+//       const headers = req.getHeaders()
+//       const analyticsObject = {}
+//       if (headers['x-0-browser']) {
+//         analyticsObject['browser'] = headers['x-0-browser']
+//       }
+//       if (headers['x-0-device']) {
+//         analyticsObject['device'] = headers['x-0-device']
+//       }
+//       if (headers['x-0-device-is-bot']) {
+//         analyticsObject['bot'] = headers['x-0-device-is-bot']
+//       }
+//       if (headers['x-0-geo-country-code']) {
+//         analyticsObject['country'] = headers['x-0-geo-country-code']
+//       }
+//       if (headers['sec-ch-ua-platform']) {
+//         analyticsObject['os'] = headers['sec-ch-ua-platform']
+//       }
+//       if (headers['referer']) {
+//         analyticsObject['referer'] = headers['referer']
+//       }
+//       console.log(JSON.stringify(analyticsObject))
+//       res.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
+//       return redirect('/u/:slug')
+//     } else {
+//       send('Invalid Request', 403)
+//     }
+//   })
+// })
 
-router.match('/me/:slug', ({ compute, redirect, send }) => {
-  compute((req, res) => {
-    const { slug } = req.params
-    if (slug && slug.length) {
-      const headers = req.getHeaders()
-      const analyticsObject = {}
-      if (headers['x-0-browser']) {
-        analyticsObject['browser'] = headers['x-0-browser']
-      }
-      if (headers['x-0-device']) {
-        analyticsObject['device'] = headers['x-0-device']
-      }
-      if (headers['x-0-device-is-bot']) {
-        analyticsObject['bot'] = headers['x-0-device-is-bot']
-      }
-      if (headers['x-0-geo-country-code']) {
-        analyticsObject['country'] = headers['x-0-geo-country-code']
-      }
-      if (headers['sec-ch-ua-platform']) {
-        analyticsObject['os'] = headers['sec-ch-ua-platform']
-      }
-      if (headers['referer']) {
-        analyticsObject['referer'] = headers['referer']
-      }
-      console.log(JSON.stringify(analyticsObject))
-      res.setHeader('ITS-MY-PROTECTION', process.env.GITHUB_WEBHOOK_SECRET)
-      return redirect('/u/:slug')
-    } else {
-      send('Invalid Request', 403)
-    }
-  })
-})
+// router.match({ path: '/u/:path', headers: { 'ITS-MY-PROTECTION': process.env.GITHUB_WEBHOOK_SECRET } }, optimizePage)
 
 router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
   compute((req, res) => {
@@ -97,11 +95,7 @@ router.match('/github/hook/issue', ({ renderWithApp, compute }) => {
 
 router.match('/', optimizePage)
 
-router.match({ path: '/u/:path', headers: { 'ITS-MY-PROTECTION': process.env.GITHUB_WEBHOOK_SECRET } }, optimizePage)
-
-router.match({ path: '/u/:path' }, ({ send }) => {
-  send('Blocked', 403)
-})
+router.match('/u/:path', optimizePage)
 
 router.use(astroRoutes)
 
