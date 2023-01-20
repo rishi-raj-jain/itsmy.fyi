@@ -43,7 +43,7 @@ export async function post({ request }) {
       owner: context.repository.owner.login,
       repo: context.repository.name,
       issue_number: data.issue,
-      body: `Bad luck! Here's what we found breaking in your data:\n\`\`\`markdown\n${data.error}\`\`\`.\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.`,
+      body: `Bad luck! Here's what we found breaking in your data:\n\`\`\`markdown\n${data.error}\n\`\`\`.\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.`,
     })
     return
   }
