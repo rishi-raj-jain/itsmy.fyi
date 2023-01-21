@@ -72,4 +72,4 @@ https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-
 
 ## License
 
-Inspired by [Dub](https://dub.sh), itsmy.fyi is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can find it [here](LICENSE.md).
+Inspired by [Dub](https://dub.sh), itsmy.fyi is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version. You can find it [here](LICENSE).
