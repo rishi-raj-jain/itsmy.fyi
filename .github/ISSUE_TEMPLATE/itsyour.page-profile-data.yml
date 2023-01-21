@@ -40,7 +40,7 @@ body:
             enabled: boolean, true or false (without quotes or newline)
             configID: **required if enabled is true**, String
         background:
-            color: optional, can be a String, Hexcode or anything that background-color supports
+            color: optional, can be a String, Hexcode (ex. "#C1C1C1" with the quotes) or anything that background-color supports
             image: optional, an absolute URL
     validations:
       required: true
