@@ -30,7 +30,7 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
 }).then((res) => res.json())
 
 try {
-  tweets = await fetch('https://itsmy.fyi/home/tweets.json')
+  tweets = await fetch('https://itsmy.fyi/home/tweets.json').then((res) => res.json())
 } catch (e) {
   console.log(e.message || e.toString())
 }
