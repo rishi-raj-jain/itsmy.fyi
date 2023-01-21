@@ -127,7 +127,7 @@ try {
             These are the stories of some of our very early users about their experience of using itsmy.fyi
           </span>
           <div class="relative mt-8 w-[95%] columns-1 gap-4 sm:columns-2 md:columns-3">
-            {tweets && tweets['data'] && tweets['data'].map((tweet) => <Tweet depth={1} tweets={tweets} {...tweet} />)}
+            {tweets && tweets['data'] && tweets['data'].map((tweet) => <Tweet tweets={tweets} {...tweet} />)}
           </div>
         </div>
       )
