@@ -1,5 +1,7 @@
 ---
 import SEO from '../components/SEO.astro'
+import Tweet from '../components/Twitter/index.astro'
+import { getTweet } from '../components/Twitter/twitter'
 
 const seo = {
   title: 'itsmy.fyi - Take control of your online presence',
@@ -9,7 +11,8 @@ const seo = {
   icon: Astro.url.origin.replace('http:', 'https:') + '/seo/logo.png',
 }
 
-let auth
+let auth,
+  tweets = {}
 
 if (import.meta && import.meta.env) {
   auth = import.meta.env.GITHUB_API_TOKEN
@@ -26,6 +29,35 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
     },
   }),
 }).then((res) => res.json())
+
+try {
+  tweets = await getTweet([
+    '1616598594051768322',
+    '1616853956172611584',
+    '1616873421685813248',
+    '1616579784477376512',
+    '1616610931152392195',
+    '1616652721880289280',
+    '1616588595363565569',
+    '1616588630859866114',
+  ])
+  tweets['data'].push({
+    type: 'github',
+    created_at: '2023-01-21T12:34:23Z',
+    author_id: 'daniel-cotton',
+    id: 'https://github.com/rishi-raj-jain/itsmy.fyi/issues/78#issue-1551788745',
+    text: 'Love the idea for this btw!',
+  })
+  tweets['includes']['users'].push({
+    verified_type: 'none',
+    id: 'daniel-cotton',
+    profile_image_url: 'https://avatars.githubusercontent.com/u/21035486?v=4',
+    name: 'Dan Cotton',
+    username: 'daniel-cotton',
+  })
+} catch (e) {
+  console.log(e.message || e.toString())
+}
 ---
 
 <html lang="en">
@@ -53,16 +85,18 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
         transform: rotate(90deg);
         border-color: black transparent;
       }
+      body {
+        background-size: 100px 100px;
+        background-image: linear-gradient(#00000010 0.5px, transparent 0.5px), linear-gradient(to right, #00000010 0.5px, white 0.5px);
+      }
     </style>
   </head>
-  <body
-    style="background-image: linear-gradient(#00000010 0.5px, transparent 0.5px), linear-gradient(to right, #00000010 0.5px, white 0.5px); background-size: 10px 10px;"
-  >
-    <div class="relative py-24 sm:py-36 w-full flex flex-col items-center">
+  <body>
+    <div class="relative mt-24 sm:mt-36 w-full flex flex-col items-center">
       <a
-        href="/launch"
         target="_blank"
         rel="noreferrer"
+        href="https://twitter.com/rishi_raj_jain_/status/1616514075688833025"
         class="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full bg-blue-100 px-7 py-2 transition-all hover:bg-blue-200"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 204" class="h-5 w-5 text-[#1d9bf0]">
@@ -74,7 +108,7 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
         <p class="text-sm font-semibold text-[#1d9bf0]">Introducing itsmy.fyi</p>
       </a>
       <h1
-        class="font-extrabold mt-8 text-center text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-blue-900 via-blue-400 to-blue-900 max-w-sm sm:max-w-2xl"
+        class="font-extrabold mt-8 text-center text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-blue-500 via-blue-900 to-blue-500 max-w-sm sm:max-w-2xl"
       >
         All for you to share.<br />In one simple link.
       </h1>
@@ -101,12 +135,28 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
           <p class="text-sm">Star on GitHub</p>
         </a>
       </div>
-      <video class="rounded mt-36 w-[90%]" controls>
+    </div>
+    <div class="mt-24 sm:mt-36 w-full flex flex-col items-center">
+      <video class="rounded w-[90%]" controls>
         <source src="https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
     </div>
-    <div class="mx-auto w-full max-w-screen-xl px-2.5 md:px-20 py-20">
+    {
+      tweets && tweets.hasOwnProperty('data') && tweets.data && tweets.data.length > 0 && (
+        <div class="mt-24 flex w-full flex-col items-center sm:mt-36">
+          <h2 class="font-display max-w-xs bg-gradient-to-r from-blue-600 via-blue-900 to-blue-600 bg-clip-text text-center text-4xl font-extrabold leading-tight text-transparent sm:max-w-max sm:text-5xl sm:leading-tight">
+            Our growing wall of love ❤️
+          </h2>
+          <span class="mt-4 max-w-md text-center sm:max-w-max">
+            These are the stories of some of our very early users about their experience of using itsmy.fyi
+          </span>
+          <div class="relative mt-8 w-[95%] columns-1 gap-4 sm:columns-2 md:columns-3">
+            {tweets && tweets['data'] && tweets['data'].map((tweet) => <Tweet depth={1} tweets={tweets} {...tweet} />)}
+          </div>
+        </div>
+      )
+    }
+    <div class="mt-24 sm:mt-36 mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
       <div class="mx-auto max-w-md text-center sm:max-w-xl">
         <h2
           class="bg-clip-text bg-gradient-to-br from-blue-900 via-blue-400 to-blue-900 font-display text-4xl font-extrabold leading-tight text-transparent sm:text-5xl sm:leading-tight"
@@ -134,7 +184,7 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
         </a>
       </div>
     </div>
-    <div class="w-full z-10 flex h-20 items-center justify-center space-x-12 border-t border-gray-200">
+    <div class="mt-24 sm:mt-36 w-full z-10 flex h-20 items-center justify-center space-x-12 border-t border-gray-200">
       <a href="https://twitter.com/rishi_raj_jain_" target="_blank">
         <span class="sr-only">Twitter</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 204" class="h-6 w-6 text-gray-600"

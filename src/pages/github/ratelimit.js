@@ -1,19 +1,25 @@
 import { Redis } from '@upstash/redis'
 import { Ratelimit } from '@upstash/ratelimit'
 
-let auth
+let auth = {}
 
 if (import.meta && import.meta.env) {
-  auth = import.meta.env.UPSTASH_REDIS_REST_URL
+  auth = {
+    url: import.meta.env.UPSTASH_REDIS_REST_URL,
+    token: import.meta.env.UPSTASH_REDIS_REST_TOKEN,
+  }
 } else if (process.env) {
-  auth = process.env.UPSTASH_REDIS_REST_URL
+  auth = {
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  }
 }
 
 // Create a new ratelimiter, that allows 3 requests per 60 seconds
 export const ratelimit = (number, time) =>
-  auth
+  auth && auth.hasOwnProperty('url') && auth.url
     ? new Ratelimit({
-        redis: Redis.fromEnv(),
+        redis: new Redis(auth),
         limiter: Ratelimit.fixedWindow(number, time),
       })
     : undefined

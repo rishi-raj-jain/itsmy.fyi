@@ -51,7 +51,7 @@ router.match('/', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
     edge: {
-      maxAgeSeconds: 60,
+      maxAgeSeconds: 60 * 60 * 24,
       staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
     },
     browser: false,

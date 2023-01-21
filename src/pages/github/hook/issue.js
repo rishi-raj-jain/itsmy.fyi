@@ -63,13 +63,16 @@ export async function post({ request }) {
   if (context.action === 'opened') {
     // If the file already exists, suggest another slug
     if (ifFileExists) {
+      const errorMessage = [
+        "Bad luck! Try with a new slug? Here's a suggestion for you:\n\n",
+        '```markdown\nslug: ' + `${sluggedSlug}-${generateString(3)}` + '\n```',
+        "\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.",
+      ]
       await octokit.rest.issues.createComment({
         owner: context.repository.owner.login,
         repo: context.repository.name,
         issue_number: data.issue,
-        body: `Bad luck! Try with a new slug? Here's a suggestion for you: ${sluggedSlug}-${generateString(
-          3
-        )}.\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+        body: errorMessage.join('').toString(),
       })
       return
     }

@@ -1,0 +1,112 @@
+---
+import { format } from 'date-fns'
+import { markdown2HTML } from './markdown'
+import TweetComponent from '../Twitter/index.astro'
+import { getAuthorInfo, getMedia } from './twitter'
+
+const { text, id, author_id, created_at, attachments, tweets, depth = 0, type = 'twitter' } = Astro.props
+let media, author, authorUrl, tweetUrl, quoteTweet
+
+const createdAt = new Date(created_at)
+
+try {
+  author = getAuthorInfo(tweets, author_id)
+  authorUrl = `https://twitter.com/${author.username}`
+  tweetUrl = `https://twitter.com/${author.username}/status/${id}`
+  if (type === 'github') {
+    tweetUrl = id
+  }
+} catch (e) {
+  console.log(e.message || e.toString())
+}
+try {
+  media = getMedia(tweets, attachments.media_keys[0])
+} catch (e) {
+  console.log(e.message || e.toString())
+}
+
+let formattedText = text.replace(/&amp;/g, '&')
+let tempText = '' + formattedText
+
+const shortLinks = formattedText.match(/https:\/\/t\.co\/[a-zA-Z0-9]{0,10}/g)
+if (shortLinks) {
+  shortLinks.forEach((i, _) => {
+    if (_ !== shortLinks.length - 1) {
+      tempText = tempText.replace(i, `[${i}](${i})`)
+    } else {
+      tempText = tempText.replace(i, ``)
+    }
+  })
+}
+
+formattedText = '' + tempText
+---
+
+<div class="mt-4 break-inside-avoid relative flex flex-col rounded bg-gradient-to-br from-blue-500 via-blue-900 to-blue-500 p-[0.1rem]">
+  <div class="w-full flex flex-col bg-white px-6 py-4">
+    <div class="flex flex-row items-center">
+      <a href={authorUrl} target="_blank" rel="noopener noreferrer">
+        <img width="48" height="48" loading="lazy" alt={author.username} class="w-[48px] h-[48px] rounded-full" src={author.profile_image_url} />
+      </a>
+      <a href={authorUrl} target="_blank" rel="noopener noreferrer" class="author ml-4 flex flex-col !no-underline">
+        <span class="flex items-center font-bold leading-5 !text-gray-900 dark:!text-gray-100" title={author.name}>
+          {author.name}
+          {
+            author.hasOwnProperty('verified_type') && author.verified_type === 'blue' && (
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="ml-1 h-5 w-5 fill-[#1d9bf0]">
+                <g>
+                  <path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z" />
+                </g>
+              </svg>
+            )
+          }
+        </span>
+        <span class="!text-gray-500" title={`@${author.username}`}>
+          @{author.username}
+        </span>
+      </a>
+      {
+        type === 'twitter' && (
+          <a aria-label={tweetUrl} class="ml-auto" href={tweetUrl} target="_blank" rel="noopener noreferrer">
+            <svg viewBox="328 355 335 276" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 630, 425    A 195, 195 0 0 1 331, 600    A 142, 142 0 0 0 428, 570    A  70,  70 0 0 1 370, 523    A  70,  70 0 0 0 401, 521    A  70,  70 0 0 1 344, 455    A  70,  70 0 0 0 372, 460    A  70,  70 0 0 1 354, 370    A 195, 195 0 0 0 495, 442    A  67,  67 0 0 1 611, 380    A 117, 117 0 0 0 654, 363    A  65,  65 0 0 1 623, 401    A 117, 117 0 0 0 662, 390    A  65,  65 0 0 1 630, 425    Z"
+                style={{ fill: '#3BA9EE' }}
+              />
+            </svg>
+          </a>
+        )
+      }
+      {
+        type === 'github' && (
+          <a aria-label={tweetUrl} class="ml-auto" href={tweetUrl} target="_blank" rel="noopener noreferrer">
+            <svg height="24" aria-hidden="true" viewBox="0 0 16 16" width="24">
+              <path
+                fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              />
+            </svg>
+          </a>
+        )
+      }
+    </div>
+    <div set:html={await markdown2HTML(formattedText)} class="mt-4 mb-1 whitespace-pre-wrap !text-gray-700 dark:!text-gray-200" />
+    {
+      media && (
+        <div class={'my-2 inline-grid grid-cols-1 gap-x-2 gap-y-2'}>
+          <img alt="Image" loading="lazy" src={media.url} class="h-auto w-full rounded" />
+        </div>
+      )
+    }
+    {
+      quoteTweet && quoteTweet['data']
+        ? quoteTweet['data'].map((qTweet) => <TweetComponent depth={depth > 0 ? depth - 1 : 0} tweets={quoteTweet} {...qTweet} />)
+        : null
+    }
+    <a class="mt-3 text-sm !text-gray-500 hover:!underline" href={tweetUrl} target="_blank" rel="noopener noreferrer">
+      <time title={`Time Posted: ${createdAt.toUTCString()}`}>
+        {format(createdAt, 'h:mm a - MMM d, y')}
+      </time>
+    </a>
+  </div>
+</div>
