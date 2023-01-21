@@ -1,7 +1,6 @@
 ---
 import SEO from '../components/SEO.astro'
 import Tweet from '../components/Twitter/index.astro'
-import { getTweet } from '../components/Twitter/twitter'
 
 const seo = {
   title: 'itsmy.fyi - Take control of your online presence',
@@ -31,30 +30,7 @@ const { stargazers_count: stars } = await fetch('https://api.github.com/repos/ri
 }).then((res) => res.json())
 
 try {
-  tweets = await getTweet([
-    '1616598594051768322',
-    '1616853956172611584',
-    '1616873421685813248',
-    '1616579784477376512',
-    '1616610931152392195',
-    '1616652721880289280',
-    '1616588595363565569',
-    '1616588630859866114',
-  ])
-  tweets['data'].push({
-    type: 'github',
-    created_at: '2023-01-21T12:34:23Z',
-    author_id: 'daniel-cotton',
-    id: 'https://github.com/rishi-raj-jain/itsmy.fyi/issues/78#issue-1551788745',
-    text: 'Love the idea for this btw!',
-  })
-  tweets['includes']['users'].push({
-    verified_type: 'none',
-    id: 'daniel-cotton',
-    profile_image_url: 'https://avatars.githubusercontent.com/u/21035486?v=4',
-    name: 'Dan Cotton',
-    username: 'daniel-cotton',
-  })
+  tweets = await fetch('https://itsmy.fyi/home/tweets.json')
 } catch (e) {
   console.log(e.message || e.toString())
 }
