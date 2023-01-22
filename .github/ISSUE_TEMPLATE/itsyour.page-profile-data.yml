@@ -38,9 +38,9 @@ body:
             image: optional, String (without quotes or newline)
         ga:
             enabled: boolean, true or false (without quotes or newline)
-            configID: **required if enabled is true**, String
+            configID: **required if enabled is true**, String (ex. "G-RANDOM")
         background:
-            color: optional, can be a String, Hexcode (ex. "#C1C1C1" with the quotes) or anything that background-color supports
+            color: optional, can be a String (ex. pink), Hexcode (ex. "#C1C1C1" with the quotes) or anything that background: CSS supports
             image: optional, an absolute URL
     validations:
       required: true

@@ -1,6 +1,8 @@
 ---
-import SEO from '../components/SEO.astro'
-import Tweet from '../components/Twitter/index.astro'
+import SEO from '@/components/Shared/SEO.astro'
+import Footer from '@/components/Home/Footer.astro'
+import Tweets from '@/components/Twitter/Tweets.astro'
+import GitHubStars from '@/components/Home/GitHub-Stars.astro'
 
 const seo = {
   title: 'itsmy.fyi - Take control of your online presence',
@@ -8,31 +10,6 @@ const seo = {
   url: Astro.request.url.replace('http:', 'https:'),
   image: Astro.url.origin.replace('http:', 'https:') + '/seo/social-media-card.png',
   icon: Astro.url.origin.replace('http:', 'https:') + '/seo/logo.png',
-}
-
-let auth,
-  tweets = {}
-
-if (import.meta && import.meta.env) {
-  auth = import.meta.env.GITHUB_API_TOKEN
-} else if (process.env) {
-  auth = process.env.GITHUB_API_TOKEN
-}
-
-const { stargazers_count: stars } = await fetch('https://api.github.com/repos/rishi-raj-jain/itsmy.fyi', {
-  // optional – feel free to remove if you don't want to display star count
-  ...(auth && {
-    headers: {
-      Authorization: `Bearer ${auth}`,
-      'Content-Type': 'application/json',
-    },
-  }),
-}).then((res) => res.json())
-
-try {
-  tweets = await fetch('https://itsmy.fyi/home/tweets.json').then((res) => res.json())
-} catch (e) {
-  console.log(e.message || e.toString())
 }
 ---
 
@@ -117,70 +94,8 @@ try {
         <source src="https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4" type="video/mp4" />
       </video>
     </div>
-    {
-      tweets && tweets.hasOwnProperty('data') && tweets.data && tweets.data.length > 0 && (
-        <div class="mt-24 flex w-full flex-col items-center sm:mt-36">
-          <h2 class="font-display max-w-xs bg-gradient-to-r from-blue-600 via-blue-900 to-blue-600 bg-clip-text text-center text-4xl font-extrabold leading-tight text-transparent sm:max-w-max sm:text-5xl sm:leading-tight">
-            Our growing wall of love ❤️
-          </h2>
-          <span class="mt-4 max-w-md text-center sm:max-w-max">
-            These are the stories of some of our very early users about their experience of using itsmy.fyi
-          </span>
-          <div class="relative mt-8 w-[95%] columns-1 gap-4 sm:columns-2 md:columns-3">
-            {tweets && tweets['data'] && tweets['data'].map((tweet) => <Tweet tweets={tweets} {...tweet} />)}
-          </div>
-        </div>
-      )
-    }
-    <div class="mt-24 sm:mt-36 mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
-      <div class="mx-auto max-w-md text-center sm:max-w-xl">
-        <h2
-          class="bg-clip-text bg-gradient-to-br from-blue-900 via-blue-400 to-blue-900 font-display text-4xl font-extrabold leading-tight text-transparent sm:text-5xl sm:leading-tight"
-        >
-          Proudly open-source
-        </h2><p class="mt-5 text-gray-600 sm:text-lg">
-          Our source code is available on GitHub - feel free to read, review, or contribute to it however you want!
-        </p>
-      </div>
-      <div class="flex items-center justify-center py-10">
-        <a href="https://github.com/rishi-raj-jain/itsmy.fyi" target="_blank" rel="noreferrer">
-          <div class="flex items-center">
-            <div class="flex h-10 items-center space-x-2 rounded-md border border-gray-600 bg-gray-800 p-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5 text-white"
-                ><path
-                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                ></path>
-              </svg>
-              <p class="font-medium text-white">Star</p>
-            </div>
-            <div class="style_less_than relative flex items-center p-[1rem] h-[2.5rem] rounded-r bg-black ml-[0.45rem]">
-              <p class="font-display font-medium text-white">{stars}</p>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="mt-24 sm:mt-36 w-full z-10 flex h-20 items-center justify-center space-x-12 border-t border-gray-200">
-      <a href="https://twitter.com/rishi_raj_jain_" target="_blank">
-        <span class="sr-only">Twitter</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 204" class="h-6 w-6 text-gray-600"
-          ><path
-            fill="currentColor"
-            d="M221.95 51.29c.15 2.17.15 4.34.15 6.53 0 66.73-50.8 143.69-143.69 143.69v-.04c-27.44.04-54.31-7.82-77.41-22.64 3.99.48 8 .72 12.02.73 22.74.02 44.83-7.61 62.72-21.66-21.61-.41-40.56-14.5-47.18-35.07 7.57 1.46 15.37 1.16 22.8-.87-23.56-4.76-40.51-25.46-40.51-49.5v-.64c7.02 3.91 14.88 6.08 22.92 6.32C11.58 63.31 4.74 33.79 18.14 10.71c25.64 31.55 63.47 50.73 104.08 52.76-4.07-17.54 1.49-35.92 14.61-48.25 20.34-19.12 52.33-18.14 71.45 2.19 11.31-2.23 22.15-6.38 32.07-12.26-3.77 11.69-11.66 21.62-22.2 27.93 10.01-1.18 19.79-3.86 29-7.95-6.78 10.16-15.32 19.01-25.2 26.16z"
-          ></path>
-        </svg>
-      </a>
-      <a aria-label="itsmy.fyi Home Page" href="/">
-        <img alt="itsmy.fyi Logo" src="https://itsmy.fyi/seo/logo.png" height="40" width="40" loading="lazy" />
-      </a>
-      <a target="_blank" href="https://github.com/rishi-raj-jain/itsmy.fyi">
-        <span class="sr-only"> Github</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6 text-gray-600"
-          ><path
-            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-          ></path>
-        </svg>
-      </a>
-    </div>
+    <Tweets />
+    <GitHubStars />
+    <Footer />
   </body>
 </html>

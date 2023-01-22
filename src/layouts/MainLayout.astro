@@ -1,8 +1,8 @@
 ---
 import probe from 'probe-image-size'
-import SEO from '@/components/SEO.astro'
 import { getImage } from '@astrojs/image'
-import { getBase64ImageUrl } from '../image/blur'
+import SEO from '@/components/Shared/SEO.astro'
+import { getBase64ImageUrl } from '@/lib/Image/Blur.js'
 
 const { content, background = {} } = Astro.props
 

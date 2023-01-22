@@ -1,15 +1,22 @@
 ---
 const { href, title, image } = Astro.props
 
-const url = new URL(href)
-url.searchParams.append('ref', 'itsmy.fyi')
+let url
+
+try {
+  url = new URL(href)
+  url.searchParams.append('ref', 'itsmy.fyi')
+  url = url.toString()
+} catch (e) {
+  console.log(e.message || e.toString())
+}
 ---
 
 {
-  href && (
+  url && href && title && (
     <a
+      href={url}
       target="_blank"
-      href={url.toString()}
       rel="noopener noreferrer"
       class="mb-3 flex w-full max-w-3xl items-center rounded bg-white/75 p-1 transition-all hover:scale-[1.025]"
     >

@@ -5,10 +5,9 @@ import { load } from 'cheerio'
 import { astroRoutes } from '@edgio/astro'
 import { minifyOptions } from 'minifyOptions'
 import esImport from '@edgio/core/utils/esImport'
+import { ratelimit } from '@/lib/Upstash/ratelimit'
 import { CustomCacheKey, Router } from '@edgio/core'
-import { ratelimit } from './src/pages/github/ratelimit'
-import { verifyPostData } from './src/pages/github/verifySignature'
-// import { writeJsonToFile } from './src/pages/github/octokit/helpers'
+import { verifyPostData } from '@/lib/verifySignature'
 
 // Right now, record only 10 requests per month per user
 // Enables us with concurrent 1000 users per day
@@ -51,7 +50,7 @@ router.match('/', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
     edge: {
-      maxAgeSeconds: 60 * 60 * 24,
+      maxAgeSeconds: 60 * 60,
       staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
     },
     browser: false,
@@ -160,13 +159,6 @@ router.match('/u/:slug', ({ compute, renderWithApp, send }) => {
           if (headers['referer']) {
             analyticsObject['referer'] = headers['referer']
           }
-          // writeJsonToFile(
-          //   'rishi-raj-jain',
-          //   'itsmy.fyi',
-          //   `analytics/${slug}/${new Date().getTime().toString()}.json`,
-          //   `${result.remaining} tracks remaining.`,
-          //   analyticsObject
-          // )
         }
       }
       return renderWithApp()

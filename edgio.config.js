@@ -1,3 +1,6 @@
+// This file was automatically added by edgio init.
+// You should commit this file to source control.
+
 const { join } = require('path')
 const { existsSync } = require('fs')
 

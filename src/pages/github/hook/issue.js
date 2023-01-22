@@ -1,11 +1,9 @@
 import { slug } from 'github-slugger'
-import { ratelimit } from '../ratelimit'
-import { validateEvent } from './validate'
-import { octokit } from '../octokit/setup'
-import { generateString } from './generateString'
-import { getUserInfo } from '../upstash/users/get'
-import { postUserInfo } from '../upstash/users/post'
-import { deleteUserInfo } from '../upstash/users/delete'
+import { octokit } from '@/lib/Octokit/setup'
+import { ratelimit } from '@/lib/Upstash/ratelimit'
+import { validateEvent } from '@/lib/GitHub/validate'
+import { generateString } from '@/lib/GitHub/generateString'
+import { deleteUserInfo, getUserInfo, postUserInfo } from '@/lib/Upstash/users'
 
 const rateLimiter = ratelimit(3, '60 s')
 

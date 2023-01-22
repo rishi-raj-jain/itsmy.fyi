@@ -1,4 +1,4 @@
-import { getUserSlugs } from './github/upstash/users/list'
+import { getUserSlugs } from '@/lib/Upstash/users'
 
 export async function get({}) {
   const prefix = 'https://itsmy.fyi'

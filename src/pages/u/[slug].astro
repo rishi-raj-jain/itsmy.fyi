@@ -1,8 +1,8 @@
 ---
-import GA from '@/src/components/GA.astro'
-import Link from '@/src/components/Link.astro'
-import MainLayout from '@/src/layouts/MainLayout.astro'
-import { getUserInfo } from '../github/upstash/users/get'
+import GA from '@/components/Analytics/GA.astro'
+import { getUserInfo } from '@/lib/Upstash/users'
+import Link from '@/components/Shared/Link.astro'
+import MainLayout from '@/layouts/MainLayout.astro'
 
 const { slug } = Astro.params
 
