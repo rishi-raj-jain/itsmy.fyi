@@ -7,7 +7,7 @@ import { astroRoutes } from '@edgio/astro'
 import { verifyPostData } from '@/lib/verifySignature'
 import { transformResponse } from './transformResponse'
 
-const router = new Router({ indexPermalink: true })
+const router = new Router()
 
 // Home page
 router.match('/', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
