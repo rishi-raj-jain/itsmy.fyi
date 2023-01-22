@@ -1,4 +1,4 @@
-name: Deploy To Edgio
+name: Deploy To Edgio (production)
 
 on: workflow_dispatch
 
