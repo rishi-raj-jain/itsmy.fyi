@@ -37,4 +37,4 @@ export async function computeDependencies(paths = [], name = 'deps') {
   fs.writeFileSync(`${process.cwd()}/${name}.json`, JSON.stringify(packages, null, 2), 'utf-8')
 }
 
-computeDependencies([`./deps.mjs`], 'deps')
+computeDependencies([`${process.cwd()}/edgio/deps.mjs`], 'deps')

@@ -14,7 +14,7 @@ jobs:
           cache: 'yarn'
       - run: yarn --prefer-offline
       - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn add sharp
-      - run: node computeDependencies.mjs
+      - run: node ./edgio/computeDependencies.mjs
       - run: yarn run edgio:deploy --token=$EDGIO_DEPLOY_TOKEN
         env:
           EDGIO_DEPLOY_TOKEN: ${{secrets.EDGIO_DEPLOY_TOKEN}}

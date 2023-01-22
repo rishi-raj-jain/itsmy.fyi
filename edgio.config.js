@@ -14,6 +14,8 @@ if (existsSync(depPath)) {
 
 module.exports = {
   includeFiles,
+  connector: '@edgio/astro',
+  routes: './edgio/routes.js',
   backends: {
     self: {
       hostHeader: 'itsmy.fyi',
@@ -21,7 +23,6 @@ module.exports = {
       disableCheckCert: true,
     },
   },
-  connector: '@edgio/astro',
   astro: {
     appPath: join(process.cwd(), 'dist', 'server', 'entry.mjs'),
   },
