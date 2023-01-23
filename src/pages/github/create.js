@@ -4,11 +4,10 @@ import { validateBody } from '@/lib/GitHub/validate'
 import { generateString } from '@/lib/GitHub/generateString'
 import { getUserInfo, postUserInfo } from '@/lib/Upstash/users'
 
-// Rate limit 1 profile in a month via the web for a user
-const ratelimitUser = ratelimit(1, '2592000 s')
+// Rate limit 3 profiles in a week via the web for a user
+const ratelimitUser = ratelimit(3, 7 * 24 * 60 * 60 + ' s')
 
-// Rate limit total valid requests to be not more 1000 per hour
-const ratelimitTotal = ratelimit(1000, '3600 s')
+const totalLimitRemains = true
 
 const returnResponse = (statusCode, body, noJS = false) => {
   if (noJS) {
@@ -95,7 +94,7 @@ export async function post({ request }) {
           // If user rate limiting allows it
           if (userLimitRemains) {
             // Apply total rate limiting next
-            const { success: totalLimitRemains } = await ratelimitTotal.limit('trial-homepage')
+            // const { success: totalLimitRemains } = await ratelimitTotal.limit('trial-homepage')
             if (totalLimitRemains) {
               // If total rate limiting allows it
               console.log('Creating the user', sluggedSlug)
@@ -104,7 +103,10 @@ export async function post({ request }) {
               if (code === 1) {
                 return returnResponse(
                   200,
-                  { code: 1, message: `<span>Visit your <a class="text-blue-600 underline" href="https://itsmy.fyi/me/${sluggedSlug}" target="_blank">profile here ↗︎</a></span>` },
+                  {
+                    code: 1,
+                    message: `<span>Visit your <a class="text-blue-600 underline" href="https://itsmy.fyi/me/${sluggedSlug}" target="_blank">profile here ↗︎</a></span>`,
+                  },
                   noJS
                 )
               }
