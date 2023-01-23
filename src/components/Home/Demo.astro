@@ -1,0 +1,178 @@
+---
+---
+
+<div id="responseDialog" class="fixed top-0 left-0 w-screen h-screen bg-black/10 z-20 hidden flex-row items-center justify-center">
+  <div id="responseHTML" class="w-[300px] md:w-full md:max-w-md bg-white border rounded p-5 text-center"></div>
+</div>
+
+<div class="mt-24 sm:mt-36 w-full flex flex-col items-center">
+  <div class="w-[300px] md:w-full md:max-w-md flex flex-col md:flex-row gap-y-4">
+    <div class="w-full flex flex-col items-start">
+      <span class="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 via-blue-900 to-blue-500 text-xl font-bold">
+        Own Your Link &darr;
+      </span>
+      <p class="w-full text-gray-400 text-sm mt-2">
+        Note: This is a demo that'll allow you to create a profile once a month.
+        <a
+          class="text-blue-600"
+          href="https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29"
+        >
+          Log In GitHub
+        </a>
+        to keep your link forever.
+      </p>
+      <form method="POST" class="w-full" action="/github/create?nojs=yes" onsubmit="return formSubmit(event)">
+        <div class="sm:overflow-hidden sm:rounded-md">
+          <div class="space-y-6">
+            <div>
+              <label for="unqiue-url" class="mt-6 block text-sm font-medium text-gray-700">
+                Unique URL <span class="text-pink-900">&#42;</span>
+              </label>
+              <div class="mt-3 w-full flex flex-row flex-wrap items-stretch rounded-md group">
+                <span
+                  class="flex flex-row items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500 group-hover:border-black w-[150px]"
+                >
+                  https://itsmy.fyi/me/
+                </span>
+                <input
+                  required
+                  id="slug"
+                  name="slug"
+                  type="text"
+                  placeholder="rishi"
+                  class="peer w-[calc(100%-150px)] pl-3 rounded-none rounded-r-md border border-l-0 border-gray-300 sm:text-sm outline-none group-hover:border-black"
+                />
+                <p class="w-full peer-focus:peer-invalid:hidden text-gray-400 text-sm mt-2">This will be your final URL.</p>
+                <p class="w-full hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter a valid slug.</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Name <span class="text-pink-900">&#42;</span></label>
+              <div class="mt-1">
+                <input
+                  required
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Rishi Raj Jain"
+                  class="peer block py-2 pl-3 w-full flex-1 rounded-md border border-gray-300 sm:text-sm outline-none hover:border-black"
+                />
+                <p class="peer-focus:peer-invalid:hidden text-gray-400 text-sm mt-2">
+                  This will show up in previews when shared on social media platforms.
+                </p>
+                <p class="hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter your name.</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">About <span class="text-pink-900">&#42;</span></label>
+              <div class="mt-1">
+                <input
+                  required
+                  id="about"
+                  type="text"
+                  name="about"
+                  placeholder="Hey, I'm Rishi Raj Jain working as Technical CSM at Edgio."
+                  class="peer block py-2 pl-3 w-full flex-1 rounded-md border border-gray-300 sm:text-sm outline-none hover:border-black"
+                />
+                <p class="peer-focus:peer-invalid:hidden text-gray-400 text-sm mt-2">
+                  This will show up in previews when shared on social media platforms.
+                </p>
+                <p class="hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter something about yourself.</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Image <span class="text-pink-900">&#42;</span></label>
+              <div class="mt-1">
+                <input
+                  required
+                  type="url"
+                  id="image"
+                  name="image"
+                  placeholder="https://rishi.app/static/favicon-image.jpg"
+                  class="peer block py-2 pl-3 w-full flex-1 rounded-md border border-gray-300 sm:text-sm outline-none hover:border-black"
+                />
+                <p class="hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter a valid image url.</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Links <span class="text-pink-900">&#42;</span></label>
+              <div class="mt-1 flex flex-col md:flex-row items-center gap-y-3 md:gap-y-0 md:gap-x-3">
+                <div class="flex flex-col w-full flex-1">
+                  <input
+                    required
+                    type="text"
+                    name="links"
+                    id="link-title"
+                    placeholder="Portfolio"
+                    class="peer block py-2 pl-3 rounded-md border border-gray-300 sm:text-sm outline-none hover:border-black"
+                  />
+                  <p class="peer-focus:peer-invalid:hidden text-gray-400 text-sm mt-2">This title will be shown in your tree.</p>
+                  <p class="hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter a title corresponding to the link.</p>
+                </div>
+                <div class="flex flex-col w-full flex-1">
+                  <input
+                    required
+                    type="url"
+                    name="links"
+                    id="link-link"
+                    placeholder="https://rishi.app/about"
+                    class="peer block py-2 pl-3 rounded-md border border-gray-300 sm:text-sm outline-none hover:border-black"
+                  />
+                  <p class="peer-focus:peer-invalid:hidden text-gray-400 text-sm mt-2">This is where clicking on title will lead to.</p>
+                  <p class="hidden peer-focus:peer-invalid:block text-red-700 text-sm mt-2">Please enter a valid url for the title.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-3 flex flex-row items-center justify-end">
+            <button
+              type="submit"
+              class="w-[100px] inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm outline-none bg-black hover:scale-105 transition duration-300 hover:bg-white hover:text-black hover:border-black"
+            >
+              Claim &rarr;
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script defer>
+  function formSubmit(e) {
+    e.preventDefault()
+    try {
+      const loginForm = document.forms[0]
+      fetch('/github/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          slug: loginForm.elements.slug.value,
+          name: loginForm.elements.name.value,
+          image: loginForm.elements.image.value,
+          links: [[loginForm.elements.links[0].value, loginForm.elements.links[1].value]],
+          socials: [],
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          document.querySelector('#responseDialog').classList.remove('hidden')
+          document.querySelector('#responseDialog').classList.add('flex')
+          document.querySelector('#responseHTML').innerHTML = res.message
+        })
+        .catch((e) => {
+          console.log(e.message || e.toString())
+          if (e.message) {
+            document.querySelector('#responseDialog').classList.remove('hidden')
+            document.querySelector('#responseDialog').classList.add('flex')
+            document.querySelector('#responseHTML').innerHTML = res.message
+          }
+        })
+    } catch (e) {
+      throw new Error(e.message)
+    }
+    return false
+  }
+</script>
