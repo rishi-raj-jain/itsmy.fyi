@@ -63,7 +63,7 @@ export async function post({ request }) {
             if (totalLimitRemains) {
               // If total rate limiting allows it
               console.log('Creating the user', sluggedSlug)
-              const { code, error: errorWithPostingUserInfo } = await postUserInfo({ ...fileContent, slug: sluggedSlug, web: 1 })
+              const { code, error: errorWithPostingUserInfo } = await postUserInfo({ ...parsedBody, slug: sluggedSlug, web: 1 })
               // If the file is created successfully, return with the profile link
               if (code === 1) {
                 return new Response(
