@@ -10,20 +10,66 @@ const ratelimitUser = ratelimit(1, '2592000 s')
 // Rate limit total valid requests to be not more 1000 per hour
 const ratelimitTotal = ratelimit(1000, '3600 s')
 
+const returnResponse = (statusCode, body, noJS = false) => {
+  if (noJS) {
+    return new Response(`<html><head></head><body>${body.message}</body></html>`, {
+      status: statusCode,
+      headers: {
+        'content-type': 'text/html',
+      },
+    })
+  }
+  return new Response(JSON.stringify(body), {
+    status: statusCode,
+    headers: {
+      'content-type': 'application/json',
+    },
+  })
+}
+
 export async function post({ request }) {
+  // Evaluate if no JS is there
+  let noJS = false
+  const requestURL = new URL(request.url)
+  if (requestURL.searchParams.has('nojs') && requestURL.searchParams.get('nojs') === 'yes') {
+    noJS = true
+  }
   // Get client ip address
   const ipAddress = request.headers.get('x-0-client-ip')
   if (ipAddress) {
     try {
+      // Check if the form is submitted from the HTML directly (probably in the case of no JS environment)
+      const ifPostForm = request.headers.get('content-type').includes('x-www-form-urlencoded')
       // Parse the data as json
-      const context = await request.json()
-      if (!context.slug) {
-        return new Response(JSON.stringify({ code: 0, message: `Invalid slug received.` }), {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      let context = ifPostForm ? await request.formData() : await request.json()
+      // Parse the body in case of a form submitted through HTML directly
+      if (ifPostForm) {
+        const formObject = {}
+        context.forEach((value, key) => {
+          key = key.trim()
+          value = value.trim()
+          if (key === 'links' || key === 'socials') {
+            if (value.length) {
+              if (formObject.hasOwnProperty(key)) {
+                formObject[key][0].push(value)
+              } else {
+                formObject[key] = [[value]]
+              }
+            }
+          } else {
+            formObject[key] = value
+          }
         })
+        if (!formObject['links']) {
+          formObject['links'] = []
+        }
+        if (!formObject['socials']) {
+          formObject['socials'] = []
+        }
+        context = formObject
+      }
+      if (!context.slug) {
+        return returnResponse(500, { code: 0, message: 'Invalid slug received.' }, noJS)
       }
       // Slugify the slug received
       const sluggedSlug = slug(context.slug)
@@ -31,12 +77,7 @@ export async function post({ request }) {
       const parsedBody = validateBody({ ...context, slug: sluggedSlug })
       // If there's error to body parsing, return with a message
       if (parsedBody.error) {
-        return new Response(JSON.stringify({ code: 0, message: parsedBody.error }), {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        return returnResponse(500, { code: 0, message: parsedBody.error }, noJS)
       } else {
         // No error in parsing the data
         // Get file content for the slug from data
@@ -45,12 +86,7 @@ export async function post({ request }) {
         // If the file already exists, suggest another slug
         if (ifFileExists) {
           const errorMessage = [`Bad luck! Try with a new slug? Here's a suggestion for you: ${sluggedSlug}-${generateString(3)}`]
-          return new Response(JSON.stringify({ code: 0, message: errorMessage.join('').toString() }), {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+          return returnResponse(200, { code: 0, message: errorMessage.join('').toString() }, noJS)
         }
         // If the file doesn't exist, create the new profile succesffully
         else {
@@ -66,58 +102,38 @@ export async function post({ request }) {
               const { code, error: errorWithPostingUserInfo } = await postUserInfo({ ...parsedBody, slug: sluggedSlug, web: 1 })
               // If the file is created successfully, return with the profile link
               if (code === 1) {
-                return new Response(
-                  JSON.stringify({
-                    code: 1,
-                    message: `<span>Visit your <a href="https://itsmy.fyi/me/${sluggedSlug}" target="_blank">profile here ↗︎</a></span>`,
-                  }),
-                  {
-                    status: 200,
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                  }
+                return returnResponse(
+                  200,
+                  { code: 1, message: `<span>Visit your <a class="text-blue-600 underline" href="https://itsmy.fyi/me/${sluggedSlug}" target="_blank">profile here ↗︎</a></span>` },
+                  noJS
                 )
               }
               // If the file is not created successfully, comment with the re-try method
               else {
-                return new Response(JSON.stringify({ code: 0, message: errorWithPostingUserInfo }), {
-                  status: 500,
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                })
+                return returnResponse(500, { code: 0, message: errorWithPostingUserInfo }, noJS)
               }
             }
             // If total rate limit doesn't allow it
             else {
-              return new Response(
-                JSON.stringify({
+              return returnResponse(
+                403,
+                {
                   code: 0,
                   message: `<span>Hourly limit for all users exceeded. Please try again later.<br />To claim more profiles, please <a class="underline text-gray-400" href="https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29">click here.</a></span>`,
-                }),
-                {
-                  status: 403,
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                }
+                },
+                noJS
               )
             }
           }
           // If user rate limit doesn't allow it
           else {
-            return new Response(
-              JSON.stringify({
+            return returnResponse(
+              403,
+              {
                 code: 0,
                 message: `<span>You can't create more than one profile from the web in a month.<br />To claim more profiles, please <a class="underline text-gray-400" href="https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29">click here.</a></span>`,
-              }),
-              {
-                status: 403,
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }
+              },
+              noJS
             )
           }
         }
@@ -126,21 +142,11 @@ export async function post({ request }) {
       // In case of any error, display the error occured on the server side
       const errorMessage = e.message || e.toString()
       console.log(errorMessage)
-      return new Response(JSON.stringify({ code: 0, message: errorMessage }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      return returnResponse(500, { code: 0, message: errorMessage }, noJS)
     }
   }
   // If the IP Address is not recevied, return with a 500
   else {
-    return new Response(JSON.stringify({ code: 0, message: 'Your IP Address is non-identifiable.' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return returnResponse(500, { code: 0, message: 'Your IP Address is non-identifiable.' }, noJS)
   }
 }
