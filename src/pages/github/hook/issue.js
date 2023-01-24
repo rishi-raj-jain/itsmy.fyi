@@ -40,7 +40,7 @@ export async function post({ request }) {
     const errorMessage = [
       "Bad luck! Here's what we found breaking in your data:\n\n",
       '```markdown\n' + data.error + '\n```',
-      "\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.",
+      `Feel free to edit the issue again in case you've already got a link, else please re-try by creating a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now..`,
     ]
     await octokit.rest.issues.createComment({
       owner: context.repository.owner.login,
