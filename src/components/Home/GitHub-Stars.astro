@@ -1,15 +1,12 @@
 ---
-let auth, stars
+import { getENV } from '@/lib/env'
+
+let stars
 
 try {
-  if (import.meta && import.meta.env) {
-    auth = import.meta.env.GITHUB_API_TOKEN
-  } else if (process.env) {
-    auth = process.env.GITHUB_API_TOKEN
-  }
   const { stargazers_count } = await fetch('https://api.github.com/repos/rishi-raj-jain/itsmy.fyi', {
     headers: {
-      Authorization: `Bearer ${auth}`,
+      Authorization: `Bearer ${getENV('GITHUB_API_TOKEN')}`,
       'Content-Type': 'application/json',
     },
   }).then((res) => res.json())
