@@ -1,4 +1,6 @@
 ---
+import Share from './Share.astro'
+
 const { href, title, image } = Astro.props
 
 let url
@@ -14,16 +16,17 @@ try {
 
 {
   url && title && (
-    <a
-      href={url}
-      target="_blank"
-      rel="nofollow noopener"
-      class="mb-3 flex w-full max-w-3xl items-center rounded bg-white/75 p-1 transition-all hover:scale-[1.025]"
-    >
-      <div class="flex w-full text-center">
-        <div class="h-10 w-10">{image && <img width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}</div>
-        {title && <h2 class="-ml-10 flex w-full items-center justify-center font-medium text-gray-700">{title}</h2>}
+    <div class="group relative rounded-lg bg-white/75 p-1 hover:shadow hover:shadow-black">
+      <a href={url} target="_blank" aria-label="Share" rel="nofollow noopener" class="absolute top-0 left-0 block h-full w-full rounded-lg " />
+      <div class="flex-row items-center">
+        <div class="flex w-full text-center">
+          <div class="h-10 w-10">
+            {image && <img width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}
+          </div>
+          {title && <h2 class="-ml-10 flex w-full items-center justify-center font-medium text-gray-700">{title}</h2>}
+        </div>
+        <Share className="absolute right-2 top-1 hidden group-hover:block" name={title} url={url} />
       </div>
-    </a>
+    </div>
   )
 }
