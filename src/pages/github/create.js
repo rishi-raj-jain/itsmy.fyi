@@ -49,7 +49,7 @@ export async function post({ request }) {
           value = value.trim()
           if (key === 'links' || key === 'socials') {
             if (value.length) {
-              if (formObject.hasOwnProperty(key)) {
+              if (key in formObject) {
                 formObject[key][0].push(value)
               } else {
                 formObject[key] = [[value]]
