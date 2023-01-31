@@ -1,8 +1,9 @@
 ---
+import Layout from '@/layouts/Layout.astro'
 import GA from '@/components/Analytics/GA.astro'
 import { getUserInfo } from '@/lib/Upstash/users'
 import Link from '@/components/Shared/Link.astro'
-import MainLayout from '@/layouts/MainLayout.astro'
+import Share from '@/src/components/Shared/Share.astro'
 import Social from '@/src/components/Shared/Social.astro'
 
 const { slug } = Astro.params
@@ -79,8 +80,6 @@ if (contentMap.links.length > 1) {
   seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
 }
 
-const updatedAt = new Date().toString()
-
 let showGA = false
 
 try {
@@ -90,11 +89,25 @@ try {
 }
 ---
 
-<MainLayout background={background} content={seo}>
-  <div class="mx-auto mt-16 flex w-full flex-col items-center justify-center px-8">
+<Layout background={background} content={seo}>
+  <div class="z-50 relative w-full max-w-[680px] px-8">
+    <div class="absolute top-5 right-5">
+      <Share url={seo.url} />
+    </div>
+  </div>
+  <div class="relative mx-auto flex w-full flex-col items-center justify-center max-w-[680px] px-8">
+    <div class="py-8"></div>
     {contentMap.image && <img width="96" height="96" loading="eager" alt={contentMap.name} src={contentMap.image} class="rounded-full shadow-2xl" />}
     {contentMap.name && <h1 class="mt-4 mb-8 text-2xl font-medium tracking-wide text-white">{contentMap.name}</h1>}
-    {contentMap.links && contentMap.links.length > 0 && contentMap.links.map((i) => <Link {...i} />)}
+    {
+      contentMap.links && contentMap.links.length > 0 && (
+        <div class="flex w-full flex-col gap-y-8">
+          {contentMap.links.map((i) => (
+            <Link {...i} />
+          ))}
+        </div>
+      )
+    }
     {
       contentMap.socials && contentMap.socials.length > 0 && (
         <div class="mt-8 flex max-w-md flex-row flex-wrap items-center justify-center gap-8">
@@ -105,7 +118,6 @@ try {
       )
     }
   </div>
-  <span id="datestamp" class="hidden">{updatedAt}</span>
-</MainLayout>
+</Layout>
 
 {showGA && <GA {...ga} />}
