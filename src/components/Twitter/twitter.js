@@ -1,12 +1,7 @@
 import fetch from 'node-fetch'
+import { getENV } from '@/lib/env'
 
-let auth
-
-if (import.meta && import.meta.env) {
-  auth = import.meta.env.TWITTER_AUTH_TOKEN
-} else if (process.env) {
-  auth = process.env.TWITTER_AUTH_TOKEN
-}
+const auth = getENV('TWITTER_AUTH_TOKEN')
 
 export const getAuthorInfo = (tweets, author_id) => {
   return tweets.includes.users.find((user) => user.id === author_id)
