@@ -37,7 +37,6 @@
     "date-fns": "^2.29.3",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
-    "html-minifier": "^4.0.0",
     "image-size": "^1.0.2",
     "imagemin": "^8.0.1",
     "imagemin-jpegtran": "^7.0.0",

@@ -2,10 +2,18 @@
 // You should commit this file to source control.
 
 import { Router } from '@edgio/core'
-import { cacheConfig } from './cache'
 import { astroRoutes } from '@edgio/astro'
+import { CustomCacheKey } from '@edgio/core'
 import { verifyPostData } from '@/lib/verifySignature'
-import { transformResponse } from './transformResponse'
+
+const cacheConfig = (maxAgeSeconds, excludeAllQueries = false) => ({
+  edge: {
+    maxAgeSeconds,
+    staleWhileRevalidateSeconds: 60 * 60 * 24 * 365,
+  },
+  browser: false,
+  ...(excludeAllQueries ? { key: new CustomCacheKey().excludeAllQueryParameters() } : {}),
+})
 
 const router = new Router()
 
@@ -13,14 +21,14 @@ const router = new Router()
 router.match('/', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache(cacheConfig(60 * 60, true))
-  renderWithApp({ transformResponse })
+  renderWithApp()
 })
 
 // Sitemap
 router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache(cacheConfig(1, true))
-  renderWithApp({ transformResponse })
+  renderWithApp()
 })
 
 // Astro's on the fly image path
@@ -34,7 +42,7 @@ router.match('/_image', ({ cache, removeUpstreamResponseHeader, renderWithApp })
 router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, renderWithApp }) => {
   removeUpstreamResponseHeader('cache-control')
   cache(cacheConfig(1, true))
-  renderWithApp({ transformResponse })
+  renderWithApp()
 })
 
 // GitHub hooks to update and handle updates for user profile(s)
