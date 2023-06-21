@@ -1,17 +1,9 @@
-import node from '@astrojs/node'
-import image from '@astrojs/image'
 import tailwind from '@astrojs/tailwind'
+import vercel from '@astrojs/vercel/edge'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
   output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
-  integrations: [
-    tailwind(),
-    image({
-      serviceEntryPoint: '@astrojs/image/sharp',
-    }),
-  ],
+  adapter: vercel(),
+  integrations: [tailwind()],
 })

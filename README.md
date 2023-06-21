@@ -68,7 +68,7 @@ https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-
 
 ## Author
 
-- Rishi Raj Jain ([@rishi_raj_jain_](https://twitter.com/rishi_raj_jain_))
+- Rishi Raj Jain ([@rishi*raj_jain*](https://twitter.com/rishi_raj_jain_))
 
 ## License
 

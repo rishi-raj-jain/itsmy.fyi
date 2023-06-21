@@ -1,8 +1,6 @@
-node_modules
-dist
-.vscode
-.layer0
-.edgio
-.edgio_temp
+node_modules/
+dist/
+.vscode/
+.edgio/
 jsons/
-/deps.json
+.vercel/

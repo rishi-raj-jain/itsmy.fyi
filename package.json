@@ -13,36 +13,27 @@
     "format": "prettier --write '**/*' --ignore-unknown"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "latest",
-    "@edgio/astro": "latest",
-    "@edgio/cli": "latest",
-    "@edgio/core": "latest",
-    "@tailwindcss/line-clamp": "^0.4.2",
-    "@tailwindcss/typography": "^0.5.7",
+    "@astrojs/tailwind": "^3.0.0-beta.1",
+    "@edgio/cli": "6.1.4",
+    "@edgio/core": "6.1.4",
+    "@tailwindcss/typography": "^0.5.9",
     "@vercel/nft": "^0.22.6",
-    "dotenv": "^16.0.3",
-    "postcss": "^8.4.16",
-    "prettier": "^2.8.1",
-    "prettier-plugin-astro": "^0.7.0",
-    "prettier-plugin-tailwindcss": "^0.2.1",
-    "tailwindcss": "^3.2.4"
+    "dotenv": "^16.3.1",
+    "postcss": "^8.4.24",
+    "prettier": "^2.8.8",
+    "prettier-plugin-astro": "^0.10.0",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.3.2"
   },
   "dependencies": {
-    "@astrojs/image": "^0.12.1",
-    "@astrojs/node": "^4.0.0",
+    "@astrojs/vercel": "^3.5.0",
     "@octokit/rest": "^19.0.5",
-    "@upstash/ratelimit": "^0.1.5",
-    "@upstash/redis": "^1.19.1",
-    "astro": "^1.9.2",
-    "date-fns": "^2.29.3",
+    "@upstash/ratelimit": "^0.4.3",
+    "@upstash/redis": "^1.21.0",
+    "astro": "^2.6.0",
+    "date-fns": "^2.30.0",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
-    "image-size": "^1.0.2",
-    "imagemin": "^8.0.1",
-    "imagemin-jpegtran": "^7.0.0",
-    "ioredis": "^5.2.5",
-    "node-fetch": "^3.3.0",
-    "probe-image-size": "^7.2.3",
-    "sharp": "^0.31.3"
+    "node-fetch": "^3.3.0"
   }
 }

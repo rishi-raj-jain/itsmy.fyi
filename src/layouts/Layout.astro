@@ -1,8 +1,5 @@
 ---
-import probe from 'probe-image-size'
-import { getImage } from '@astrojs/image'
 import SEO from '@/components/Shared/SEO.astro'
-import { getBase64ImageUrl } from '@/lib/Image/Blur.js'
 import Clipboard from '@/components/Shared/Clipboard.astro'
 
 const updatedAt = new Date().toString()
@@ -16,17 +13,8 @@ const bg = {
   className: '',
 }
 
-try {
-  if ('image' in background) {
-    const { type: format, width, height } = await probe(background.image)
-    const { src } = await getImage({ src: background.image, alt: 'Background Image', width, height, format })
-    if (src) {
-      bg['src'] = src
-    }
-    bg['blurURL'] = await getBase64ImageUrl(background.image)
-  }
-} catch (e) {
-  console.log(e.message || e.toString())
+if ('image' in background) {
+  bg['src'] = background.image
 }
 
 if ('color' in background) {
@@ -59,8 +47,7 @@ if (!('color' in background || 'image' in background)) {
           loading="eager"
           decoding="async"
           alt="Background Image"
-          style={`background-image: url(${bg.blurURL.data})`}
-          class="fixed top-0 left-0 z-[-2] h-screen w-screen transform-gpu bg-cover bg-center bg-no-repeat object-cover"
+          class="fixed left-0 top-0 z-[-2] h-screen w-screen transform-gpu bg-cover bg-center bg-no-repeat object-cover"
         />
       )
     }

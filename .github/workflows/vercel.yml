@@ -1,0 +1,12 @@
+name: Deploy To Vercel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-to-vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $VERCEL_HOOK
+        env:
+          VERCEL_HOOK: ${{secrets.VERCEL_HOOK}}

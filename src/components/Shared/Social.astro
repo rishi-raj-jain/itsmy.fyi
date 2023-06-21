@@ -1,15 +1,12 @@
 ---
-import probe from 'probe-image-size'
 import { icon } from '@/lib/Icons/getIcon'
-import { Image } from '@astrojs/image/components'
 
 const { title, href } = Astro.props
 
 let url,
   iconName,
   iconLink,
-  iconHeight = 24,
-  iconRatio
+  iconHeight = 24
 
 try {
   url = new URL(href)
@@ -22,10 +19,6 @@ try {
 try {
   iconName = title.toLowerCase().replace(/-/g, '').replace(/ /g, '')
   iconLink = icon(iconName ?? title)
-  if (iconLink) {
-    const { width, height } = await probe(iconLink)
-    iconRatio = width / height
-  }
 } catch (e) {
   console.log(e.message || e.toString())
 }
@@ -35,7 +28,7 @@ try {
   title && url && (
     <a href={url} target="_blank" aria-label={title} rel="noopener nofollow" class="transition hover:scale-[1.25]">
       {iconLink ? (
-        <Image class="rounded" alt={title} title={title} height={iconHeight} aspectRatio={iconRatio} position="center" src={iconLink} />
+        <img class="h-[24px] rounded" alt={title} title={title} height={iconHeight} src={iconLink} />
       ) : (
         <svg class="transition hover:scale-[1.025]" width="30" height="30" viewBox="0 0 70 68" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
