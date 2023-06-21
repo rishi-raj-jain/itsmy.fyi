@@ -3,7 +3,6 @@ import { CustomCacheKey } from '@edgio/core'
 
 const router = new Router()
 
-// Home page
 router.match('/', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
@@ -17,7 +16,6 @@ router.match('/', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   proxy('web')
 })
 
-// Sitemap
 router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
@@ -31,7 +29,6 @@ router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, proxy }) =>
   proxy('web')
 })
 
-// User path(s)
 router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   removeUpstreamResponseHeader('cache-control')
   cache({
