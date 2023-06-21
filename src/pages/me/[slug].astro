@@ -14,8 +14,8 @@ const origin = Astro.url.origin.replace('http:', 'https:')
 let userSlug = slug.toLowerCase(),
   title = '',
   description = '',
-  image = origin + '/seo/social-media-card.png',
-  icon = origin + '/seo/logo.png'
+  image = origin + '/__astro/seo/social-media-card.png',
+  icon = origin + '/__astro/seo/logo.png'
 
 if (userSlug.endsWith('/')) {
   userSlug = userSlug.substring(0, userSlug.length - 1)

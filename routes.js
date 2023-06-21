@@ -45,4 +45,40 @@ router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   proxy('web')
 })
 
+router.match('/robots.txt', ({ cache, proxy }) => {
+  cache({
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+  })
+  proxy('web')
+})
+
+router.match('/_astro/:path*', ({ cache, proxy }) => {
+  cache({
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+  })
+  proxy('web')
+})
+
+router.match('/__astro/:path*', ({ cache, proxy }) => {
+  cache({
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+  })
+  proxy('web')
+})
+
+router.match('/seo/:path*', ({ cache, proxy }) => {
+  cache({
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+  })
+  proxy('web', { path: '/__astro/seo/:path*' })
+})
+
 export default router

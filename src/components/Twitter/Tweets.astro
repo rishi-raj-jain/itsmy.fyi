@@ -4,7 +4,7 @@ import Tweet from './Tweet.astro'
 let tweets = {}
 
 try {
-  tweets = await fetch(`${Astro.url.origin.replace('http:', 'https:')}/home/tweets.json`).then((res) => res.json())
+  tweets = await fetch(`${Astro.url.origin.replace('http:', 'https:')}/__astro/home/tweets.json`).then((res) => res.json())
 } catch (e) {
   console.log(e.message || e.toString())
 }

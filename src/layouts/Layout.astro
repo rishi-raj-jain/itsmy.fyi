@@ -30,7 +30,7 @@ if (!('color' in background || 'image' in background)) {
   <head>
     <SEO {...content} />
     {bg.src && <link rel="preload" href={bg.src} />}
-    <link href="/css/global.css" rel="stylesheet" />
+    <link href="/__astro/css/global.css" rel="stylesheet" />
     <noscript>
       <style>
         .hide-with-no-javascript {

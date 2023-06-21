@@ -3,7 +3,7 @@
   font-family: 'Inter';
   font-weight: 100 900;
   font-display: optional;
-  src: url(/fonts/rsms-inter-var.woff2) format('woff2');
+  src: url(/__astro/fonts/rsms-inter-var.woff2) format('woff2');
 }
 
 .default-body {

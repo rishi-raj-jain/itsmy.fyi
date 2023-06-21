@@ -9,8 +9,8 @@ const seo = {
   title: 'itsmy.fyi - Take control of your online presence',
   description: 'Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
   url: Astro.request.url.replace('http:', 'https:'),
-  image: Astro.url.origin.replace('http:', 'https:') + '/seo/social-media-card.png',
-  icon: Astro.url.origin.replace('http:', 'https:') + '/seo/logo.png',
+  image: Astro.url.origin.replace('http:', 'https:') + '/__astro/seo/social-media-card.png',
+  icon: Astro.url.origin.replace('http:', 'https:') + '/__astro/seo/logo.png',
 }
 ---
 
@@ -24,7 +24,7 @@ const seo = {
         font-style: normal;
         font-weight: 100 900;
         font-display: optional;
-        src: url(/fonts/rsms-inter-var.woff2) format('woff2');
+        src: url(/__astro/fonts/rsms-inter-var.woff2) format('woff2');
       }
       .style_less_than::before {
         width: 0;
