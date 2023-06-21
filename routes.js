@@ -50,6 +50,7 @@ router.match('/robots.txt', ({ cache, proxy }) => {
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
   })
   proxy('web')
 })
@@ -59,6 +60,7 @@ router.match('/_astro/:path*', ({ cache, proxy }) => {
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
   })
   proxy('web')
 })
@@ -68,6 +70,7 @@ router.match('/__astro/:path*', ({ cache, proxy }) => {
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
   })
   proxy('web')
 })
@@ -77,6 +80,7 @@ router.match('/seo/:path*', ({ cache, proxy }) => {
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
   })
   proxy('web', { path: '/__astro/seo/:path*' })
 })
