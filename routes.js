@@ -3,7 +3,8 @@ import { CustomCacheKey } from '@edgio/core'
 
 const router = new Router()
 
-router.match('/', ({ cache, removeUpstreamResponseHeader, proxy }) => {
+router.match('/', ({ cache, removeUpstreamResponseHeader, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   removeUpstreamResponseHeader('cache-control')
   cache({
     browser: false,
@@ -16,7 +17,8 @@ router.match('/', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   proxy('web')
 })
 
-router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, proxy }) => {
+router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   removeUpstreamResponseHeader('cache-control')
   cache({
     browser: false,
@@ -29,7 +31,8 @@ router.match('/sitemap.xml', ({ cache, removeUpstreamResponseHeader, proxy }) =>
   proxy('web')
 })
 
-router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy }) => {
+router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   removeUpstreamResponseHeader('cache-control')
   cache({
     browser: false,
@@ -42,7 +45,8 @@ router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy }) => {
   proxy('web')
 })
 
-router.match('/robots.txt', ({ cache, proxy }) => {
+router.match('/robots.txt', ({ cache, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   cache({
     browser: false,
     edge: {
@@ -53,7 +57,8 @@ router.match('/robots.txt', ({ cache, proxy }) => {
   proxy('web')
 })
 
-router.match('/_astro/:path*', ({ cache, proxy }) => {
+router.match('/_astro/:path*', ({ cache, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   cache({
     browser: false,
     edge: {
@@ -64,7 +69,8 @@ router.match('/_astro/:path*', ({ cache, proxy }) => {
   proxy('web')
 })
 
-router.match('/__astro/:path*', ({ cache, proxy }) => {
+router.match('/__astro/:path*', ({ cache, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   cache({
     browser: false,
     edge: {
@@ -75,7 +81,8 @@ router.match('/__astro/:path*', ({ cache, proxy }) => {
   proxy('web')
 })
 
-router.match('/seo/:path*', ({ cache, proxy }) => {
+router.match('/seo/:path*', ({ cache, proxy, setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
   cache({
     browser: false,
     edge: {
