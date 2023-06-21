@@ -9,13 +9,12 @@ import Social from '@/src/components/Shared/Social.astro'
 const { slug } = Astro.params
 
 let url = Astro.request.url.replace('http:', 'https:')
-const origin = Astro.url.origin.replace('http:', 'https:')
 
 let userSlug = slug.toLowerCase(),
   title = '',
   description = '',
-  image = origin + '/__astro/seo/social-media-card.png',
-  icon = origin + '/__astro/seo/logo.png'
+  image = 'https://itsmy.fyi/__astro/seo/social-media-card.png',
+  icon = 'https://itsmy.fyi/__astro/seo/logo.png'
 
 if (userSlug.endsWith('/')) {
   userSlug = userSlug.substring(0, userSlug.length - 1)
