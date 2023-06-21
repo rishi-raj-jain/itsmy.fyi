@@ -47,6 +47,7 @@ router.match('/me/:path', ({ cache, removeUpstreamResponseHeader, proxy }) => {
 
 router.match('/robots.txt', ({ cache, proxy }) => {
   cache({
+    browser: false,
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
@@ -57,6 +58,7 @@ router.match('/robots.txt', ({ cache, proxy }) => {
 
 router.match('/_astro/:path*', ({ cache, proxy }) => {
   cache({
+    browser: false,
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
@@ -67,6 +69,7 @@ router.match('/_astro/:path*', ({ cache, proxy }) => {
 
 router.match('/__astro/:path*', ({ cache, proxy }) => {
   cache({
+    browser: false,
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
@@ -77,6 +80,7 @@ router.match('/__astro/:path*', ({ cache, proxy }) => {
 
 router.match('/seo/:path*', ({ cache, proxy }) => {
   cache({
+    browser: false,
     edge: {
       maxAgeSeconds: 60 * 60 * 24 * 365,
     },
