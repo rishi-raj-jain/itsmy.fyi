@@ -2,8 +2,8 @@ module.exports = {
   connector: './',
   backends: {
     web: {
-      hostHeader: process.env.VERCEL_DEPLOYMENT,
-      domainOrIp: process.env.VERCEL_DEPLOYMENT,
+      hostHeader: 'itsmy-fyi.vercel.app',
+      domainOrIp: 'itsmy-fyi.vercel.app',
       disableCheckCert: true,
     },
   },
