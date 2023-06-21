@@ -32,14 +32,6 @@ Take control of your online presence with itsmy.fyi - the open-source alternativ
 
 Built with [Astro](https://astro.build), [Edgio](https://edg.io), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
 
-## One-Click Deploy
-
-> Note: one-click deployment is a bit broken at the moment – you'll need to change some of the hard-coded values in the codebase to get it working. We're working on fixing this.
-
-You can deploy your own hosted version of itsmy.fyi using the button below:
-
-[![Deploy with Edgio](https://docs.edg.io/button.svg)](https://app.layer0.co/deploy?repo=https://github.com/rishi-raj-jain/itsmy.fyi)
-
 ## Tech Stack + Features
 
 https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4
@@ -60,7 +52,9 @@ https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-
 
 ### Platform
 
-- [Edgio](https://edg.io) – Hosting
+- [Vercel](https://vercel.com) – Hosting
+
+- [Edgio](https://edg.io) – Hosting & Caching
 
 ### Code Quality
 
