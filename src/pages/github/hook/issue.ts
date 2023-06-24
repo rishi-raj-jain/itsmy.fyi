@@ -36,6 +36,8 @@ export async function post({ request }) {
   }
   const data = validateEvent(context)
 
+  if (data === false) return
+
   if (data.error) {
     const errorMessage = [
       "Bad luck! Here's what we found breaking in your data:\n\n",
@@ -45,7 +47,7 @@ export async function post({ request }) {
     await octokit.rest.issues.createComment({
       owner: context.repository.owner.login,
       repo: context.repository.name,
-      issue_number: data.issue,
+      issue_number: context.issue.number,
       body: errorMessage.join('').toString(),
     })
     return
@@ -69,7 +71,7 @@ export async function post({ request }) {
       await octokit.rest.issues.createComment({
         owner: context.repository.owner.login,
         repo: context.repository.name,
-        issue_number: data.issue,
+        issue_number: context.issue.number,
         body: errorMessage.join('').toString(),
       })
       return
@@ -82,7 +84,7 @@ export async function post({ request }) {
         await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
-          issue_number: data.issue,
+          issue_number: context.issue.number,
           body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
         return
@@ -92,7 +94,7 @@ export async function post({ request }) {
         await octokit.rest.issues.createComment({
           owner: context.repository.owner.login,
           repo: context.repository.name,
-          issue_number: data.issue,
+          issue_number: context.issue.number,
           body: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
         return
@@ -104,14 +106,14 @@ export async function post({ request }) {
     // If the file exists
     if (ifFileExists) {
       // Only if the issue matches
-      if (fileContent.issue === data.issue) {
+      if (fileContent.issue === context.issue.number) {
         // Delete the file
         const { code } = await deleteUserInfo(data.slug)
         if (code === 1) {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
             repo: context.repository.name,
-            issue_number: data.issue,
+            issue_number: context.issue.number,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
           })
           return
@@ -119,7 +121,7 @@ export async function post({ request }) {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
             repo: context.repository.name,
-            issue_number: data.issue,
+            issue_number: context.issue.number,
             body: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
           })
           return
@@ -132,13 +134,13 @@ export async function post({ request }) {
     // If the file exists
     if (ifFileExists) {
       // Only if the issue matches
-      if (fileContent.issue === data.issue) {
+      if (fileContent.issue === context.issue.number) {
         const { code } = await postUserInfo({ ...data, slug: sluggedSlug })
         if (code === 1) {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
             repo: context.repository.name,
-            issue_number: data.issue,
+            issue_number: context.issue.number,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
           })
           return
@@ -148,7 +150,7 @@ export async function post({ request }) {
       await octokit.rest.issues.createComment({
         owner: context.repository.owner.login,
         repo: context.repository.name,
-        issue_number: data.issue,
+        issue_number: context.issue.number,
         body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
       })
       return

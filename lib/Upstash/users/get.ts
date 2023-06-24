@@ -1,9 +1,13 @@
 import redis from '../setup'
 
+type UserProfile = null | {
+  slug: string
+}
+
 export async function getUserInfo(slug) {
   try {
-    const parsedData = await redis.hget('profiles', slug)
-    if (parsedData.slug === slug) {
+    const parsedData: UserProfile = await redis.hget('profiles', slug)
+    if (parsedData?.slug === slug) {
       return { ...parsedData, code: 1 }
     }
     return {

@@ -47,10 +47,7 @@ export const validateEvent = (context) => {
     const start = body.indexOf('---\r\n')
     const end = body.lastIndexOf('\r\n---')
     const { data } = matter(body.substring(start, end + 5))
-    return {
-      ...validateBody(data),
-      issue: context.issue.number,
-    }
+    return validateBody(data)
   } catch (e) {
     console.error(e.message || e.toString())
     return { error: e.message || e.toString() }
