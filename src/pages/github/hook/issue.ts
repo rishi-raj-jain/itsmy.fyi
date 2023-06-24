@@ -23,6 +23,12 @@ export async function post({ request }) {
     limit = result.limit
     remaining = result.remaining
     if (!result.success) {
+      await octokit.rest.issues.createComment({
+        owner: context.repository.owner.login,
+        repo: context.repository.name,
+        issue_number: context.issue.number,
+        body: 'Too many updates in 1 minute. Please try again in a few minutes.',
+      })
       return {
         headers: {
           'X-RateLimit-Limit': limit,
