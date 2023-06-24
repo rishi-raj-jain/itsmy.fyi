@@ -2,6 +2,7 @@ import redis from '../setup'
 
 type UserProfile = null | {
   slug: string
+  issue: null | number
 }
 
 export async function getUserInfo(slug) {
@@ -12,14 +13,16 @@ export async function getUserInfo(slug) {
     }
     return {
       code: 0,
+      issue: null,
       error: "slug doesn't match for the user.",
     }
   } catch (e) {
     const error = e.message || e.toString()
     console.log(error)
     return {
-      code: 0,
       error,
+      code: 0,
+      issue: null,
     }
   }
 }
