@@ -12,11 +12,17 @@ export async function post({ request }) {
     remaining = 9999
   const context = await request.json()
   if (!['closed', 'edited', 'opened'].includes(context.action.toLowerCase())) {
-    return {
-      body: JSON.stringify({
+    return new Response(
+      JSON.stringify({
         message: 'Event not supported.',
       }),
-    }
+      {
+        status: 403,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
   }
   if (rateLimiter) {
     const result = await rateLimiter.limit(context.sender.login)
@@ -29,20 +35,31 @@ export async function post({ request }) {
         issue_number: context.issue.number,
         body: 'Too many updates in 1 minute. Please try again in a few minutes.',
       })
-      return {
-        headers: {
-          'X-RateLimit-Limit': limit,
-          'X-RateLimit-Remaining': remaining,
-        },
-        body: JSON.stringify({
+      return new Response(
+        JSON.stringify({
           message: 'Too many updates in 1 minute. Please try again in a few minutes.',
         }),
-      }
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'Content-Type': 'application/json',
+          },
+        }
+      )
     }
   }
   const data = validateEvent(context)
 
-  if (data === false) return
+  if (data === false)
+    return new Response(null, {
+      status: 403,
+      headers: {
+        'X-RateLimit-Limit': limit.toString(),
+        'X-RateLimit-Remaining': remaining.toString(),
+      },
+    })
 
   if (data.error) {
     const errorMessage = [
@@ -56,7 +73,19 @@ export async function post({ request }) {
       issue_number: context.issue.number,
       body: errorMessage.join('').toString(),
     })
-    return
+    return new Response(
+      JSON.stringify({
+        message: errorMessage.join('').toString(),
+      }),
+      {
+        status: 400,
+        headers: {
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'Content-Type': 'application/json',
+        },
+      }
+    )
   }
 
   const sluggedSlug = slug(data.slug)
@@ -80,7 +109,19 @@ export async function post({ request }) {
         issue_number: context.issue.number,
         body: errorMessage.join('').toString(),
       })
-      return
+      return new Response(
+        JSON.stringify({
+          message: errorMessage.join('').toString(),
+        }),
+        {
+          status: 409,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'Content-Type': 'application/json',
+          },
+        }
+      )
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
@@ -93,7 +134,19 @@ export async function post({ request }) {
           issue_number: context.issue.number,
           body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
-        return
+        return new Response(
+          JSON.stringify({
+            message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+          }),
+          {
+            status: 200,
+            headers: {
+              'X-RateLimit-Limit': limit.toString(),
+              'X-RateLimit-Remaining': remaining.toString(),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
       }
       // If the file is not created successfully, comment with the re-try method
       else {
@@ -103,7 +156,19 @@ export async function post({ request }) {
           issue_number: context.issue.number,
           body: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
         })
-        return
+        return new Response(
+          JSON.stringify({
+            message: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+          }),
+          {
+            status: 500,
+            headers: {
+              'X-RateLimit-Limit': limit.toString(),
+              'X-RateLimit-Remaining': remaining.toString(),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
       }
     }
   }
@@ -122,7 +187,19 @@ export async function post({ request }) {
             issue_number: context.issue.number,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
           })
-          return
+          return new Response(
+            JSON.stringify({
+              message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
+            }),
+            {
+              status: 200,
+              headers: {
+                'X-RateLimit-Limit': limit.toString(),
+                'X-RateLimit-Remaining': remaining.toString(),
+                'Content-Type': 'application/json',
+              },
+            }
+          )
         } else {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
@@ -130,7 +207,19 @@ export async function post({ request }) {
             issue_number: context.issue.number,
             body: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
           })
-          return
+          return new Response(
+            JSON.stringify({
+              message: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
+            }),
+            {
+              status: 500,
+              headers: {
+                'X-RateLimit-Limit': limit.toString(),
+                'X-RateLimit-Remaining': remaining.toString(),
+                'Content-Type': 'application/json',
+              },
+            }
+          )
         }
       }
     }
@@ -149,7 +238,19 @@ export async function post({ request }) {
             issue_number: context.issue.number,
             body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
           })
-          return
+          return new Response(
+            JSON.stringify({
+              message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+            }),
+            {
+              status: 200,
+              headers: {
+                'X-RateLimit-Limit': limit.toString(),
+                'X-RateLimit-Remaining': remaining.toString(),
+                'Content-Type': 'application/json',
+              },
+            }
+          )
         }
       }
     } else {
@@ -159,7 +260,19 @@ export async function post({ request }) {
         issue_number: context.issue.number,
         body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
       })
-      return
+      return new Response(
+        JSON.stringify({
+          message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
+        }),
+        {
+          status: 200,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'Content-Type': 'application/json',
+          },
+        }
+      )
     }
   }
 }
