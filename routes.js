@@ -93,12 +93,12 @@ router.match('/seo/:path*', ({ cache, proxy, setRequestHeader }) => {
   proxy('web', { path: '/__astro/seo/:path*' })
 })
 
-router.match('/github/create', ({ cache, proxy, setRequestHeader }) => {
+router.match('/github/create', ({ proxy, setRequestHeader }) => {
   setRequestHeader('edgio', process.env.EDGIO_HEADER)
   proxy('web')
 })
 
-router.match('/github/hook/issue', ({ cache, proxy, setRequestHeader }) => {
+router.match('/github/hook/issue', ({ proxy, setRequestHeader }) => {
   setRequestHeader('edgio', process.env.EDGIO_HEADER)
   proxy('web')
 })
