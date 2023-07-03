@@ -12,16 +12,9 @@ const getPath = (path) => {
   }
 }
 
-router.match(
-  {
-    headers: {
-      host: /itsmy\.fyi/,
-    },
-  },
-  ({ setRequestHeader }) => {
-    setRequestHeader('edgio', process.env.EDGIO_HEADER)
-  }
-)
+router.match(getPath('/:path*'), ({ setRequestHeader }) => {
+  setRequestHeader('edgio', process.env.EDGIO_HEADER)
+})
 
 router.match(getPath('/'), ({ cache, removeUpstreamResponseHeader, proxy }) => {
   removeUpstreamResponseHeader('cache-control')
@@ -111,6 +104,28 @@ router.match(getPath('/github/create'), ({ proxy }) => {
 })
 
 router.match(getPath('/github/hook/issue'), ({ proxy }) => {
+  proxy('web')
+})
+
+router.match(getPath('/terms'), ({ proxy }) => {
+  cache({
+    browser: false,
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
+  proxy('web')
+})
+
+router.match(getPath('/privacy'), ({ proxy }) => {
+  cache({
+    browser: false,
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
   proxy('web')
 })
 

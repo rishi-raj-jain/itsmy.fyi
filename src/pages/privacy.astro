@@ -1,0 +1,69 @@
+---
+import SEO from '@/components/Shared/SEO.astro'
+import Footer from '@/components/Home/Footer.astro'
+
+const seo = {
+  url: 'https://itsmy.fyi',
+  icon: 'https://itsmy.fyi/__astro/seo/logo.png',
+  title: 'Privacy Policy - itsmy.fyi - Take control of your online presence',
+  image: 'https://itsmy.fyi/__astro/seo/social-media-card.png',
+  description: 'Privacy Policy - Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
+}
+---
+
+<html lang="en">
+  <head>
+    <SEO {...seo} />
+    <style is:raw>
+      body {
+        background-size: 100px 100px;
+        background-image: linear-gradient(#00000010 0.5px, transparent 0.5px), linear-gradient(to right, #00000010 0.5px, white 0.5px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w-full flex flex-col items-center">
+      <div class="mt-12 sm:mt-18 max-w-2xl flex flex-col min-w-[90%]">
+        <a href="/" class="font-light text-gray-600 hover:underline">&larr; Back to homepage</a>
+        <h1 class="mt-12 sm:mt-18 text-3xl font-bold sm:text-4xl">Privacy Policy</h1>
+        <p class="mt-3">
+          Welcome to <a href="/">itsmy.fyi</a> (the "Site"), hosted by Rishi Raj Jain ("Rishi Raj Jain", "we", "us", and/or "our"). itsmy.fyi is an open-source
+          media creation tool for everything you create, share or sell online. All from a link. (the "Services").
+        </p>
+        <p class="mt-3">
+          We value your privacy and are dedicated to protecting your personal data. This Privacy Policy covers how we collect, handle, and disclose
+          personal data on our Platform.
+        </p>
+        <p class="mt-3">
+          If you have any questions, comments, or concerns regarding this Privacy Policy, our data practices, or would like to exercise your rights,
+          do not hesitate to contact us.
+        </p>
+        <h3>To Whom Does This Policy Apply</h3>
+        <p class="mt-3">
+          This Privacy Policy applies to customers and site visitors. Each customer is responsible for posting its own terms, conditions, and privacy
+          policies, and ensuring compliance with all applicable laws and regulations.
+        </p>
+        <h3>Changes To This Privacy Policy</h3>
+        <p class="mt-3">
+          This Privacy Policy may change from time to time, as our Platform and our business may change. Your continued use of the Platform after any
+          changes to this Privacy Policy indicates your agreement with the terms of the revised Privacy Policy.
+        </p>
+        <h3>What Information Do We Collect</h3>
+        <p class="mt-3">
+          We collect information directly from you when you provide it to us explicitly on our site. We do not use third-party cookies on our Site.
+        </p>
+        <h3>What We Use Your Information For</h3>
+        <p class="mt-3">
+          We use your information to provide our Services, to improve our Platform, to understand how you use our Platform, and to communicate with
+          you.
+        </p>
+        <h3>How To Contact Us</h3>
+        <p class="mt-3">
+          For privacy-related questions, please contact us at <a class="text-blue-600" href="mailto:rishi18304@iiitd.ac.in">rishi18304@iiitd.ac.in</a
+          >.
+        </p>
+      </div>
+    </div>
+    <Footer />
+  </body>
+</html>
