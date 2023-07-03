@@ -6,18 +6,23 @@ import Tweets from '@/components/Twitter/Tweets.astro'
 import GitHubStars from '@/components/Home/GitHub-Stars.astro'
 
 const seo = {
-  title: 'itsmy.fyi - Take control of your online presence',
-  description: 'Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
   url: 'https://itsmy.fyi',
-  image: 'https://itsmy.fyi/__astro/seo/social-media-card.png',
   icon: 'https://itsmy.fyi/__astro/seo/logo.png',
+  title: 'itsmy.fyi - Take control of your online presence',
+  image: 'https://itsmy.fyi/__astro/seo/social-media-card.png',
+  description: 'Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
+  preloads: [
+    {
+      as: 'video',
+      href: 'https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4',
+    },
+  ],
 }
 ---
 
 <html lang="en">
   <head>
     <SEO {...seo} />
-    <link rel="preload" href="https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4" />
     <style is:raw>
       @font-face {
         font-family: 'Inter';
@@ -92,7 +97,7 @@ const seo = {
     </div>
     <Demo />
     <div class="mt-24 sm:mt-36 w-full flex flex-col items-center">
-      <video class="rounded w-[90%]" controls>
+      <video preload="none" poster="https://a.storyblok.com/f/117912/3024x1726/68261db79a/itsmy-fyi-cover.png" class="rounded w-[90%]" controls>
         <source src="https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4" type="video/mp4" />
       </video>
     </div>
