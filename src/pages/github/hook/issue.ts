@@ -233,7 +233,7 @@ export async function post({ request }) {
     if (ifFileExists) {
       // Only if the issue matches
       if (fileContent.issue === context.issue.number) {
-        const { code } = await postUserInfo({ ...data, slug: sluggedSlug })
+        const { code } = await postUserInfo({ ...fileContent, ...data, slug: sluggedSlug })
         if (code === 1) {
           await octokit.rest.issues.createComment({
             owner: context.repository.owner.login,
