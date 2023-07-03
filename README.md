@@ -10,9 +10,6 @@
 </p>
 
 <p align="center">
-  <a href="https://twitter.com/rishi_raj_jain_">
-    <img src="https://img.shields.io/twitter/follow/rishi_raj_jain_?style=flat&label=rishi_raj_jain_&logo=twitter&color=0bf&logoColor=fff" alt="Rishi Raj Jain Twitter follower count" />
-  </a>
   <a href="https://github.com/rishi-raj-jain/itsmy.fyi">
     <img src="https://img.shields.io/github/stars/rishi-raj-jain/itsmy.fyi?label=rishi-raj-jain%2Fitsmy.fyi" alt="itsmy.fyi repo star count" />
   </a>
@@ -28,7 +25,7 @@
 
 ## Introduction
 
-Take control of your online presence with itsmy.fyi - the open-source alternative to Linktree.
+Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree.
 
 Built with [Astro](https://astro.build), [Vercel](https://vercel.com), [Edgio](https://edg.io), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
 
