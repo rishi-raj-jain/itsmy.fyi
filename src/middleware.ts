@@ -12,8 +12,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     })
   }
   const response = await next()
-  return new Response(response.body, {
-    status: response.status,
-    headers: response.headers,
-  })
+  console.log(response)
+  if (response) {
+    return new Response(response.body, {
+      status: response.status,
+      headers: response.headers,
+    })
+  }
 })
