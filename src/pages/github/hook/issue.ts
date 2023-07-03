@@ -24,6 +24,7 @@ export async function post({ request }) {
       }
     )
   }
+
   if (rateLimiter) {
     const result = await rateLimiter.limit(context.sender.login)
     limit = result.limit
@@ -50,9 +51,10 @@ export async function post({ request }) {
       )
     }
   }
+
   const data = validateEvent(context)
 
-  if (data === false)
+  if (data === false) {
     return new Response(null, {
       status: 403,
       headers: {
@@ -60,6 +62,7 @@ export async function post({ request }) {
         'X-RateLimit-Remaining': remaining.toString(),
       },
     })
+  }
 
   if (data.error) {
     const errorMessage = [
