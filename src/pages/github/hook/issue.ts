@@ -128,7 +128,7 @@ export async function post({ request }) {
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
-      const { code } = await postUserInfo({ ...data, slug: sluggedSlug, issue: context.issue.number })
+      const { code } = await postUserInfo({ ...data, slug: sluggedSlug, issue: context.issue.number, via_github: 1 })
       // If the file is created successfully, comment with the profile link
       if (code === 1) {
         await octokit.rest.issues.createComment({
