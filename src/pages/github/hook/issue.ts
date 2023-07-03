@@ -95,7 +95,6 @@ export async function post({ request }) {
 
   // Get file content for the slug from data
   const fileContent = await getUserInfo(sluggedSlug)
-  console.log(JSON.stringify(fileContent))
   const ifFileExists = fileContent.code === 1
 
   // If an issue is opened
@@ -129,7 +128,7 @@ export async function post({ request }) {
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
-      const { code } = await postUserInfo({ ...data, slug: sluggedSlug })
+      const { code } = await postUserInfo({ ...data, slug: sluggedSlug, issue: context.issue.number })
       // If the file is created successfully, comment with the profile link
       if (code === 1) {
         await octokit.rest.issues.createComment({
