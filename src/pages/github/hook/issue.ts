@@ -1,9 +1,16 @@
+import crypto from 'crypto'
+import { getENV } from '@/lib/env'
 import { slug } from 'github-slugger'
 import { octokit } from '@/lib/Octokit/setup'
 import { ratelimit } from '@/lib/Upstash/ratelimit'
 import { validateEvent } from '@/lib/GitHub/validate'
 import { generateString } from '@/lib/GitHub/generateString'
 import { deleteUserInfo, getUserInfo, postUserInfo } from '@/lib/Upstash/users'
+
+const verifySignature = (body, header) => {
+  const signature = crypto.createHmac('sha256', getENV('GITHUB_WEBHOOK_SECRET')).update(JSON.stringify(body)).digest('hex')
+  return `sha256=${signature}` === header
+}
 
 const rateLimiter = ratelimit(3, '60 s')
 
@@ -15,6 +22,20 @@ export async function post({ request }) {
     return new Response(
       JSON.stringify({
         message: 'Event not supported.',
+      }),
+      {
+        status: 403,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+  }
+
+  if (!verifySignature(context, request.headers.get('X-Hub-Signature-256'))) {
+    return new Response(
+      JSON.stringify({
+        message: 'Forbidden.',
       }),
       {
         status: 403,
