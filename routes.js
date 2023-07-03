@@ -107,7 +107,7 @@ router.match(getPath('/github/hook/issue'), ({ proxy }) => {
   proxy('web')
 })
 
-router.match(getPath('/terms'), ({ proxy }) => {
+router.match(getPath('/terms'), ({ proxy, cache }) => {
   cache({
     browser: false,
     edge: {
@@ -118,7 +118,7 @@ router.match(getPath('/terms'), ({ proxy }) => {
   proxy('web')
 })
 
-router.match(getPath('/privacy'), ({ proxy }) => {
+router.match(getPath('/privacy'), ({ proxy, cache }) => {
   cache({
     browser: false,
     edge: {
