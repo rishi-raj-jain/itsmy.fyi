@@ -95,6 +95,7 @@ export async function post({ request }) {
 
   // Get file content for the slug from data
   const fileContent = await getUserInfo(sluggedSlug)
+  console.log(JSON.stringify(fileContent))
   const ifFileExists = fileContent.code === 1
 
   // If an issue is opened
@@ -229,9 +230,6 @@ export async function post({ request }) {
   }
   // If an issue is edited
   else if (context.action === 'edited') {
-    console.log('In edited...', ifFileExists)
-    console.log(JSON.stringify(fileContent))
-    console.log(JSON.stringify(context.issue))
     // If the file exists
     if (ifFileExists) {
       // Only if the issue matches
