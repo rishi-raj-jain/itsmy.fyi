@@ -229,6 +229,9 @@ export async function post({ request }) {
   }
   // If an issue is edited
   else if (context.action === 'edited') {
+    console.log('In edited...', ifFileExists)
+    console.log(JSON.stringify(fileContent))
+    console.log(JSON.stringify(context.issue))
     // If the file exists
     if (ifFileExists) {
       // Only if the issue matches
@@ -255,6 +258,10 @@ export async function post({ request }) {
             }
           )
         }
+      } else {
+        return new Response(null, {
+          status: 409,
+        })
       }
     } else {
       await octokit.rest.issues.createComment({
