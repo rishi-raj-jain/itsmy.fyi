@@ -12,7 +12,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     })
   }
   const response = await next()
-  console.log(response)
   return new Response(response.body, {
     status: response.status,
     headers: response.headers,
