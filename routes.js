@@ -129,6 +129,28 @@ router.match(getPath('/privacy'), ({ proxy, cache }) => {
   proxy('web')
 })
 
+router.match(getPath('/pricing'), ({ proxy, cache }) => {
+  cache({
+    browser: false,
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
+  proxy('web')
+})
+
+router.match(getPath('/changelog'), ({ proxy, cache }) => {
+  cache({
+    browser: false,
+    edge: {
+      maxAgeSeconds: 60 * 60 * 24 * 365,
+    },
+    key: new CustomCacheKey().excludeAllQueryParameters(),
+  })
+  proxy('web')
+})
+
 router.fallback(({ send, cache }) => {
   cache({
     edge: {
