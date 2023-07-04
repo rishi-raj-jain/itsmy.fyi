@@ -1,4 +1,6 @@
+import crypto from 'crypto'
 import matter from 'gray-matter'
+import { getENV } from '@/lib/env'
 
 export const validateBody = (data) => {
   try {
@@ -52,4 +54,9 @@ export const validateEvent = (context) => {
     console.error(e.message || e.toString())
     return { error: e.message || e.toString() }
   }
+}
+
+export const verifySignature = (body, header) => {
+  const signature = crypto.createHmac('sha256', getENV('GITHUB_WEBHOOK_SECRET')).update(JSON.stringify(body)).digest('hex')
+  return `sha256=${signature}` === header
 }

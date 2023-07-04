@@ -1,12 +1,11 @@
 .tooltip {
-    @apply invisible absolute;
-  }
-  
-  .has-tooltip:hover .tooltip {
-    @apply visible z-50;
-  }
-  
-  .has-tooltip:focus .tooltip {
-    @apply visible z-50;
-  }
-  
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}
+
+.has-tooltip:focus .tooltip {
+  @apply visible z-50;
+}

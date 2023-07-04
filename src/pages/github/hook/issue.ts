@@ -1,16 +1,10 @@
-import crypto from 'crypto'
-import { getENV } from '@/lib/env'
 import { slug } from 'github-slugger'
-import { octokit } from '@/lib/Octokit/setup'
+import { json } from '@/lib/GitHub/json'
 import { ratelimit } from '@/lib/Upstash/ratelimit'
-import { validateEvent } from '@/lib/GitHub/validate'
+import { createComment } from '@/lib/GitHub/comment'
 import { generateString } from '@/lib/GitHub/generateString'
+import { validateEvent, verifySignature } from '@/lib/GitHub/validate'
 import { deleteUserInfo, getUserInfo, postUserInfo } from '@/lib/Upstash/users'
-
-const verifySignature = (body, header) => {
-  const signature = crypto.createHmac('sha256', getENV('GITHUB_WEBHOOK_SECRET')).update(JSON.stringify(body)).digest('hex')
-  return `sha256=${signature}` === header
-}
 
 const rateLimiter = ratelimit(3, '60 s')
 
@@ -18,98 +12,46 @@ export async function post({ request }) {
   let limit = 9999,
     remaining = 9999
   const context = await request.json()
+  // if not a suitable event
   if (!['closed', 'edited', 'opened'].includes(context.action.toLowerCase())) {
-    return new Response(
-      JSON.stringify({
-        message: 'Event not supported.',
-      }),
-      {
-        status: 403,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    return json({ message: 'Event not supported.' }, 403)
   }
 
+  // if not a verified call
   if (!verifySignature(context, request.headers.get('X-Hub-Signature-256'))) {
-    return new Response(
-      JSON.stringify({
-        message: 'Forbidden.',
-      }),
-      {
-        status: 403,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    return json({ message: 'Forbidden.' }, 403)
   }
 
+  // if rate limited
   if (rateLimiter) {
     const result = await rateLimiter.limit(context.sender.login)
     limit = result.limit
     remaining = result.remaining
     if (!result.success) {
-      await octokit.rest.issues.createComment({
-        owner: context.repository.owner.login,
-        repo: context.repository.name,
-        issue_number: context.issue.number,
-        body: 'Too many updates in 1 minute. Please try again in a few minutes.',
-      })
-      return new Response(
-        JSON.stringify({
-          message: 'Too many updates in 1 minute. Please try again in a few minutes.',
-        }),
-        {
-          status: 429,
-          headers: {
-            'X-RateLimit-Limit': limit.toString(),
-            'X-RateLimit-Remaining': remaining.toString(),
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      const message = 'Too many updates in 1 minute. Please try again in a few minutes.'
+      await createComment(context, message)
+      return json({ message }, 429)
     }
   }
 
   const data = validateEvent(context)
 
+  // if no data
   if (data === false) {
-    return new Response(null, {
-      status: 403,
-      headers: {
-        'X-RateLimit-Limit': limit.toString(),
-        'X-RateLimit-Remaining': remaining.toString(),
-      },
-    })
+    return json(null, 403)
   }
 
+  // if error in data
   if (data.error) {
-    const errorMessage = [
+    const message = [
       "Bad luck! Here's what we found breaking in your data:\n\n",
       '```markdown\n' + data.error + '\n```',
       `\n\nFeel free to edit the issue again in case you've already got a link, else please re-try by creating a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.`,
     ]
-    await octokit.rest.issues.createComment({
-      owner: context.repository.owner.login,
-      repo: context.repository.name,
-      issue_number: context.issue.number,
-      body: errorMessage.join('').toString(),
-    })
-    return new Response(
-      JSON.stringify({
-        message: errorMessage.join('').toString(),
-      }),
-      {
-        status: 400,
-        headers: {
-          'X-RateLimit-Limit': limit.toString(),
-          'X-RateLimit-Remaining': remaining.toString(),
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+      .join('')
+      .toString()
+    await createComment(context, message)
+    return json({ message }, 400)
   }
 
   const sluggedSlug = slug(data.slug)
@@ -122,77 +64,30 @@ export async function post({ request }) {
   if (context.action === 'opened') {
     // If the file already exists, suggest another slug
     if (ifFileExists) {
-      const errorMessage = [
+      const message = [
         "Bad luck! Try with a new slug? Here's a suggestion for you:\n\n",
         '```markdown\nslug: ' + `${sluggedSlug}-${generateString(3)}` + '\n```',
         "\n\nI promise I'll handle this better, but you'd have to create a [new issue](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new?assignees=&labels=&template=itsyour.page-profile-data.yml&title=itsmy.fyi+-+%7BINSERT+NAME%7D+%28Optional%29) for now.",
       ]
-      await octokit.rest.issues.createComment({
-        owner: context.repository.owner.login,
-        repo: context.repository.name,
-        issue_number: context.issue.number,
-        body: errorMessage.join('').toString(),
-      })
-      return new Response(
-        JSON.stringify({
-          message: errorMessage.join('').toString(),
-        }),
-        {
-          status: 409,
-          headers: {
-            'X-RateLimit-Limit': limit.toString(),
-            'X-RateLimit-Remaining': remaining.toString(),
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+        .join('')
+        .toString()
+      await createComment(context, message)
+      return json({ message }, 409)
     }
     // If the file doesn't exist, create the new profile succesffully
     else {
       const { code } = await postUserInfo({ ...data, slug: sluggedSlug, issue: context.issue.number, via_github: 1 })
       // If the file is created successfully, comment with the profile link
       if (code === 1) {
-        await octokit.rest.issues.createComment({
-          owner: context.repository.owner.login,
-          repo: context.repository.name,
-          issue_number: context.issue.number,
-          body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-        })
-        return new Response(
-          JSON.stringify({
-            message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-          }),
-          {
-            status: 200,
-            headers: {
-              'X-RateLimit-Limit': limit.toString(),
-              'X-RateLimit-Remaining': remaining.toString(),
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const message = `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`
+        await createComment(context, message)
+        return json({ message }, 200)
       }
       // If the file is not created successfully, comment with the re-try method
       else {
-        await octokit.rest.issues.createComment({
-          owner: context.repository.owner.login,
-          repo: context.repository.name,
-          issue_number: context.issue.number,
-          body: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-        })
-        return new Response(
-          JSON.stringify({
-            message: `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-          }),
-          {
-            status: 500,
-            headers: {
-              'X-RateLimit-Limit': limit.toString(),
-              'X-RateLimit-Remaining': remaining.toString(),
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const message = `Oops, some error occured while creating your profile. Try again by editing the issue?\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`
+        await createComment(context, message)
+        return json({ message }, 500)
       }
     }
   }
@@ -205,49 +100,18 @@ export async function post({ request }) {
         // Delete the file
         const { code } = await deleteUserInfo(data.slug)
         if (code === 1) {
-          await octokit.rest.issues.createComment({
-            owner: context.repository.owner.login,
-            repo: context.repository.name,
-            issue_number: context.issue.number,
-            body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
-          })
-          return new Response(
-            JSON.stringify({
-              message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`,
-            }),
-            {
-              status: 200,
-              headers: {
-                'X-RateLimit-Limit': limit.toString(),
-                'X-RateLimit-Remaining': remaining.toString(),
-                'Content-Type': 'application/json',
-              },
-            }
-          )
+          const message = `Thanks for using [itsmy.fyi](https://itsmy.fyi). Succesfully deleted your profile.`
+          await createComment(context, message)
+          return json({ message }, 200)
         } else {
-          await octokit.rest.issues.createComment({
-            owner: context.repository.owner.login,
-            repo: context.repository.name,
-            issue_number: context.issue.number,
-            body: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
-          })
-          return new Response(
-            JSON.stringify({
-              message: `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`,
-            }),
-            {
-              status: 500,
-              headers: {
-                'X-RateLimit-Limit': limit.toString(),
-                'X-RateLimit-Remaining': remaining.toString(),
-                'Content-Type': 'application/json',
-              },
-            }
-          )
+          const message = `Oops! There was an error in deleting your profile. Can you go ahead and just mention that in Discussions?`
+          await createComment(context, message)
+          return json({ message }, 500)
         }
       }
     }
   }
+
   // If an issue is edited
   else if (context.action === 'edited') {
     // If the file exists
@@ -256,51 +120,17 @@ export async function post({ request }) {
       if (fileContent.issue === context.issue.number) {
         const { code } = await postUserInfo({ ...fileContent, ...data, slug: sluggedSlug })
         if (code === 1) {
-          await octokit.rest.issues.createComment({
-            owner: context.repository.owner.login,
-            repo: context.repository.name,
-            issue_number: context.issue.number,
-            body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-          })
-          return new Response(
-            JSON.stringify({
-              message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-            }),
-            {
-              status: 200,
-              headers: {
-                'X-RateLimit-Limit': limit.toString(),
-                'X-RateLimit-Remaining': remaining.toString(),
-                'Content-Type': 'application/json',
-              },
-            }
-          )
+          const message = `Thanks for using [itsmy.fyi](https://itsmy.fyi). Visit your [profile here ↗︎](https://itsmy.fyi/me/${sluggedSlug}).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`
+          await createComment(context, message)
+          return json({ message }, 200)
         }
       } else {
-        return new Response(null, {
-          status: 409,
-        })
+        return json(null, 409)
       }
     } else {
-      await octokit.rest.issues.createComment({
-        owner: context.repository.owner.login,
-        repo: context.repository.name,
-        issue_number: context.issue.number,
-        body: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-      })
-      return new Response(
-        JSON.stringify({
-          message: `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`,
-        }),
-        {
-          status: 200,
-          headers: {
-            'X-RateLimit-Limit': limit.toString(),
-            'X-RateLimit-Remaining': remaining.toString(),
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      const message = `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`
+      await createComment(context, message)
+      return json({ message }, 200)
     }
   }
 }
