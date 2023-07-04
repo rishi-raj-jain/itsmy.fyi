@@ -1,5 +1,8 @@
 ---
 const { title, description, url, image, preloads, slackPreviewLabels = [], icon } = Astro.props
+
+const can = new URL(url)
+can.hostname = 'itsmy.fyi'
 ---
 
 <!-- Global Metadata -->
@@ -10,7 +13,7 @@ const { title, description, url, image, preloads, slackPreviewLabels = [], icon 
 <meta name="generator" content={Astro.generator} />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="canonical" href={url} />
+<link rel="canonical" href={can.toString()} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
