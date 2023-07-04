@@ -1,4 +1,5 @@
 import { slug } from 'github-slugger'
+import { json } from '@/lib/GitHub/json'
 import { ratelimit } from '@/lib/Upstash/ratelimit'
 import { validateBody } from '@/lib/GitHub/validate'
 import { generateString } from '@/lib/GitHub/generateString'
@@ -18,12 +19,7 @@ const returnResponse = (statusCode, body, noJS = false) => {
       },
     })
   }
-  return new Response(JSON.stringify(body), {
-    status: statusCode,
-    headers: {
-      'content-type': 'application/json',
-    },
-  })
+  return json(body, statusCode)
 }
 
 export async function post({ request }) {
