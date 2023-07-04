@@ -1,0 +1,135 @@
+---
+import './index.css'
+
+const plans = [
+  {
+    buy: '',
+    plan: 'Free',
+    tagline: 'Link Sharing Made Simple and Free',
+    quota: 1000,
+    features: [
+      { text: 'Unlimited links to insert' },
+      {
+        text: 'Free SSL certificates',
+      },
+      { text: 'Up to 3 profiles', neutral: true },
+      { text: '7-day link history', neutral: true },
+      {
+        text: 'Page Redirect',
+        footnote: 'Redirect vistors that land on your link to page of your choice.',
+        negative: true,
+      },
+      {
+        text: 'Custom QR Code Logo',
+        negative: true,
+      },
+      { text: 'Priority support', negative: true },
+    ],
+    cta: 'Start for free',
+    price: 0,
+  },
+  {
+    plan: 'Basic',
+    tagline: 'Kickstart Your Link-Sharing Success',
+    features: [
+      { text: 'Unlimited links to insert' },
+      {
+        text: 'Free SSL certificates',
+      },
+      { text: 'Up to 10 profiles', neutral: true },
+      { text: '14-day link history', neutral: true },
+      {
+        text: 'Page Redirect',
+        footnote: 'Redirect vistors that land on your link to page of your choice.',
+      },
+      {
+        text: 'Custom QR Code Logo',
+      },
+      { text: 'Priority support', footnote: 'Email & Chat support within 48 hours.' },
+    ],
+    cta: 'Get started',
+    price: 5,
+  },
+  {
+    plan: 'Pro',
+    tagline: 'Elevate Your Brand with Advanced Features',
+    features: [
+      { text: 'Unlimited branded links' },
+      {
+        text: 'Unlimited custom domains',
+      },
+      {
+        text: 'Free SSL certificates',
+      },
+      {
+        text: 'Advanced link features',
+        footnote: 'Password protection, link expiration, device targeting, custom social media cards, etc.',
+      },
+      { text: '30-day link history' },
+      {
+        text: 'Root domain redirect',
+        footnote: 'Redirect visitors that land on the root of your domain (e.g. yourdomain.com) to a page of your choice.',
+      },
+      {
+        text: 'Custom QR Code Logo',
+      },
+      {
+        text: 'Priority support',
+        footnote: 'Email & Chat support within 24 hours.',
+      },
+    ],
+    cta: 'Get started',
+    price: 10,
+  },
+]
+---
+
+<div class="grid grid-cols-1 gap-1 md:grid-cols-3 mt-4">
+  {
+    plans.map((j) => (
+      <div class="mt-4 flex rounded border bg-white p-4">
+        <div class="flex flex-1 flex-col">
+          <ul class="flex list-inside list-disc flex-col" role="list">
+            <li class="mt-3 flex items-center text-sm text-neutral-600">{j.tagline}</li>
+            <li class="my-3 block text-2xl font-medium text-black">
+              {j.plan} &middot; <strong>${j.price}</strong>
+            </li>
+            {j.features.map((i) => (
+              <div class="has-tooltip mt-3 flex flex-row items-center gap-x-2">
+                {i.footnote && <span class="tooltip mt-16 rounded border bg-white px-5 py-2 shadow-lg">{i.footnote}</span>}
+                &middot; {i.text}{' '}
+                {i.footnote && (
+                  <svg
+                    fill="none"
+                    shape-rendering="geometricPrecision"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="h-4 w-4 text-gray-600"
+                  >
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
+                    <circle cx="12" cy="17" r=".5" />
+                  </svg>
+                )}
+              </div>
+            ))}
+            <div class="mb-8" />
+          </ul>
+          <div class="mt-auto">
+            <a
+              href={j.buy}
+              class="inline-flex w-full items-center justify-center rounded-full border border-neutral-300 bg-white px-4 py-1 text-center text-sm font-medium text-black duration-200 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            >
+              {j.cta}
+            </a>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>
