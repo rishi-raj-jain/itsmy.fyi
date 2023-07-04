@@ -1,0 +1,64 @@
+---
+import SEO from '@/components/Shared/SEO.astro'
+import Footer from '@/components/Home/Footer.astro'
+import Navbar from '@/components/Shared/Navbar.astro'
+
+const seo = {
+  url: 'https://itsmy.fyi/changelog',
+  icon: 'https://itsmy.fyi/__astro/seo/logo.png',
+  title: 'Changelog - itsmy.fyi - Take control of your online presence',
+  image: 'https://itsmy.fyi/__astro/seo/social-media-card.png',
+  description: 'Changelog - Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
+}
+---
+
+<html lang="en">
+  <head>
+    <SEO {...seo} />
+    <style is:raw>
+      body {
+        background-size: 100px 100px;
+        background-image: linear-gradient(#00000010 0.5px, transparent 0.5px), linear-gradient(to right, #00000010 0.5px, white 0.5px);
+      }
+    </style>
+  </head>
+  <body>
+    <Navbar />
+    <div class="w-full flex flex-col items-center">
+      <div class="mt-12 sm:mt-18 flex flex-col w-[90%]">
+        <a href="/" class="font-light text-gray-600 hover:underline">&larr; Back to homepage</a>
+        <h1 class="mt-12 sm:mt-18 text-3xl font-bold sm:text-4xl">Changelog</h1>
+        <div class="divide-y space-y-24 divide-white/20">
+          <div>
+            <div>
+              <ul class="border-t divide-y mt-12 space-y-24 w-full" role="list">
+                <li class="py-4 lg:py-8">
+                  <div class="grid grid-cols-1 gap-6 items-start lg:gap-24 lg:grid-cols-3">
+                    <div class="lg:col-span-2 order-first space-y-6">
+                      <div
+                        class="text-neutral-600 hover:prose-a:text-black prose prose-a:font-semibold prose-a:text-accent-500 prose-h2:font-semibold prose-h2:text-black prose-neutral-500 prose:p-text-sm"
+                      >
+                        <span class="font-semibold text-accent-500 text-xs uppercase">19 June 2023</span>
+                        <h2 class="text-2xl mt-3">New template added!</h2>
+                        <p class="text-black font-semibold">Updates</p>
+                        <ul>
+                          <li>
+                            Dusk is the minimal productise studio or agency theme. For those who want to have a nice, minial and elegant studio.
+                          </li>
+                          <li>
+                            <a class="text-accent-400 hover:text-black" href="/info/dusk">Learn more about dusk</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Footer />
+  </body>
+</html>
