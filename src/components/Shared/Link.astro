@@ -21,7 +21,7 @@ try {
       <div class="flex-row items-center">
         <div class="flex w-full text-center">
           <div class="h-10 w-10">
-            {image && <img width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}
+            {image && <img loading="lazy" width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}
           </div>
           {title && <h2 class="-ml-10 flex w-full items-center justify-center font-medium text-gray-700">{title}</h2>}
         </div>

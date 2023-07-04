@@ -28,7 +28,7 @@ try {
   title && url && (
     <a href={url} target="_blank" aria-label={title} rel="noopener nofollow" class="transition hover:scale-[1.25]">
       {iconLink ? (
-        <img class="h-[24px] rounded" alt={title} title={title} height={iconHeight} src={iconLink} />
+        <img loading="lazy" class="h-[24px] rounded" alt={title} title={title} height={iconHeight} src={iconLink} />
       ) : (
         <svg class="transition hover:scale-[1.025]" width="30" height="30" viewBox="0 0 70 68" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

@@ -51,7 +51,7 @@ const socialURLMap = {
       Object.entries(socialURLMap).map((i) => (
         <a rel="nofollow" href={i[1]} target="_blank" class="flex w-full flex-row items-center justify-between rounded px-5 py-3 hover:bg-black/10">
           <div class="flex w-full flex-row items-center gap-x-3">
-            {icon(i[0].toLowerCase()) && <img src={icon(i[0].toLowerCase())} height="16" class="object-cover" width="16" />}
+            {icon(i[0].toLowerCase()) && <img loading="lazy" src={icon(i[0].toLowerCase())} height="16" class="object-cover" width="16" />}
             <span>Share On {i[0]}</span>
           </div>
           <span>&xrarr;</span>
@@ -63,7 +63,7 @@ const socialURLMap = {
       class="hide-with-no-javascript cursor-pointer flex w-full flex-row items-center justify-between rounded py-3 px-5 hover:bg-black/10"
     >
       <div class="flex w-full flex-row items-center gap-x-3">
-        <img src="https://itsmy.fyi/__astro/seo/logo.png" height="16" class="object-cover" width="16" />
+        <img loading="lazy" src="https://itsmy.fyi/__astro/seo/logo.png" height="16" class="object-cover" width="16" />
         <span>Copy Link</span>
       </div>
       <svg height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
