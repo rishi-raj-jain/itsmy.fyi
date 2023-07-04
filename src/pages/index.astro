@@ -2,6 +2,7 @@
 import Demo from '@/components/Home/Demo.astro'
 import SEO from '@/components/Shared/SEO.astro'
 import Footer from '@/components/Home/Footer.astro'
+import Navbar from '@/components/Shared/Navbar.astro'
 import Tweets from '@/components/Twitter/Tweets.astro'
 import GitHubStars from '@/components/Home/GitHub-Stars.astro'
 
@@ -51,6 +52,7 @@ const seo = {
     </style>
   </head>
   <body>
+    <Navbar />
     <div class="relative mt-24 sm:mt-36 w-full flex flex-col items-center">
       <a
         target="_blank"
