@@ -2,6 +2,8 @@
 import SEO from '@/components/Shared/SEO.astro'
 import Footer from '@/components/Home/Footer.astro'
 import Navbar from '@/components/Shared/Navbar.astro'
+import PostHog from '@/components/Analytics/PostHog.astro'
+import InstantPage from '@/components/Shared/Instant.astro'
 
 const seo = {
   url: 'https://itsmy.fyi/terms',
@@ -113,5 +115,7 @@ const seo = {
       </div>
     </div>
     <Footer />
+    <InstantPage />
+    <PostHog />
   </body>
 </html>

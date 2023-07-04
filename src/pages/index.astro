@@ -4,6 +4,8 @@ import SEO from '@/components/Shared/SEO.astro'
 import Footer from '@/components/Home/Footer.astro'
 import Navbar from '@/components/Shared/Navbar.astro'
 import Tweets from '@/components/Twitter/Tweets.astro'
+import PostHog from '@/components/Analytics/PostHog.astro'
+import InstantPage from '@/components/Shared/Instant.astro'
 import GitHubStars from '@/components/Home/GitHub-Stars.astro'
 
 const seo = {
@@ -106,5 +108,7 @@ const seo = {
     <Tweets />
     <GitHubStars />
     <Footer />
+    <InstantPage />
+    <PostHog />
   </body>
 </html>
