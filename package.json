@@ -17,20 +17,19 @@
     "@edgio/cli": "6.1.4",
     "@edgio/core": "6.1.4",
     "@tailwindcss/typography": "^0.5.9",
-    "@vercel/nft": "^0.22.6",
     "dotenv": "^16.3.1",
-    "postcss": "^8.4.24",
-    "prettier": "^2.8.8",
-    "prettier-plugin-astro": "^0.10.0",
-    "prettier-plugin-tailwindcss": "^0.3.0",
-    "tailwindcss": "^3.3.2"
+    "postcss": "^8.4.27",
+    "prettier": "^3.0.0",
+    "prettier-plugin-astro": "^0.11.0",
+    "prettier-plugin-tailwindcss": "^0.4.1",
+    "tailwindcss": "^3.3.3"
   },
   "dependencies": {
-    "@astrojs/vercel": "^3.5.0",
-    "@octokit/rest": "^19.0.5",
+    "@astrojs/vercel": "^3.7.4",
+    "@octokit/rest": "^20.0.1",
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.21.0",
-    "astro": "^2.7.0",
+    "astro": "^2.9.2",
     "date-fns": "^2.30.0",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3"
