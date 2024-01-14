@@ -15,3 +15,5 @@ pnpm-debug.log*
 test.js
 .vercel/
 README.md
+.vercel
+.env*.local
