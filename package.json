@@ -13,25 +13,25 @@
     "format": "prettier --write '**/*' --ignore-unknown"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "^4.0.0",
+    "@astrojs/tailwind": "latest",
     "@edgio/cli": "6.1.4",
     "@edgio/core": "6.1.4",
-    "@tailwindcss/typography": "^0.5.9",
+    "@tailwindcss/typography": "latest",
     "dotenv": "^16.3.1",
     "postcss": "^8.4.27",
-    "prettier": "^3.0.0",
-    "prettier-plugin-astro": "^0.11.0",
-    "prettier-plugin-tailwindcss": "^0.4.1",
-    "tailwindcss": "^3.3.3"
+    "prettier": "latest",
+    "prettier-plugin-astro": "latest",
+    "prettier-plugin-tailwindcss": "latest",
+    "tailwindcss": "latest"
   },
   "dependencies": {
-    "@astrojs/vercel": "^3.7.4",
+    "@astrojs/vercel": "latest",
     "@octokit/rest": "^20.0.1",
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.21.0",
-    "astro": "^2.9.2",
-    "astro-font": "^0.0.72",
-    "date-fns": "^2.30.0",
+    "astro": "latest",
+    "astro-font": "latest",
+    "date-fns": "latest",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3"
   }
