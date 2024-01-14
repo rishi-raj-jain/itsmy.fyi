@@ -10,7 +10,6 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 .vscode
-.edgio
 # environment variables
 .env
 test.js

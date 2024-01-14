@@ -6,16 +6,10 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "edgio:dev": "edgio dev",
-    "edgio:build": "edgio build",
-    "edgio:deploy": "edgio deploy",
-    "edgio:production": "edgio run --production",
     "format": "prettier --write '**/*' --ignore-unknown"
   },
   "devDependencies": {
     "@astrojs/tailwind": "latest",
-    "@edgio/cli": "6.1.4",
-    "@edgio/core": "6.1.4",
     "@tailwindcss/typography": "latest",
     "dotenv": "^16.3.1",
     "postcss": "^8.4.27",
