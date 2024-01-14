@@ -4,6 +4,9 @@ import vercel from '@astrojs/vercel/serverless'
 
 export default defineConfig({
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    edgeMiddleware: true,
+    functionPerRoute: true,
+  }),
   integrations: [tailwind()],
 })
