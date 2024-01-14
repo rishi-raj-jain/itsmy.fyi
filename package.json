@@ -30,6 +30,7 @@
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.21.0",
     "astro": "^2.9.2",
+    "astro-font": "^0.0.72",
     "date-fns": "^2.30.0",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3"
