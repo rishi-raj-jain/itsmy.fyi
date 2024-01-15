@@ -1,29 +1,26 @@
 import { getUserSlugs } from '@/lib/Upstash/users'
+import { SitemapStream, streamToPromise } from 'sitemap'
 
-export async function get() {
-  const prefix = 'https://itsmy.fyi'
-  const { code, slugs = [] } = await getUserSlugs()
-  if (code === 1) {
-    const sitemap = `
-      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-          <url><loc>${prefix}</loc></url>
-          ${slugs.map((i) => `<url><loc>${prefix}/me/${i}</loc></url>`).join('')}
-      </urlset>
-    `
-    return new Response(sitemap, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/xml',
-      },
-    })
-  } else {
-    return new Response(null, {
-      status: 404,
-      // @ts-ignore
-      location: '/404',
-      headers: {
-        'Content-Type': 'text/html',
-      },
-    })
+export async function GET() {
+  try {
+    const hostname = 'https://itsmy.fyi'
+    const smStream = new SitemapStream({ hostname })
+    const { code, slugs = [] } = await getUserSlugs()
+    if (code === 1) {
+      slugs.forEach((i) => {
+        smStream.write({ url: `/me/${i}`, changefreq: 'daily', priority: 1 })
+      })
+      smStream.end()
+      const sitemap = await streamToPromise(smStream)
+      return new Response(sitemap, {
+        headers: {
+          'Content-Type': 'text/xml',
+        },
+      })
+    }
+  } catch (e: any) {
+    const tmp = e.message || e.toString()
+    console.log(tmp)
+    return new Response(tmp, { status: 500 })
   }
 }
