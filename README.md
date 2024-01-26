@@ -1,9 +1,4 @@
-<p align="center">
-  <a href="https://itsmy.fyi">
-    <img alt="itsmy.fyi - Take control of your online presence" src="https://itsmy.fyi/seo/social-media-card.png">
-    <h1 align="center">itsmy.fyi</h1>
-  </a>
-</p>
+![](https://itsmy.fyi/__astro/seo/social-media-card.png)
 
 <p align="center">
   Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree
