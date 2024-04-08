@@ -22,7 +22,7 @@
 
 Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree.
 
-Built with [Astro](https://astro.build), [Vercel](https://vercel.com), [Edgio](https://edg.io), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
+Built with [Astro](https://astro.build), [Vercel](https://vercel.com), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
 
 ## Tech Stack + Features
 
@@ -45,8 +45,6 @@ https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-
 ### Platform
 
 - [Vercel](https://vercel.com) – Hosting
-
-- [Edgio](https://edg.io) – Hosting & Caching
 
 ### Code Quality
 
