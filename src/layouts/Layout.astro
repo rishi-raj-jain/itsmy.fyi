@@ -1,6 +1,6 @@
 ---
-import { AstroFont } from 'astro-font'
 import SEO from '@/components/Shared/SEO.astro'
+import Font from '@/components/Shared/Font.astro'
 import Clipboard from '@/components/Shared/Clipboard.astro'
 
 const updatedAt = new Date().toString()
@@ -26,19 +26,7 @@ if (!('color' in background || 'image' in background)) bg['className'] = 'defaul
     <SEO {...content} />
     {bg.src && <link rel="preload" href={bg.src} />}
     <link href="/__astro/css/global.css" rel="stylesheet" />
-    <AstroFont
-      config={[
-        {
-          src: [],
-          name: 'Inter',
-          preload: false,
-          display: 'swap',
-          fallback: 'sans-serif',
-          selector: '.font-display',
-          googleFontsURL: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900'
-        },
-      ]}
-    />
+    <Font />
     <noscript>
       <style>
         .hide-with-no-javascript {

@@ -1,7 +1,7 @@
 ---
-import { AstroFont } from 'astro-font'
 import Demo from '@/components/Home/Demo.astro'
 import SEO from '@/components/Shared/SEO.astro'
+import Font from '@/components/Shared/Font.astro'
 import Footer from '@/components/Home/Footer.astro'
 import Navbar from '@/components/Shared/Navbar.astro'
 import Tweets from '@/components/Twitter/Tweets.astro'
@@ -26,19 +26,7 @@ const seo = {
 <html lang="en">
   <head>
     <SEO {...seo} />
-    <AstroFont
-      config={[
-        {
-          src: [],
-          name: 'Inter',
-          preload: false,
-          display: 'swap',
-          fallback: 'sans-serif',
-          selector: '.font-display',
-          googleFontsURL: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900'
-        },
-      ]}
-    />
+    <Font />
   </head>
   <body class="font-display">
     <Navbar />
