@@ -1,17 +1,18 @@
 ---
 import Tweet from './Tweet.astro'
 
-let tweets = {}
+let tweets
 
 try {
-  tweets = await fetch(`${Astro.url.origin.includes('localhost') ? Astro.url.origin : Astro.url.origin.replace('http:', 'https:')}/__astro/home/tweets.json`).then((res) => res.json())
+  const tweetsFetch = await fetch(`${Astro.url.origin.includes('localhost') ? Astro.url.origin : Astro.url.origin.replace('http:', 'https:')}/__astro/home/tweets.json`)
+  tweets = await tweetsFetch.json()
 } catch (e) {
   console.log(e.message || e.toString())
 }
 ---
 
 {
-  tweets && tweets['data'] && tweets.data.length > 0 && (
+  tweets?.['data'] && tweets['data'].length > 0 && (
     <div class="mt-24 flex w-full flex-col items-center sm:mt-36">
       <h2 class="max-w-xs bg-gradient-to-r from-blue-600 via-blue-900 to-blue-600 bg-clip-text text-center font-display text-4xl font-extrabold leading-tight text-transparent sm:max-w-max sm:text-5xl sm:leading-tight">
         Our growing wall of love ❤️

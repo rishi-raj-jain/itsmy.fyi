@@ -8,64 +8,45 @@ import Social from '@/components/Shared/Social.astro'
 
 const { slug } = Astro.params
 
-let url = Astro.request.url.replace('http:', 'https:')
+if (!slug) return new Response(null, { status: 404 })
+
+const url = Astro.request.url.replace('http:', 'https:')
 
 let userSlug = slug.toLowerCase(),
   title = '',
   description = '',
-  image = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png',
-  icon = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/logo.png'
+  icon = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/logo.png',
+  image = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png'
 
-if (userSlug.endsWith('/')) {
-  userSlug = userSlug.substring(0, userSlug.length - 1)
-}
+if (userSlug.endsWith('/')) userSlug = userSlug.substring(0, userSlug.length - 1)
 
 // Get data from the json file
 const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {}, ga = {}, icon: iconLink, code = 1 } = await getUserInfo(userSlug)
 
-if (code === 0) 
-  return Astro.redirect('/404')
+if (code === 0) return Astro.redirect('/404')
 
-if (iconLink) 
-  icon = iconLink
+if (iconLink) icon = iconLink
 
-if (userName) 
-  title = userName
+if (userName) title = userName
 
-if (about) 
-  description = about
+if (about) description = about
 
-if (og && og.image) 
-  image = og.image
+if (og?.image) image = og.image
 
 // Process into content map
 const contentMap = {}
-contentMap['image'] = userImage
 contentMap['name'] = userName
+contentMap['image'] = userImage
 contentMap['links'] = links.map((i) => ({ title: i[0], href: i[1], image: i[2] ?? '' }))
-
 if (socials && socials.length) contentMap['socials'] = socials.map((i) => ({ title: i[0].toLowerCase(), href: i[1] }))
 
+// Show Google Analytics
+const showGA = Boolean(ga?.['enabled'] && ga?.['configID'])
+
 // Create SEO map
-const seo = {
-  url,
-  icon,
-  title,
-  image,
-  description,
-}
-
-if (contentMap.image) seo['preloads'] = [{ href: contentMap.image, as: 'image' }]
-
-if (contentMap.links.length > 1) seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
-
-let showGA = false
-
-try {
-  showGA = ga.enabled && ga.configID
-} catch (e) {
-  console.log(e.message || e.toString())
-}
+const seo = { url, icon, title, image, description }
+if (contentMap?.['image']) seo['preloads'] = [{ href: contentMap['image'], as: 'image' }]
+if (contentMap?.['links'].length > 1) seo['slackPreviewLabels'] = contentMap['links'].slice(0, 2)
 ---
 
 <Layout background={background} content={seo}>
@@ -76,21 +57,21 @@ try {
   </div>
   <div class="relative mx-auto flex w-full flex-col items-center justify-center max-w-[680px] px-8">
     <div class="py-8"></div>
-    {contentMap.image && <img width="96" height="96" loading="eager" alt={contentMap.name} src={contentMap.image} class="rounded-full shadow-2xl" />}
-    {contentMap.name && <h1 class="mb-8 mt-4 text-2xl font-medium tracking-wide text-white">{contentMap.name}</h1>}
+    {contentMap['name'] && contentMap['image'] && <img width="96" height="96" loading="eager" alt={contentMap['name']} src={contentMap['image']} class="rounded-full shadow-2xl" />}
+    {contentMap['name'] && <h1 class="mb-8 mt-4 text-2xl font-medium tracking-wide text-white">{contentMap['name']}</h1>}
     {
-      contentMap.links && contentMap.links.length > 0 && (
+      contentMap['links'] && contentMap['links'].length > 0 && (
         <div class="flex w-full flex-col gap-y-8">
-          {contentMap.links.map((i) => (
+          {contentMap['links'].map((i) => (
             <Link {...i} />
           ))}
         </div>
       )
     }
     {
-      contentMap.socials && contentMap.socials.length > 0 && (
+      contentMap['socials'] && contentMap['socials'].length > 0 && (
         <div class="mt-8 flex max-w-md flex-row flex-wrap items-center justify-center gap-8">
-          {contentMap.socials.map((i) => (
+          {contentMap['socials'].map((i) => (
             <Social {...i} />
           ))}
         </div>
