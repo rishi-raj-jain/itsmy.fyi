@@ -14,17 +14,11 @@ const bg = {
   className: '',
 }
 
-if ('image' in background) {
-  bg['src'] = background.image
-}
+if ('image' in background) bg['src'] = background.image
 
-if ('color' in background) {
-  bg['style'] = `background: ${background.color}`
-}
+if ('color' in background) bg['style'] = `background: ${background.color}`
 
-if (!('color' in background || 'image' in background)) {
-  bg['className'] = 'default-body'
-}
+if (!('color' in background || 'image' in background)) bg['className'] = 'default-body'
 ---
 
 <html lang="en">
@@ -35,19 +29,14 @@ if (!('color' in background || 'image' in background)) {
     <AstroFont
       config={[
         {
+          src: [],
           name: 'Inter',
           preload: false,
           display: 'swap',
           fallback: 'sans-serif',
           selector: '.font-display',
-          src: [
-            {
-              style: 'normal',
-              weight: '100 900',
-              path: 'https://itsmy.fyi/__astro/fonts/rsms-inter-var.woff2'
-            }
-          ]
-        }
+          googleFontsURL: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900'
+        },
       ]}
     />
     <noscript>

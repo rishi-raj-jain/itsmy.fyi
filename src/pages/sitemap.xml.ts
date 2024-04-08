@@ -1,4 +1,4 @@
-import { getUserSlugs } from '@/lib/Upstash/users'
+import { getUserSlugs } from '~/Upstash/users'
 import { SitemapStream, streamToPromise } from 'sitemap'
 
 export async function GET() {

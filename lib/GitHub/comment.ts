@@ -1,4 +1,4 @@
-import { octokit } from '@/lib/Octokit/setup'
+import { octokit } from '~/Octokit/setup'
 
 export const createComment = async (context, body) => {
   await octokit.rest.issues.createComment({

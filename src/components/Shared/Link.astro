@@ -20,9 +20,7 @@ try {
       <a href={url} target="_blank" aria-label="Share" rel="nofollow noopener" class="absolute left-0 top-0 block h-full w-full rounded-lg " />
       <div class="flex-row items-center">
         <div class="flex w-full text-center">
-          <div class="h-10 w-10">
-            {image && <img loading="lazy" width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}
-          </div>
+          <div class="h-10 w-10">{image && <img loading="lazy" width="40" height="40" class="h-10 w-10 bg-transparent object-contain" alt={title} src={image} />}</div>
           {title && <h2 class="-ml-10 flex w-full items-center justify-center font-medium text-gray-700">{title}</h2>}
         </div>
         <Share className="absolute right-2 top-1 hidden group-hover:block" name={title} url={url} />

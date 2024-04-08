@@ -1,10 +1,10 @@
 import { slug } from 'github-slugger'
-import { json } from '@/lib/GitHub/json'
-import { ratelimit } from '@/lib/Upstash/ratelimit'
-import { createComment } from '@/lib/GitHub/comment'
-import { generateString } from '@/lib/GitHub/generateString'
-import { validateEvent, verifySignature } from '@/lib/GitHub/validate'
-import { deleteUserInfo, getUserInfo, postUserInfo } from '@/lib/Upstash/users'
+import { json } from '~/GitHub/json'
+import { ratelimit } from '~/Upstash/ratelimit'
+import { createComment } from '~/GitHub/comment'
+import { generateString } from '~/GitHub/generateString'
+import { validateEvent, verifySignature } from '~/GitHub/validate'
+import { deleteUserInfo, getUserInfo, postUserInfo } from '~/Upstash/users'
 
 const rateLimiter = ratelimit(3, '60 s')
 
@@ -37,9 +37,7 @@ export async function post({ request }) {
   const data = validateEvent(context)
 
   // if no data
-  if (data === false) {
-    return json(null, 403)
-  }
+  if (data === false) return json(null, 403)
 
   // if error in data
   if (data.error) {
@@ -124,9 +122,7 @@ export async function post({ request }) {
           await createComment(context, message)
           return json({ message }, 200)
         }
-      } else {
-        return json(null, 409)
-      }
+      } else return json(null, 409)
     } else {
       const message = `Thanks for using [itsmy.fyi](https://itsmy.fyi). To claim a new slug, please create another [issue here](https://github.com/rishi-raj-jain/itsmy.fyi/issues/new/choose).\n\nUsage:\nRemaining edits for next 1 minute: ${remaining}`
       await createComment(context, message)

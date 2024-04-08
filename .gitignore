@@ -1,19 +1,24 @@
 # build output
 dist/
+
+# generated types
+.astro/
+
 # dependencies
 node_modules/
+
 # logs
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-# macOS-specific files
-.DS_Store
-.vscode
+
 # environment variables
 .env
-test.js
-.vercel/
-README.md
-.vercel
+.env.production
 .env*.local
+
+# macOS-specific files
+.DS_Store
+
+# Deployment
+.vercel
+.netlify
+.amplify-hosting

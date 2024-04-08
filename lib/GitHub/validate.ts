@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import matter from 'gray-matter'
-import { getENV } from '@/lib/env'
+import { getENV } from '~/env'
 
 export const validateBody = (data) => {
   try {

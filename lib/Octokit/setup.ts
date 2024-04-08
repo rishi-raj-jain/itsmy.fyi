@@ -1,4 +1,4 @@
-import { getENV } from '@/lib/env'
+import { getENV } from '~/env'
 import { Octokit } from '@octokit/rest'
 
 const auth = getENV('GITHUB_API_TOKEN')

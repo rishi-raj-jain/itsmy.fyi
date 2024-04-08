@@ -4,10 +4,8 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"],
-      "@/lib/*": ["lib/*"],
-      "@/layouts/*": ["src/layouts/*"],
-      "@/components/*": ["src/components/*"]
+      "@/*": ["src/*"],
+      "~/*": ["lib/*"]
     }
   }
 }

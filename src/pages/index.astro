@@ -1,18 +1,18 @@
 ---
+import { AstroFont } from 'astro-font'
 import Demo from '@/components/Home/Demo.astro'
 import SEO from '@/components/Shared/SEO.astro'
 import Footer from '@/components/Home/Footer.astro'
 import Navbar from '@/components/Shared/Navbar.astro'
 import Tweets from '@/components/Twitter/Tweets.astro'
-import PostHog from '@/components/Analytics/PostHog.astro'
 import InstantPage from '@/components/Shared/Instant.astro'
 import GitHubStars from '@/components/Home/GitHub-Stars.astro'
 
 const seo = {
   url: 'https://itsmy.fyi',
-  icon: 'https://itsmy.fyi/__astro/seo/logo.png',
+  icon: 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/logo.png',
   title: 'itsmy.fyi - Take control of your online presence',
-  image: 'https://itsmy.fyi/__astro/seo/social-media-card.png',
+  image: 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png',
   description: 'Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree',
   preloads: [
     {
@@ -26,14 +26,20 @@ const seo = {
 <html lang="en">
   <head>
     <SEO {...seo} />
+    <AstroFont
+      config={[
+        {
+          src: [],
+          name: 'Inter',
+          preload: false,
+          display: 'swap',
+          fallback: 'sans-serif',
+          selector: '.font-display',
+          googleFontsURL: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900'
+        },
+      ]}
+    />
     <style is:raw>
-      @font-face {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 100 900;
-        font-display: optional;
-        src: url(/__astro/fonts/rsms-inter-var.woff2) format('woff2');
-      }
       .style_less_than::before {
         width: 0;
         top: 15px;
@@ -53,7 +59,7 @@ const seo = {
       }
     </style>
   </head>
-  <body>
+  <body class="font-display">
     <Navbar />
     <div class="relative mt-24 sm:mt-36 w-full flex flex-col items-center">
       <a
@@ -70,9 +76,7 @@ const seo = {
         </svg>
         <p class="text-sm font-semibold text-[#1d9bf0]">Introducing itsmy.fyi</p>
       </a>
-      <h1
-        class="font-extrabold mt-8 text-center text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-blue-500 via-blue-900 to-blue-500 max-w-sm sm:max-w-2xl"
-      >
+      <h1 class="font-extrabold mt-8 text-center text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-blue-500 via-blue-900 to-blue-500 max-w-sm sm:max-w-2xl">
         All for you to share.<br />In one simple link.
       </h1>
       <span class="mt-8 text-center text-xl text-gray-800 leading-relaxed max-w-lg">
@@ -109,6 +113,5 @@ const seo = {
     <GitHubStars />
     <Footer />
     <InstantPage />
-    <PostHog />
   </body>
 </html>

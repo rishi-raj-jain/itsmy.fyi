@@ -1,10 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import GA from '@/components/Analytics/GA.astro'
-import { getUserInfo } from '@/lib/Upstash/users'
+import { getUserInfo } from '~/Upstash/users'
 import Link from '@/components/Shared/Link.astro'
-import Share from '@/src/components/Shared/Share.astro'
-import Social from '@/src/components/Shared/Social.astro'
+import Share from '@/components/Shared/Share.astro'
+import Social from '@/components/Shared/Social.astro'
 
 const { slug } = Astro.params
 
@@ -13,46 +13,30 @@ let url = Astro.request.url.replace('http:', 'https:')
 let userSlug = slug.toLowerCase(),
   title = '',
   description = '',
-  image = 'https://itsmy.fyi/__astro/seo/social-media-card.png',
-  icon = 'https://itsmy.fyi/__astro/seo/logo.png'
+  image = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png',
+  icon = 'https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/logo.png'
 
 if (userSlug.endsWith('/')) {
   userSlug = userSlug.substring(0, userSlug.length - 1)
 }
 
 // Get data from the json file
-const {
-  name: userName,
-  image: userImage,
-  links = [],
-  socials = [],
-  about = '',
-  og = {},
-  background = {},
-  ga = {},
-  icon: iconLink,
-  code = 1,
-} = await getUserInfo(userSlug)
+const { name: userName, image: userImage, links = [], socials = [], about = '', og = {}, background = {}, ga = {}, icon: iconLink, code = 1 } = await getUserInfo(userSlug)
 
-if (code === 0) {
+if (code === 0) 
   return Astro.redirect('/404')
-}
 
-if (iconLink) {
+if (iconLink) 
   icon = iconLink
-}
 
-if (userName) {
+if (userName) 
   title = userName
-}
 
-if (about) {
+if (about) 
   description = about
-}
 
-if (og && og.image) {
+if (og && og.image) 
   image = og.image
-}
 
 // Process into content map
 const contentMap = {}
@@ -71,13 +55,9 @@ const seo = {
   description,
 }
 
-if (contentMap.image) {
-  seo['preloads'] = [{ href: contentMap.image, as: 'image' }]
-}
+if (contentMap.image) seo['preloads'] = [{ href: contentMap.image, as: 'image' }]
 
-if (contentMap.links.length > 1) {
-  seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
-}
+if (contentMap.links.length > 1) seo['slackPreviewLabels'] = contentMap.links.slice(0, 2)
 
 let showGA = false
 

@@ -1,4 +1,4 @@
-![](https://itsmy.fyi/__astro/seo/social-media-card.png)
+![](https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png)
 
 <p align="center">
   Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree

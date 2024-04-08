@@ -30,16 +30,13 @@ try {
   tempText = tempText
     .replace(/\B\@([\w\-]+)/gim, (match) => {
       // format all @ mentions
-      return `<a style="color: rgb(29,161,242); font-weight:normal; text-decoration: none" href="https://twitter.com/${match.replace(
-        '@',
-        ''
-      )}" target="_blank">${match}</a>`
+      return `<a style="color: rgb(29,161,242); font-weight:normal; text-decoration: none" href="https://twitter.com/${match.replace('@', '')}" target="_blank">${match}</a>`
     })
     .replace(/(#+[a-zA-Z0-9(_)]{1,})/g, (match) => {
       // format all # hashtags
       return `<a style="color: rgb(29,161,242); font-weight:normal; text-decoration: none" href="https://twitter.com/hashtag/${match.replace(
         '#',
-        ''
+        '',
       )}" target="_blank">${match}</a>`
     })
   const shortLinks = formattedText.match(/https:\/\/t\.co\/[a-zA-Z0-9]{0,10}/g)
