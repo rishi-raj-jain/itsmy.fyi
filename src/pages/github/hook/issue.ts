@@ -1,5 +1,5 @@
-import { slug } from 'github-slugger'
 import { json } from '~/GitHub/json'
+import { slug } from 'github-slugger'
 import { ratelimit } from '~/Upstash/ratelimit'
 import { createComment } from '~/GitHub/comment'
 import { generateString } from '~/GitHub/generateString'
@@ -13,14 +13,10 @@ export async function POST({ request }) {
     remaining = 9999
   const context = await request.json()
   // if not a suitable event
-  if (!['closed', 'edited', 'opened'].includes(context.action.toLowerCase())) {
-    return json({ message: 'Event not supported.' }, 403)
-  }
+  if (!['closed', 'edited', 'opened'].includes(context.action.toLowerCase())) return json({ message: 'Event not supported.' }, 403)
 
   // if not a verified call
-  if (!verifySignature(context, request.headers.get('X-Hub-Signature-256'))) {
-    return json({ message: 'Forbidden.' }, 403)
-  }
+  if (!verifySignature(context, request.headers.get('X-Hub-Signature-256'))) return json({ message: 'Forbidden.' }, 403)
 
   // if rate limited
   if (rateLimiter) {
