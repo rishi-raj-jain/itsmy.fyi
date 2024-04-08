@@ -8,9 +8,7 @@ type UserProfile = null | {
 export async function getUserInfo(slug) {
   try {
     const parsedData: UserProfile = await redis.hget('profiles', slug)
-    if (parsedData?.slug === slug) {
-      return { ...parsedData, code: 1 }
-    }
+    if (parsedData?.slug === slug) return { ...parsedData, code: 1 }
     return {
       code: 0,
       issue: null,
