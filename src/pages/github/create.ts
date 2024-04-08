@@ -22,7 +22,7 @@ const returnResponse = (statusCode, body, noJS = false) => {
   return json(body, statusCode)
 }
 
-export async function post({ request }) {
+export async function POST({ request }) {
   // Evaluate if no JS is there
   const requestURL = new URL(request.url)
   const noJS = Boolean(requestURL.searchParams.has('nojs') && requestURL.searchParams.get('nojs') === 'yes')

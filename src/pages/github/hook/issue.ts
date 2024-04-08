@@ -8,7 +8,7 @@ import { deleteUserInfo, getUserInfo, postUserInfo } from '~/Upstash/users'
 
 const rateLimiter = ratelimit(3, '60 s')
 
-export async function post({ request }) {
+export async function POST({ request }) {
   let limit = 9999,
     remaining = 9999
   const context = await request.json()
