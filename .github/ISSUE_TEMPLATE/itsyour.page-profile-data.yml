@@ -1,0 +1,46 @@
+name: itsmy.fyi Profile Data
+description: Describe your profile data and get a URL to share instantly!
+title: 'itsmy.fyi - {INSERT NAME} (Optional)'
+body:
+  - type: textarea
+    attributes:
+      render: Markdown
+      label: itsmy.fyi Profile Data
+      value: |
+        ---
+        slug: rishi-raj-jain
+        name: Rishi Raj Jain
+        about: Hey there, I'm Rishi on itsmy.fyi!
+        image: https://rishi.app/static/favicon-image.jpg
+        links: [["Portfolio", "https://rishi.app"]]
+        socials: [["Twitter", "https://twitter.com/rishi_raj_jain_"]]
+        og:
+          image: https://rishi.app/static/social-media-card.jpg
+        background:
+          image: https://volta.net/home/hero.png
+        ---
+
+
+        The expected format for itsmy.fyi to parse your data would be:
+
+        ## Required
+
+        slug: **required**, String (without quotes, newline, let's keep it simple!)
+        name: **required**, String (without quotes or newline)
+        image: **required**, String (without quotes or newline)
+        links: **required**, but can be empty array [], (examples: [["My Website", "https://rishi.app"], ["Web", "https://rishi.app", "https://rishi.app/static/favicon-image.jpg"]])
+        socials: **required**, but can be empty array [], (example: [["twitter", "https://twitter.com/rishi_raj_jain_"], ["linkedin", "https://linked.com/in/rishi-raj-jain"]])
+
+        ## Optional
+
+        about: optional, String (without quotes or newline)
+        og:
+            image: optional, String (without quotes or newline)
+        ga:
+            enabled: boolean, true or false (without quotes or newline)
+            configID: **required if enabled is true**, String (ex. "G-RANDOM")
+        background:
+            color: optional, can be a String (ex. pink), Hexcode (ex. "#C1C1C1" with the quotes) or anything that background: CSS supports
+            image: optional, an absolute URL
+    validations:
+      required: true
