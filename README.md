@@ -1,5 +1,7 @@
 ![](https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png)
 
+<a target="_blank" href="https://www.launchfa.st">Built with LaunchFa.st</a>
+
 <p align="center">
   Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree
 </p>
