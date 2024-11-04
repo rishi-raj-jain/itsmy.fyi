@@ -1,7 +1,5 @@
 ![](https://ik.imagekit.io/vjeqenuhn/itsmy.fyi/social-media-card.png)
 
-<a target="_blank" href="https://www.launchfa.st">Built with LaunchFa.st</a>
-
 <p align="center">
   Take control of your online presence with itsmy.fyi - the true open-source alternative to Linktree
 </p>
@@ -27,6 +25,8 @@ Take control of your online presence with itsmy.fyi - the true open-source alter
 Built with [Astro](https://astro.build), [Vercel](https://vercel.com), [Upstash](https://upstash.com), [GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) and [TailwindCSS](https://tailwindcss.com).
 
 ## Tech Stack + Features
+
+<a target="_blank" href="https://www.launchfa.st">Built with LaunchFa.st</a>
 
 https://user-images.githubusercontent.com/46300090/213339667-d6a6599c-8136-4dd3-9e05-6594636c1d48.mp4
 
