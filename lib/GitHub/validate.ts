@@ -4,7 +4,6 @@ import { getENV } from '~/env'
 
 export const validateBody = (data) => {
   try {
-    console.log(JSON.stringify(data))
     if ('disabled' in data && data.disabled === 'yes') {
       throw new Error(`Found disabled as yes, avoiding processing further.`)
     }
