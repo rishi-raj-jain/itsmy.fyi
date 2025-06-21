@@ -47,9 +47,7 @@ export const validateEvent = (context) => {
       return false
     }
     const body = context.issue.body
-    const start = body.indexOf('---\r\n')
-    const end = body.lastIndexOf('\r\n---')
-    const { data } = matter(body.substring(start, end + 5))
+    const { data } = matter(`---\n${body.split('---')[1]}\n---`)
     return validateBody(data)
   } catch (e) {
     console.error(e.message || e.toString())
