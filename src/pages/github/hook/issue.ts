@@ -12,6 +12,7 @@ export async function POST({ request }) {
   let limit = 9999,
     remaining = 9999
   const context = await request.json()
+  console.log(context)
   // if not a suitable event
   if (!['closed', 'edited', 'opened'].includes(context.action.toLowerCase())) return json({ message: 'Event not supported.' }, 403)
 
